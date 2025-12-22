@@ -2,10 +2,8 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent),
-      ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+
     ui->setupUi(this);
 
     // Initialize UI
@@ -21,6 +19,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->inputMax,   &QLineEdit::editingFinished, this, &MainWindow::onMaxChanged);
     connect(ui->inputStep,  &QLineEdit::editingFinished, this, &MainWindow::onStepChanged);
     connect(ui->inputValue, &QLineEdit::editingFinished, this, &MainWindow::onValueChanged);
+
+    // synth business
+    synth_ = new Synth(this);
+    audioStream_ = new AudioStream(synth_, this);
+
+    audioStream_->start();
+    synth_->audioSink()->start(audioStream_); 
 
 }
 
@@ -46,6 +51,8 @@ void MainWindow::updateCounterLabel() {
 void MainWindow::onSliderValueChanged(int value) { 
     QSignalBlocker blocker(ui->inputValue);
     ui->inputValue->setText(QString::number(value));
+
+    synth_->setFrequency(static_cast<float>(value));
 }
 
 // allows only values within the min, max to be set by the text field
