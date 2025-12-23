@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 
-#include "synth/Synth.h"
-#include "synth/AudioStream.h"
+#include "synth/AudioEngine.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,7 +41,6 @@ private:
     void applySliderStep();
     void syncValueToUi(int value);
 
-    Synth *synth_ = nullptr;
-    AudioStream *audioStream_ = nullptr;
+    AudioEngine* audio_ = nullptr;
 
 };

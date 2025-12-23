@@ -1,4 +1,6 @@
 
+/*
+
 #include "Synth.h"
 
 #include <QMediaDevices>
@@ -28,13 +30,12 @@ Synth::~Synth() {
 
 void Synth::start() {
 
-    /*
     // std::cout << "Synth::start()" << std::endl;
-    if (audioSink_->state() == QAudio::ActiveState)
-        return;
+    // if (audioSink_->state() == QAudio::ActiveState)
+    //     return;
 
-    audioDevice_ = audioSink_->start();
-    */
+    // audioDevice_ = audioSink_->start();
+    
 }
 
 void Synth::stop() {
@@ -110,3 +111,5 @@ void Synth::applyConfig(const AudioConfig& config) {
 
     audioSink_->setBufferSize(config.bufferSize);
 }
+
+*/

@@ -1,6 +1,8 @@
 
 #pragma once
 
+/*
+
 #include <QObject>
 #include <QAudioFormat>
 #include <QAudioSink>
@@ -46,3 +48,5 @@ private:
 
     float freq = 400.0f;
 };
+
+*/

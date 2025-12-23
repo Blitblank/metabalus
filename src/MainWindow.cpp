@@ -21,11 +21,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->inputValue, &QLineEdit::editingFinished, this, &MainWindow::onValueChanged);
 
     // synth business
-    synth_ = new Synth(this);
-    audioStream_ = new AudioStream(synth_, this);
-
-    audioStream_->start();
-    synth_->audioSink()->start(audioStream_); 
+    audio_ = new AudioEngine();
+    audio_->start();
 
 }
 
@@ -52,7 +49,7 @@ void MainWindow::onSliderValueChanged(int value) {
     QSignalBlocker blocker(ui->inputValue);
     ui->inputValue->setText(QString::number(value));
 
-    synth_->setFrequency(static_cast<float>(value));
+    audio_->setFrequency(static_cast<float>(value));
 }
 
 // allows only values within the min, max to be set by the text field
