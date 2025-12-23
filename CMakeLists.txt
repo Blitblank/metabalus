@@ -5,30 +5,53 @@ project(metabolus LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if (WIN32)
-    add_library(RtAudio::RtAudio SHARED IMPORTED)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
+qt_standard_project_setup()
 
-    set_target_properties(RtAudio::RtAudio PROPERTIES
-        IMPORTED_LOCATION "C:/rtaudio/bin/rtaudio.dll"
-        IMPORTED_IMPLIB   "C:/rtaudio/lib/rtaudio.lib"
-        INTERFACE_INCLUDE_DIRECTORIES "C:/rtaudio/include"
+# windows 11 x86_64
+# debian 12 x86_64
+if (WIN32)
+    # Header-only target (real target, no ::)
+    add_library(rtaudio_headers INTERFACE)
+    target_include_directories(rtaudio_headers INTERFACE
+        "C:/rtaudio/include"
+        "C:/rtaudio/include/rtAudio"
     )
 
+    # Imported binary (real target, no ::)
+    add_library(rtaudio_binary SHARED IMPORTED)
+    set_target_properties(rtaudio_binary PROPERTIES
+        IMPORTED_LOCATION "C:/rtaudio/bin/rtaudio.dll"
+        IMPORTED_IMPLIB   "C:/rtaudio/lib/rtaudio.lib"
+    )
+
+    # Unified interface target
+    add_library(rtaudio INTERFACE)
+    target_link_libraries(rtaudio INTERFACE
+        rtaudio_headers
+        rtaudio_binary
+    )
+
+    # Public alias (this is where :: belongs)
+    add_library(RtAudio::RtAudio ALIAS rtaudio)
+
 else()
-    find_package(Qt6 REQUIRED COMPONENTS Widgets)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(RTAUDIO REQUIRED rtaudio)
 
-    add_library(RtAudio::RtAudio INTERFACE IMPORTED)
-    set_target_properties(RtAudio::RtAudio PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES "${RTAUDIO_INCLUDE_DIRS}"
-        INTERFACE_LINK_LIBRARIES "${RTAUDIO_LIBRARIES}"
+    add_library(rtaudio INTERFACE)
+    target_include_directories(rtaudio INTERFACE
+        ${RTAUDIO_INCLUDE_DIRS}
     )
+    target_link_libraries(rtaudio INTERFACE
+        ${RTAUDIO_LIBRARIES}
+    )
+
+    add_library(RtAudio::RtAudio ALIAS rtaudio)
 endif()
 
-qt_standard_project_setup()
 
-add_executable(metabolus
+qt_add_executable(metabolus
     src/main.cpp
     src/MainWindow.cpp
     src/MainWindow.h
@@ -40,14 +63,12 @@ add_executable(metabolus
     resources/resources.qrc
 )
 
-# target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS})
-target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES})
-# target_compile_options(metabolus PRIVATE ${RTAUDIO_CFLAGS_OTHER})
+target_link_libraries(metabolus PRIVATE Qt6::Widgets RtAudio::RtAudio)
 
 if (WIN32)
-    add_custom_command(TARGET MyQtApp POST_BUILD
+    add_custom_command(TARGET metabolus POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "C:/rtaudio/bin/rtaudio.dll"
-        $<TARGET_FILE_DIR:MyQtApp>
+        $<TARGET_FILE_DIR:metabolus>
     )
 endif()

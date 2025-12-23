@@ -1,8 +1,13 @@
 
 #include "AudioEngine.h"
 
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <iostream>
-#include <math.h>
+
+#ifndef M_PI // I hate my stupid chungus life
+    #define M_PI 3.14159265358979323846
+#endif
 
 AudioEngine::AudioEngine() {
     if(audio_.getDeviceCount() < 1) {
@@ -18,12 +23,13 @@ bool AudioEngine::start() {
 
     RtAudio::StreamParameters params;
     params.deviceId = audio_.getDefaultOutputDevice();
-    params.nChannels = 1;
+    params.nChannels = 2;
     params.firstChannel = 0;
 
     RtAudio::StreamOptions options;
     options.flags = RTAUDIO_MINIMIZE_LATENCY;
 
+    /*
     try {
         audio_.openStream(&params, nullptr, RTAUDIO_FLOAT32, sampleRate_, &bufferFrames_, &AudioEngine::audioCallback, this, &options);
         audio_.startStream();
@@ -31,6 +37,9 @@ bool AudioEngine::start() {
         std::cerr << e.getMessage() << std::endl;
         return false;
     }
+    */
+    audio_.openStream(&params, nullptr, RTAUDIO_FLOAT32, sampleRate_, &bufferFrames_, &AudioEngine::audioCallback, this, &options);
+    audio_.startStream();
 
     std::cout << "sample rate: " << sampleRate_ << "  buffer frames: " << bufferFrames_ << std::endl;
     return true;
@@ -63,7 +72,9 @@ int32_t AudioEngine::process(float* out, uint32_t nFrames) {
         currentFreq_ += freqStep;
 
         float phaseInc = 2.0f * M_PI * currentFreq_ / sr;
-        out[i] = std::sin(phase_);
+
+        out[2*i] = std::sin(phase_); // left
+        out[2*i+1] = std::sin(phase_); // right
 
         phase_ += phaseInc;
         if (phase_ > 2.0f * M_PI) phase_ -= 2.0f * M_PI;

@@ -8,8 +8,7 @@ REM ================================
 set BUILD_DIR=build
 set CONFIG=Release
 
-REM Update these paths if needed
-set QT_ROOT=C:\Qt\6.6.1\msvc2022_64
+set QT_ROOT=C:\Qt\6.10.1\msvc2022_64
 set RTAUDIO_ROOT=C:\rtaudio
 
 REM ================================
@@ -50,7 +49,7 @@ REM ================================
 
 cd %BUILD_DIR%
 
-windeployqt MyQtApp.exe
+windeployqt metabolus.exe
 
 copy "%RTAUDIO_ROOT%\bin\rtaudio.dll" .
 
