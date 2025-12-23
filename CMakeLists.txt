@@ -6,11 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
-qt_standard_project_setup()
 
-# windows 11 x86_64
-# debian 12 x86_64
-if (WIN32)
+if (WIN32) # windows 11 x86_64
     # Header-only target (real target, no ::)
     add_library(rtaudio_headers INTERFACE)
     target_include_directories(rtaudio_headers INTERFACE
@@ -35,21 +32,12 @@ if (WIN32)
     # Public alias (this is where :: belongs)
     add_library(RtAudio::RtAudio ALIAS rtaudio)
 
-else()
+else() # debian 12 x86_64
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(RTAUDIO REQUIRED rtaudio)
-
-    add_library(rtaudio INTERFACE)
-    target_include_directories(rtaudio INTERFACE
-        ${RTAUDIO_INCLUDE_DIRS}
-    )
-    target_link_libraries(rtaudio INTERFACE
-        ${RTAUDIO_LIBRARIES}
-    )
-
-    add_library(RtAudio::RtAudio ALIAS rtaudio)
 endif()
 
+qt_standard_project_setup()
 
 qt_add_executable(metabolus
     src/main.cpp
@@ -63,12 +51,17 @@ qt_add_executable(metabolus
     resources/resources.qrc
 )
 
-target_link_libraries(metabolus PRIVATE Qt6::Widgets RtAudio::RtAudio)
-
 if (WIN32)
+    target_link_libraries(metabolus PRIVATE Qt6::Widgets RtAudio::RtAudio)
+
     add_custom_command(TARGET metabolus POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "C:/rtaudio/bin/rtaudio.dll"
         $<TARGET_FILE_DIR:metabolus>
     )
+
+else() 
+    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS})
+    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES})
+    target_compile_options(metabolus PRIVATE ${RTAUDIO_CFLAGS_OTHER})
 endif()
