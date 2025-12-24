@@ -1,115 +1,51 @@
 
-/*
-
 #include "Synth.h"
 
-#include <QMediaDevices>
-#include <QtMath>
 #include <iostream>
+#include <cmath>
 
-Synth::Synth(QObject *parent) : QObject(parent) {
+#ifndef M_PI // I hate my stupid chungus life
+    #define M_PI 3.14159265358979323846
+#endif
 
-    format_.setSampleRate(44100);
-    format_.setChannelCount(1);
-    format_.setSampleFormat(QAudioFormat::Int16);
+Synth::Synth(const ParameterStore& params) : paramStore_(params) {
 
-    QAudioDevice device = QMediaDevices::defaultAudioOutput();
+}
 
-    if (!device.isFormatSupported(format_)) {
-        format_ = device.preferredFormat();
+void Synth::updateParams() {
+    for(size_t i = 0; i < PARAM_COUNT; i++) {
+        params_[i].target = paramStore_.get(static_cast<ParamId>(i));
     }
-
-    audioSink_ = new QAudioSink(device, format_, this);
-    audioSink_->setBufferSize(4096);
 }
 
-Synth::~Synth() {
-
-    stop();
+inline float Synth::getParam(ParamId id) {
+    return params_[static_cast<size_t>(id)].current;
 }
 
-void Synth::start() {
-
-    // std::cout << "Synth::start()" << std::endl;
-    // if (audioSink_->state() == QAudio::ActiveState)
-    //     return;
-
-    // audioDevice_ = audioSink_->start();
+void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
     
-}
+    // yeah really only need to update this once per buffer if its ~6ms latency
+    updateParams();
 
-void Synth::stop() {
+    for (uint32_t i = 0; i < nFrames; i++) {
 
-    if (audioSink_) {
-        audioSink_->stop();
-        audioDevice_ = nullptr;
-    }
-}
+        for(auto& p : params_) p.update(); // TODO: profile this
 
-void Synth::setFrequency(float frequency) {
+        // based on oscillator frequency
+        float frequency = getParam(ParamId::Osc1Frequency); // this will come from a midi controller
+        float phaseInc = 2.0f * M_PI * frequency / static_cast<float>(sampleRate);
 
-    frequency_ = qMax(1.0f, frequency);
-}
+        // sample generation
+        float gain = getParam(ParamId::Osc1Gain);
+        float sample = std::sin(phase_) * gain;
 
-QByteArray Synth::generateSamples(qint64 bytes) {
+        // write to buffer
+        out[2*i] = sample; // left
+        out[2*i+1] = sample; // right
 
-    QByteArray buffer(bytes, Qt::Uninitialized);
-
-    const int channels = format_.channelCount();
-    const int sampleRate = format_.sampleRate();
-    //const float phaseInc = 2.0f * M_PI * frequency_ / sampleRate;
-    freq += 1.0f;
-    const float phaseInc = 2.0f * M_PI * freq / sampleRate;
-
-    if (format_.sampleFormat() == QAudioFormat::Int16) {
-        int16_t* out = reinterpret_cast<int16_t*>(buffer.data());
-        int frames = bytes / (sizeof(int16_t) * channels);
-
-        for (int i = 0; i < frames; ++i) {
-            int16_t s = static_cast<int16_t>(32767 * std::sin(phase_));
-            for (int c = 0; c < channels; ++c)
-                *out++ = s;
-            phase_ += phaseInc;
-        }
-    }
-    else if (format_.sampleFormat() == QAudioFormat::Float) {
-        float* out = reinterpret_cast<float*>(buffer.data());
-        int frames = bytes / (sizeof(float) * channels);
-
-        for (int i = 0; i < frames; ++i) {
-            float s = std::sin(phase_);
-            for (int c = 0; c < channels; ++c)
-                *out++ = s;
-            phase_ += phaseInc;
-        }
+        // sampling business
+        phase_ += phaseInc;
+        if (phase_ > 2.0f * M_PI) phase_ -= 2.0f * M_PI;
     }
 
-    return buffer;
 }
-
-void Synth::applyConfig(const AudioConfig& config) {
-
-    // map struct values to the QAudioFormat
-    QAudioFormat format;
-    format.setSampleRate(config.sampleRate);
-    format.setChannelCount(config.channelCount);
-    format.setSampleFormat(config.sampleFormat);
-
-    // must create a new device
-    QAudioDevice device = QMediaDevices::defaultAudioOutput();
-
-    if (!device.isFormatSupported(format)) {
-        std::cout << "Requested format not supported, using preferred format" << std::endl;
-        format = device.preferredFormat();
-    }
-
-    format_ = format;
-
-    // and must create a new audioSink
-    delete audioSink_;
-    audioSink_ = new QAudioSink(device, format_, this);
-
-    audioSink_->setBufferSize(config.bufferSize);
-}
-
-*/

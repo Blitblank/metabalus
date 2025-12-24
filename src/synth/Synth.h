@@ -1,52 +1,38 @@
 
 #pragma once
 
-/*
-
-#include <QObject>
-#include <QAudioFormat>
-#include <QAudioSink>
-#include <QIODevice>
+#include "../ParameterStore.h"
 
 #include <atomic>
 
-struct AudioConfig {
-    int sampleRate = 44100;
-    int channelCount = 1;
-    QAudioFormat::SampleFormat sampleFormat = QAudioFormat::Int16;
-    int bufferSize = 4096; // bytes
+struct SmoothedParam {
+    float current = 0.0f;
+    float target = 0.0f;
+    float gain = 0.001f;
+
+    inline void update() {
+        current += gain * (target - current);
+    }
 };
 
-class Synth : public QObject {
-    Q_OBJECT
+class Synth {
 
 public:
-    explicit Synth(QObject *parent = nullptr);
-    ~Synth();
+    Synth(const ParameterStore& params);
+    ~Synth() = default;
 
-    // audioSink is the media consumer for the audio data
-    QAudioSink* audioSink() { return audioSink_; }
-
-    // audio config setter/getter 
-    void applyConfig(const AudioConfig& config);
-    const QAudioFormat& format() const { return format_; }
-
-    // synth commands
-    void start();
-    void stop();
-    void setFrequency(float frequency);
-    // bread and butter right here
-    QByteArray generateSamples(qint64 bytes);
+    void process(float* out, uint32_t nFrames, uint32_t sampleRate);
+    void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
 
 private:
-    QAudioFormat format_;
-    QAudioSink *audioSink_ = nullptr;
-    QIODevice *audioDevice_ = nullptr;
 
-    std::atomic<float> frequency_{440.0f};
+    void updateParams();
+    inline float getParam(ParamId);
+
+    const ParameterStore& paramStore_;
+    // smoothed params creates a buffer in case the thread controlling paramStore gets blocked
+    std::array<SmoothedParam, PARAM_COUNT> params_;
+    uint32_t sampleRate_;
+
     float phase_ = 0.0f;
-
-    float freq = 400.0f;
 };
-
-*/

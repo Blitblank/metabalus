@@ -1,6 +1,8 @@
 
 #include "MainWindow.h"
+
 #include "ui_MainWindow.h"
+#include "ParameterStore.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
 
@@ -14,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->buttonReset, &QPushButton::clicked, this, &MainWindow::onResetClicked);
 
     // slider business
+    // TODO: smart slider widget
     connect(ui->slider,     &QSlider::valueChanged,      this, &MainWindow::onSliderValueChanged);
     connect(ui->inputMin,   &QLineEdit::editingFinished, this, &MainWindow::onMinChanged);
     connect(ui->inputMax,   &QLineEdit::editingFinished, this, &MainWindow::onMaxChanged);
@@ -24,6 +27,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     audio_ = new AudioEngine();
     audio_->start();
 
+    // init defaults
+    // TODO:: there's gotta be a better way
+    ui->slider->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].def);
+    ui->slider->setMinimum(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].min);
+    ui->slider->setMaximum(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].max);
+    ui->inputValue->setText(QString::number(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].def));
+    ui->inputMin->setText(QString::number(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].min));
+    ui->inputMax->setText(QString::number(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Frequency)].max));
 }
 
 MainWindow::~MainWindow() {
@@ -49,7 +60,8 @@ void MainWindow::onSliderValueChanged(int value) {
     QSignalBlocker blocker(ui->inputValue);
     ui->inputValue->setText(QString::number(value));
 
-    audio_->setFrequency(static_cast<float>(value));
+    // forward value so synthesizer can read
+    audio_->parameters()->set(ParamId::Osc1Frequency, static_cast<float>(value));
 }
 
 // allows only values within the min, max to be set by the text field

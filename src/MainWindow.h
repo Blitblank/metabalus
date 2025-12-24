@@ -42,5 +42,4 @@ private:
     void syncValueToUi(int value);
 
     AudioEngine* audio_ = nullptr;
-
 };

@@ -44,6 +44,7 @@ qt_add_executable(metabolus
     src/MainWindow.cpp
     src/MainWindow.h
     src/MainWindow.ui
+    src/ParameterStore.h
     src/synth/AudioEngine.cpp
     src/synth/AudioEngine.h
     src/synth/Synth.cpp
