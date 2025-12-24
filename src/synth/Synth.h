@@ -21,12 +21,18 @@ public:
     Synth(const ParameterStore& params);
     ~Synth() = default;
 
+    // generates a buffer of audio samples nFrames long
     void process(float* out, uint32_t nFrames, uint32_t sampleRate);
+
+    // sample rate setter
     void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
 
 private:
 
-    void updateParams();
+    // update internal params to the paramStore. not an immediate sync, its buffered for smoothing 
+    void updateParams(); // (might remove the smoothing later)
+
+    // small getter that abstracts all the static casts and such
     inline float getParam(ParamId);
 
     const ParameterStore& paramStore_;

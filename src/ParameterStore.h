@@ -32,7 +32,7 @@ struct ParamDef {
 };
 
 // TODO: make these configurable via yml file too
-// TODO: and then when I have full on profile saving there will be a default profile to load from
+// later TODO: and then when I have full on profile saving there will be a default profile to load from
 constexpr std::array<ParamDef, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f, 20.0f, 600.0f},   // Osc1Freq
     { 0.8f, 0.0f, 1.0f},        // Osc1Gain

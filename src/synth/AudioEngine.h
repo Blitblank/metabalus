@@ -13,12 +13,21 @@ public:
     AudioEngine();
     ~AudioEngine();
 
+    // starts the audio stream. returns true on success and false on failure
     bool start();
+
+    // stops the audio stream.
     void stop();
+
+    // params getter
     ParameterStore* parameters() { return &params_; }
 
-private: 
+private:
+
+    // RtAudio binding for passing samples
     static int32_t audioCallback(void* outputBuffer, void* inputBuffer, uint32_t nFrames, double streamTime, RtAudioStreamStatus status, void* userData);
+
+    // calls the synth.process to generate a buffer audio samples
     int32_t process(float* out, uint32_t nFrames);
 
     ParameterStore params_;
