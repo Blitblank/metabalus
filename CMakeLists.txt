@@ -52,6 +52,8 @@ qt_add_executable(metabolus
     src/NoteQueue.h
     src/synth/AudioEngine.cpp
     src/synth/AudioEngine.h
+    src/synth/Envelope.cpp
+    src/synth/Envelope.h
     src/synth/Synth.cpp
     src/synth/Synth.h
     resources/resources.qrc

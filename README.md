@@ -13,7 +13,7 @@ This synthesizer isn't very good, but it's neat :3
 - [+] Add note control via either Midi or a keyboard. Coordinate on-off events to
       start and stop tone generation
 - [ ] Create a widget for this smart-slider to clean up the ui code
-- [ ] Add envelope generation, attach to global volume for now. ADSR and such,
+- [x] Add envelope generation, attach to global volume for now. ADSR and such,
       responds to note-on/note-off events
 - [ ] Make midi/keyboard control cross-platform. Use case will mostly be
       Midi -> linux and Keyboard -> windows though

@@ -3,6 +3,7 @@
 
 #include "../ParameterStore.h"
 #include "../NoteQueue.h"
+#include "Envelope.h"
 
 #include <vector>
 #include <atomic>
@@ -51,11 +52,15 @@ private:
 
     // here's where the actual sound generation happens
     // TODO: put this in an oscillator class
-    bool noteActive_ = false;
     float frequency_ = 220.0f;
     float phase_ = 0.0f;
 
     // TODO: might make this a fixed array where index=midi-note and the value=velocity
     // so non-zero elements are the ones currently being played
     std::vector<uint8_t> heldNotes_;
+
+    // envelopes !!
+    // TODO: set these parameters via sliders
+    Envelope gainEnvelope_;
+
 };

@@ -8,6 +8,7 @@
     #define M_PI 3.14159265358979323846
 #endif
 
+// TODO: you get it, also in a yml config
 #define SYNTH_PITCH_STANDARD 432.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
 #define SYNTH_NOTES_PER_OCTAVE 12
@@ -36,6 +37,7 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
         // add note to activeNotes list
         if (std::find(heldNotes_.begin(), heldNotes_.end(), event.note) == heldNotes_.end()) {
             heldNotes_.push_back(event.note);
+            gainEnvelope_.noteOn();
         }
     } else {
         // remove note from activeNotes list
@@ -50,13 +52,12 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
 
 void Synth::updateCurrentNote() {
     if(heldNotes_.empty()) {
-        noteActive_ = false;
+        gainEnvelope_.noteOff(); // TODO: move somewhere else when polyphony
         return;
     }
 
     uint8_t note = heldNotes_.back();
     frequency_ = noteToFrequency(note);
-    noteActive_ = true;
 }
 
 void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
@@ -71,10 +72,11 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // updates internal buffered parameters for smoothing
         for(auto& p : params_) p.update(); // TODO: profile this
 
-        // skip if no note is being played
-        // TODO: this will be handled by an idle envelope eventually
-        // could also say gain = 0.0f; but w/e, this saves computing
-        if(!noteActive_) {
+        // process all envelopes
+        float gain = gainEnvelope_.process();
+
+        // skip if no active notes
+        if(!gainEnvelope_.isActive()) {
             out[2*i] = 0.0f;
             out[2*i+1] = 0.0f;
             continue;
@@ -83,8 +85,10 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         float phaseInc = 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
         // sample generation
-        float gain = getParam(ParamId::Osc1Gain);
-        sampleOut = std::sin(phase_) * gain;
+        float sineSample = std::sin(phase_);
+        float squareSample = -0.707f;
+        if(phase_ >= M_PI) squareSample = 0.707f;
+        sampleOut = sineSample * gain;
 
         // write to buffer
         out[2*i] = sampleOut; // left
