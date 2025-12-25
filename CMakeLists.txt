@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 if (WIN32) # windows 11 x86_64
+
     # Header-only target (real target, no ::)
     add_library(rtaudio_headers INTERFACE)
     target_include_directories(rtaudio_headers INTERFACE
@@ -45,6 +46,10 @@ qt_add_executable(metabolus
     src/MainWindow.h
     src/MainWindow.ui
     src/ParameterStore.h
+    src/KeyboardController.cpp
+    src/KeyboardController.h
+    src/NoteQueue.cpp
+    src/NoteQueue.h
     src/synth/AudioEngine.cpp
     src/synth/AudioEngine.h
     src/synth/Synth.cpp
@@ -53,7 +58,11 @@ qt_add_executable(metabolus
 )
 
 if (WIN32)
-    target_link_libraries(metabolus PRIVATE Qt6::Widgets RtAudio::RtAudio)
+    target_link_libraries(metabolus
+        PRIVATE
+            Qt6::Widgets
+            RtAudio::RtAudio
+    )
 
     add_custom_command(TARGET metabolus POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different

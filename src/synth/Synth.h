@@ -2,7 +2,9 @@
 #pragma once
 
 #include "../ParameterStore.h"
+#include "../NoteQueue.h"
 
+#include <vector>
 #include <atomic>
 
 struct SmoothedParam {
@@ -10,9 +12,7 @@ struct SmoothedParam {
     float target = 0.0f;
     float gain = 0.001f;
 
-    inline void update() {
-        current += gain * (target - current);
-    }
+    inline void update() { current += gain * (target - current); }
 };
 
 class Synth {
@@ -23,6 +23,9 @@ public:
 
     // generates a buffer of audio samples nFrames long
     void process(float* out, uint32_t nFrames, uint32_t sampleRate);
+
+    // handles note events
+    void handleNoteEvent(const NoteEvent& event);
 
     // sample rate setter
     void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
@@ -35,10 +38,24 @@ private:
     // small getter that abstracts all the static casts and such
     inline float getParam(ParamId);
 
+    // for calculating frequency based on midi note id
+    inline float noteToFrequency(uint8_t note);
+
+    // finds the active voice
+    void updateCurrentNote(); 
+
     const ParameterStore& paramStore_;
     // smoothed params creates a buffer in case the thread controlling paramStore gets blocked
     std::array<SmoothedParam, PARAM_COUNT> params_;
     uint32_t sampleRate_;
 
+    // here's where the actual sound generation happens
+    // TODO: put this in an oscillator class
+    bool noteActive_ = false;
+    float frequency_ = 220.0f;
     float phase_ = 0.0f;
+
+    // TODO: might make this a fixed array where index=midi-note and the value=velocity
+    // so non-zero elements are the ones currently being played
+    std::vector<uint8_t> heldNotes_;
 };

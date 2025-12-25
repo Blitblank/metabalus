@@ -6,6 +6,7 @@
 #include <atomic>
 
 #include "Synth.h"
+#include "../KeyboardController.h"
 
 class AudioEngine {
 
@@ -19,8 +20,9 @@ public:
     // stops the audio stream.
     void stop();
 
-    // params getter
+    // getters
     ParameterStore* parameters() { return &params_; }
+    NoteQueue& noteQueue() { return noteQueue_; }
 
 private:
 
@@ -31,6 +33,7 @@ private:
     int32_t process(float* out, uint32_t nFrames);
 
     ParameterStore params_;
+    NoteQueue noteQueue_;
     Synth synth_;
 
     // TODO: id like a yml config file or something for these

@@ -9,7 +9,6 @@ AudioEngine::AudioEngine() : synth_(params_) {
     }
 
     // TODO: get audio configurations
-
     synth_.setSampleRate(sampleRate_);
 
 }
@@ -53,7 +52,13 @@ int32_t AudioEngine::audioCallback( void* outputBuffer, void*, uint32_t nFrames,
 
 int32_t AudioEngine::process(float* out, uint32_t nFrames) {
 
-    // pass to synth
+    // pass note handling to synth
+    NoteEvent event;
+    while(noteQueue_.pop(event)) {
+        synth_.handleNoteEvent(event);
+    }
+
+    // pass sample generation to synth
     synth_.process(out, nFrames, sampleRate_);
 
     return 0;

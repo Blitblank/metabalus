@@ -30,8 +30,7 @@ if not exist %BUILD_DIR% (
 cmake -S . -B %BUILD_DIR% ^
     -G Ninja ^
     -DCMAKE_BUILD_TYPE=%CONFIG% ^
-    -DCMAKE_PREFIX_PATH=%QT_ROOT% ^
-    -DRTAUDIO_ROOT=%RTAUDIO_ROOT%
+    -DRTAUDIO_ROOT=%RTAUDIO_ROOT% 
 
 if errorlevel 1 goto error
 

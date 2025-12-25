@@ -1,12 +1,19 @@
 
 #include "MainWindow.h"
 
+#include <QTimer>
 #include "ui_MainWindow.h"
+
 #include "ParameterStore.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    audio_(new AudioEngine()),
+    keyboard_(audio_->noteQueue()) {
 
     ui->setupUi(this);
+    setFocusPolicy(Qt::StrongFocus);
 
     // Initialize UI
     updateCounterLabel();
@@ -24,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->inputValue, &QLineEdit::editingFinished, this, &MainWindow::onValueChanged);
 
     // synth business
-    audio_ = new AudioEngine();
     audio_->start();
 
     // init defaults
@@ -39,6 +45,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* event) {
+    keyboard_.handleKeyPress(event);
+}
+
+void MainWindow::keyReleaseEvent(QKeyEvent* event) {
+    keyboard_.handleKeyRelease(event);
 }
 
 void MainWindow::onIncrementClicked() {

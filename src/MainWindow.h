@@ -2,6 +2,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QKeyEvent>
 
 #include "synth/AudioEngine.h"
 
@@ -18,6 +19,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+    void keyReleaseEvent(QKeyEvent* event) override;
 
 private slots:
     void onIncrementClicked();
@@ -42,4 +47,6 @@ private:
     void syncValueToUi(int value);
 
     AudioEngine* audio_ = nullptr;
+    KeyboardController keyboard_;
+
 };
