@@ -42,9 +42,8 @@ qt_standard_project_setup()
 
 qt_add_executable(metabolus
     src/main.cpp
-    src/MainWindow.cpp
-    src/MainWindow.h
-    src/MainWindow.ui
+    src/ui/MainWindow.cpp
+    src/ui/MainWindow.h
     src/ParameterStore.h
     src/KeyboardController.cpp
     src/KeyboardController.h
@@ -57,6 +56,8 @@ qt_add_executable(metabolus
     src/synth/Synth.cpp
     src/synth/Synth.h
     resources/resources.qrc
+    src/ui/MainWindow.ui
+    src/ui/SmartSlider.ui
 )
 
 if (WIN32)

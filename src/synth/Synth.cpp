@@ -88,7 +88,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         float sineSample = std::sin(phase_);
         float squareSample = -0.707f;
         if(phase_ >= M_PI) squareSample = 0.707f;
-        sampleOut = sineSample * gain;
+        sampleOut = squareSample * gain;
 
         // write to buffer
         out[2*i] = sampleOut; // left

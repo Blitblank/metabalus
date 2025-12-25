@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 
-#include "synth/AudioEngine.h"
+#include "../synth/AudioEngine.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,7 +35,7 @@ private slots:
     void onValueChanged();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui_;
     int counter_ = 0;
 
     int value = 0;
