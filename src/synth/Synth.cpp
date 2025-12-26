@@ -31,7 +31,6 @@ inline float Synth::noteToFrequency(uint8_t note) {
     return SYNTH_PITCH_STANDARD * pow(2.0f, static_cast<float>(note - SYNTH_MIDI_HOME) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
 }
 
-// TODO: stop popping on note-offs
 void Synth::handleNoteEvent(const NoteEvent& event) {
     if(event.type == NoteEventType::NoteOn) {
         // add note to activeNotes list
@@ -73,8 +72,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(auto& p : params_) p.update(); // TODO: profile this
 
         // process all envelopes
-        //gainEnvelope_.set(0.05f, 0.2f, 0.7f, getParam(ParamId::Osc1VolumeEnvR));
-        gainEnvelope_.setRelease(getParam(ParamId::Osc1VolumeEnvR));
+        gainEnvelope_.set(getParam(ParamId::Osc1VolumeEnvA), getParam(ParamId::Osc1VolumeEnvD), getParam(ParamId::Osc1VolumeEnvS), getParam(ParamId::Osc1VolumeEnvR));
         float gain = gainEnvelope_.process();
 
         // skip if no active notes
@@ -90,8 +88,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // TODO: wavetables
         // TODO: wavetables should be scaled by their RMS for equal loudness (prelim standard = 0.707)
         float sineSample = std::sin(phase_);
-        float squareSample = -0.707f;
-        if(phase_ >= M_PI) squareSample = 0.707f;
+        float squareSample = (phase_ >= M_PI) ? 0.707f : -0.707f;
         float sawSample = phase_ * 4.0f / M_PI * frequency_ / static_cast<float>(sampleRate); 
         sampleOut = sawSample * gain;
 

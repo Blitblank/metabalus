@@ -36,10 +36,10 @@ struct ParamDef {
 constexpr std::array<ParamDef, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f, 20.0f, 600.0f},   // Osc1Freq
     { 0.8f, 0.0f, 1.0f},        // Osc1Gain
-    { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvA,
-    { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvD,
-    { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvS,
-    { 0.2f,  0.0f,    2.0f},    // Osc1VolumeEnvR,
+    { 0.05f, 0.0f,    2.0f},    // Osc1VolumeEnvA,
+    {  0.2f, 0.0f,    2.0f},    // Osc1VolumeEnvD,
+    {  0.7f, 0.0f,    1.0f},    // Osc1VolumeEnvS,
+    {  0.2f, 0.0f,    2.0f},    // Osc1VolumeEnvR,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvA,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvD,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvS,
