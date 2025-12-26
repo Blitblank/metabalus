@@ -57,6 +57,10 @@ void SmartSlider::setValue(float value) {
     emit valueChanged(value);
 }
 
+float SmartSlider::value() {
+    return ui_->spinValue->value();
+}
+
 void SmartSlider::onSliderChanged(int32_t v) {
     float min = ui_->spinMin->value();
     float max = ui_->spinMax->value();

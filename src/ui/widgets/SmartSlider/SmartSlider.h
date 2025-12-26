@@ -19,6 +19,9 @@ public:
     void setRange(float min, float max);
     void setValue(float value);
 
+    // getters
+    float value();
+
 signals:
     void valueChanged(float value);
 

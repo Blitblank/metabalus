@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>605</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,53 +35,17 @@
      <string>Reset</string>
     </property>
    </widget>
-   <widget class="SmartSlider" name="sliderGainR" native="true">
+   <widget class="EnvelopeGenerator" name="envelopeOsc1Volume" native="true">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>180</y>
-      <width>120</width>
-      <height>300</height>
+      <x>150</x>
+      <y>130</y>
+      <width>500</width>
+      <height>360</height>
      </rect>
     </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="SmartSlider" name="sliderGainA" native="true">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>180</y>
-      <width>120</width>
-      <height>300</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="SmartSlider" name="sliderGainD" native="true">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>180</y>
-      <width>120</width>
-      <height>300</height>
-     </rect>
-    </property>
-    <property name="autoFillBackground">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="SmartSlider" name="sliderGainS" native="true">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>180</y>
-      <width>120</width>
-      <height>300</height>
-     </rect>
+    <property name="acceptDrops">
+     <bool>false</bool>
     </property>
     <property name="autoFillBackground">
      <bool>true</bool>
@@ -91,9 +55,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SmartSlider</class>
+   <class>EnvelopeGenerator</class>
    <extends>QWidget</extends>
-   <header>SmartSlider.h</header>
+   <header>EnvelopeGenerator/EnvelopeGenerator.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
