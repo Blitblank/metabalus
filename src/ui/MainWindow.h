@@ -7,13 +7,11 @@
 #include "../synth/AudioEngine.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui {
-class MainWindow;
-}
+namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
+    
     Q_OBJECT
 
 public:
@@ -28,12 +26,6 @@ private slots:
     void onIncrementClicked();
     void onResetClicked();
 
-    void onSliderValueChanged(int value);
-    void onMinChanged() { applySliderRange(); }
-    void onMaxChanged() { applySliderRange(); }
-    void onStepChanged() { applySliderStep(); }
-    void onValueChanged();
-
 private:
     Ui::MainWindow *ui_;
     int counter_ = 0;
@@ -41,10 +33,6 @@ private:
     int value = 0;
 
     void updateCounterLabel();
-
-    void applySliderRange();
-    void applySliderStep();
-    void syncValueToUi(int value);
 
     AudioEngine* audio_ = nullptr;
     KeyboardController keyboard_;

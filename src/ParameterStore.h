@@ -39,7 +39,7 @@ constexpr std::array<ParamDef, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {
     { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvA,
     { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvD,
     { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvS,
-    { 10.0f, 0.0f, 1000.0f},    // Osc1VolumeEnvR,
+    { 0.2f,  0.0f,    2.0f},    // Osc1VolumeEnvR,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvA,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvD,
     { 10.0f, 0.0f, 1000.0f},    // FilterCutoffEnvS,

@@ -29,15 +29,15 @@ private:
     // RtAudio binding for passing samples
     static int32_t audioCallback(void* outputBuffer, void* inputBuffer, uint32_t nFrames, double streamTime, RtAudioStreamStatus status, void* userData);
 
-    // calls the synth.process to generate a buffer audio samples
+    // calls the synth.process to generate a buffer of audio samples
     int32_t process(float* out, uint32_t nFrames);
 
-    ParameterStore params_;
-    NoteQueue noteQueue_;
-    Synth synth_;
+    ParameterStore params_; // stores the control parameters
+    NoteQueue noteQueue_; // stores note events for passing between threads
+    Synth synth_; // generates audio
 
+    RtAudio audio_; // audio device
     // TODO: id like a yml config file or something for these
-    RtAudio audio_;
     uint32_t sampleRate_ = 44100;
     uint32_t bufferFrames_ = 256; // time per buffer = BF/SR (256/44100 = 5.8ms)
     uint32_t channels_ = 2; // stereo

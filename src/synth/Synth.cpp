@@ -73,6 +73,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(auto& p : params_) p.update(); // TODO: profile this
 
         // process all envelopes
+        //gainEnvelope_.set(0.05f, 0.2f, 0.7f, getParam(ParamId::Osc1VolumeEnvR));
+        gainEnvelope_.setRelease(getParam(ParamId::Osc1VolumeEnvR));
         float gain = gainEnvelope_.process();
 
         // skip if no active notes
@@ -85,10 +87,13 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         float phaseInc = 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
         // sample generation
+        // TODO: wavetables
+        // TODO: wavetables should be scaled by their RMS for equal loudness (prelim standard = 0.707)
         float sineSample = std::sin(phase_);
         float squareSample = -0.707f;
         if(phase_ >= M_PI) squareSample = 0.707f;
-        sampleOut = squareSample * gain;
+        float sawSample = phase_ * 4.0f / M_PI * frequency_ / static_cast<float>(sampleRate); 
+        sampleOut = sawSample * gain;
 
         // write to buffer
         out[2*i] = sampleOut; // left

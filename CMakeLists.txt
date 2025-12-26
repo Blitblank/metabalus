@@ -44,6 +44,7 @@ qt_add_executable(metabolus
     src/main.cpp
     src/ui/MainWindow.cpp
     src/ui/MainWindow.h
+    src/ui/MainWindow.ui
     src/ParameterStore.h
     src/KeyboardController.cpp
     src/KeyboardController.h
@@ -56,8 +57,16 @@ qt_add_executable(metabolus
     src/synth/Synth.cpp
     src/synth/Synth.h
     resources/resources.qrc
-    src/ui/MainWindow.ui
-    src/ui/SmartSlider.ui
+    src/ui/widgets/SmartSlider.cpp
+    src/ui/widgets/SmartSlider.h
+    src/ui/widgets/SmartSlider.ui
+)
+
+set_target_properties(metabolus PROPERTIES AUTOUIC ON)
+
+target_include_directories(metabolus PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/ui
+    ${CMAKE_SOURCE_DIR}/src/ui/widgets
 )
 
 if (WIN32)
