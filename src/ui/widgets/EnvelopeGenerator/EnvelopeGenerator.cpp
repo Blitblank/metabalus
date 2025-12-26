@@ -56,13 +56,6 @@ void EnvelopeGenerator::setRelease(float v) {
     ui_->sliderRelease->setValue(v);
 }
 
-void EnvelopeGenerator::setRanges(float minA, float maxA, float minD, float maxD, float minS, float maxS, float minR, float maxR) {
-    ui_->sliderAttack->setRange(minA, maxA);
-    ui_->sliderDecay->setRange(minD, maxD);
-    ui_->sliderSustain->setRange(minS, maxS);
-    ui_->sliderRelease->setRange(minR, maxR);
-}
-
 void EnvelopeGenerator::emitEnvelope() {
     emit envelopeChanged(
         attack(),
@@ -70,4 +63,34 @@ void EnvelopeGenerator::emitEnvelope() {
         sustain(),
         release()
     );
+}
+
+void EnvelopeGenerator::init(EnvelopeId id) {
+
+    // could probably make this simpler with a map
+    ParamId aId, dId, sId, rId;
+    switch (id) {
+    case EnvelopeId::Osc1Volume:
+        aId = ParamId::Osc1VolumeEnvA; dId = ParamId::Osc1VolumeEnvD; sId = ParamId::Osc1VolumeEnvS; rId = ParamId::Osc1VolumeEnvR;
+        break;
+    case EnvelopeId::FilterCutoff:
+        aId = ParamId::FilterCutoffEnvA; dId = ParamId::FilterCutoffEnvD; sId = ParamId::FilterCutoffEnvS; rId = ParamId::FilterCutoffEnvR;
+        break;
+    case EnvelopeId::FilterResonance:
+        aId = ParamId::FilterResonanceEnvA; dId = ParamId::FilterResonanceEnvD; sId = ParamId::FilterResonanceEnvS; rId = ParamId::FilterResonanceEnvR;
+        break;
+    default: // not found
+        break;
+    }
+
+    ui_->sliderAttack->setRange(PARAM_DEFS[static_cast<size_t>(aId)].min, PARAM_DEFS[static_cast<size_t>(aId)].max);
+    ui_->sliderDecay->setRange(PARAM_DEFS[static_cast<size_t>(dId)].min, PARAM_DEFS[static_cast<size_t>(dId)].max);
+    ui_->sliderSustain->setRange(PARAM_DEFS[static_cast<size_t>(sId)].min, PARAM_DEFS[static_cast<size_t>(sId)].max);
+    ui_->sliderRelease->setRange(PARAM_DEFS[static_cast<size_t>(rId)].min, PARAM_DEFS[static_cast<size_t>(rId)].max);
+
+    setAttack(PARAM_DEFS[static_cast<size_t>(aId)].def);
+    setDecay(PARAM_DEFS[static_cast<size_t>(sId)].def);
+    setSustain(PARAM_DEFS[static_cast<size_t>(sId)].def);
+    setRelease(PARAM_DEFS[static_cast<size_t>(rId)].def);
+
 }

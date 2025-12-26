@@ -45,6 +45,7 @@ qt_add_executable(metabolus
     src/ui/MainWindow.cpp
     src/ui/MainWindow.h
     src/ui/MainWindow.ui
+    src/ParameterStore.cpp
     src/ParameterStore.h
     src/KeyboardController.cpp
     src/KeyboardController.h

@@ -25,7 +25,17 @@ enum class ParamId : uint16_t {
     Count // for sizing
 };
 
-struct ParamDef {
+// TODO: might make a map of EnvelopeIds to a struct of 4 ParamIds
+enum class EnvelopeId : uint16_t {
+    Osc1Volume,
+    Osc2Volume,
+    Osc3Volume,
+    FilterCutoff,
+    FilterResonance,
+    Count
+};
+
+struct ParamDefault {
     float def;
     float min;
     float max;
@@ -33,7 +43,7 @@ struct ParamDef {
 
 // TODO: make these configurable via yml file too
 // later TODO: and then when I have full on profile saving there will be a default profile to load from
-constexpr std::array<ParamDef, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
+constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f, 20.0f, 600.0f},   // Osc1Freq
     { 0.8f, 0.0f, 1.0f},        // Osc1Gain
     { 0.05f, 0.0f,    2.0f},    // Osc1VolumeEnvA,
@@ -56,22 +66,12 @@ class ParameterStore {
 
 public:
 
-    ParameterStore() { resetToDefaults(); }
+    ParameterStore();
     ~ParameterStore() = default;
 
-    // TODO: move into implementation file ? idk
-    void set(ParamId id, float value) {
-        values_[static_cast<size_t>(id)].store(value, std::memory_order_relaxed);
-    }
-    float get(ParamId id) const {
-        return values_[static_cast<size_t>(id)].load(std::memory_order_relaxed);
-    }
-
-    void resetToDefaults() {
-        for(size_t i = 0; i < PARAM_COUNT; i++) {
-            values_[i].store(PARAM_DEFS[i].def, std::memory_order_relaxed);
-        }
-    }
+    void set(ParamId id, float value);
+    float get(ParamId id) const;
+    void resetToDefaults();
 
 private:
 

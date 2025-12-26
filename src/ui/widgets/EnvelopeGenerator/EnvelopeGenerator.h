@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "../../ParameterStore.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class EnvelopeGenerator; }
 QT_END_NAMESPACE
@@ -14,13 +16,15 @@ public:
     explicit EnvelopeGenerator(QWidget* parent = nullptr);
     ~EnvelopeGenerator();
 
+    void init(EnvelopeId id);
+
+    // setters
     void setAttack(float v);
     void setDecay(float v);
     void setSustain(float v);
     void setRelease(float v);
 
-    void setRanges(float minA, float maxA, float minD, float maxD, float minS, float maxS, float minR, float maxR);
-
+    // getters
     float attack() const;
     float decay() const;
     float sustain() const;
