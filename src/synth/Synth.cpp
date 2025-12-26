@@ -74,6 +74,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // process all envelopes
         gainEnvelope_.set(getParam(ParamId::Osc1VolumeEnvA), getParam(ParamId::Osc1VolumeEnvD), getParam(ParamId::Osc1VolumeEnvS), getParam(ParamId::Osc1VolumeEnvR));
         float gain = gainEnvelope_.process();
+        // TODO: envelope is shared between all notes so this sequence involves a note change but only one envelope attack:
+        // NOTE_A_ON > NOTE_B_ON > NOTE_A_OFF and note B starts playing part-way through note A's envelope 
 
         // skip if no active notes
         if(!gainEnvelope_.isActive()) {

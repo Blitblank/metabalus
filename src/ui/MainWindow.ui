@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>739</width>
     <height>605</height>
    </rect>
   </property>
@@ -38,10 +38,10 @@
    <widget class="SmartSlider" name="sliderGainR" native="true">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>480</x>
       <y>180</y>
-      <width>171</width>
-      <height>321</height>
+      <width>120</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -51,10 +51,10 @@
    <widget class="SmartSlider" name="sliderGainA" native="true">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>120</x>
       <y>180</y>
-      <width>171</width>
-      <height>321</height>
+      <width>120</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -64,10 +64,10 @@
    <widget class="SmartSlider" name="sliderGainD" native="true">
     <property name="geometry">
      <rect>
-      <x>220</x>
+      <x>240</x>
       <y>180</y>
-      <width>171</width>
-      <height>321</height>
+      <width>120</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -77,10 +77,10 @@
    <widget class="SmartSlider" name="sliderGainS" native="true">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>360</x>
       <y>180</y>
-      <width>171</width>
-      <height>321</height>
+      <width>120</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="autoFillBackground">
