@@ -25,10 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->envelopeOsc1Volume->init(EnvelopeId::Osc1Volume);
     connect(ui_->envelopeOsc1Volume, &EnvelopeGenerator::envelopeChanged,
         this, [this](float a, float d, float s, float r) {
-            audio_->parameters()->set(ParamId::Osc1VolumeEnvA, a);
-            audio_->parameters()->set(ParamId::Osc1VolumeEnvD, d);
-            audio_->parameters()->set(ParamId::Osc1VolumeEnvS, s);
-            audio_->parameters()->set(ParamId::Osc1VolumeEnvR, r);
+            audio_->parameters()->set(EnvelopeId::Osc1Volume, a, d, s, r);
         });
     // this should be easy enough to put into a for each envelopeGenerator loop 
 }

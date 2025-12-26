@@ -42,11 +42,11 @@ struct EnvelopeParam {
 };
 
 constexpr std::array<EnvelopeParam, static_cast<size_t>(EnvelopeId::Count)> ENV_PARAMS {{
-    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc1Volume
-    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc2Volume (not implemented)
-    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc3Volume (not implemented)
-    { ParamId::FilterCutoffEnvA, ParamId::FilterCutoffEnvR, ParamId::FilterCutoffEnvS, ParamId::FilterCutoffEnvR },   // FilterCutoff
-    { ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvR, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR },   // FilterResonance
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc1Volume
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc2Volume (not implemented)
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc3Volume (not implemented)
+    { ParamId::FilterCutoffEnvA, ParamId::FilterCutoffEnvR, ParamId::FilterCutoffEnvS, ParamId::FilterCutoffEnvR }, // FilterCutoff
+    { ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvR, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR }, // FilterResonance
 
 }};
 
@@ -85,6 +85,7 @@ public:
     ~ParameterStore() = default;
 
     void set(ParamId id, float value);
+    void set(EnvelopeId, float a, float d, float s, float r);
     float get(ParamId id) const;
     void resetToDefaults();
 
