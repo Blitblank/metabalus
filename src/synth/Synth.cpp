@@ -72,6 +72,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(auto& p : params_) p.update(); // TODO: profile this
 
         // process all envelopes
+        // should be easy enough if all the envelopes are in an array to loop over them
         gainEnvelope_.set(getParam(ParamId::Osc1VolumeEnvA), getParam(ParamId::Osc1VolumeEnvD), getParam(ParamId::Osc1VolumeEnvS), getParam(ParamId::Osc1VolumeEnvR));
         float gain = gainEnvelope_.process();
         // TODO: envelope is shared between all notes so this sequence involves a note change but only one envelope attack:

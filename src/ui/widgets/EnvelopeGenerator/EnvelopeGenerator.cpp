@@ -67,30 +67,16 @@ void EnvelopeGenerator::emitEnvelope() {
 
 void EnvelopeGenerator::init(EnvelopeId id) {
 
-    // could probably make this simpler with a map
-    ParamId aId, dId, sId, rId;
-    switch (id) {
-    case EnvelopeId::Osc1Volume:
-        aId = ParamId::Osc1VolumeEnvA; dId = ParamId::Osc1VolumeEnvD; sId = ParamId::Osc1VolumeEnvS; rId = ParamId::Osc1VolumeEnvR;
-        break;
-    case EnvelopeId::FilterCutoff:
-        aId = ParamId::FilterCutoffEnvA; dId = ParamId::FilterCutoffEnvD; sId = ParamId::FilterCutoffEnvS; rId = ParamId::FilterCutoffEnvR;
-        break;
-    case EnvelopeId::FilterResonance:
-        aId = ParamId::FilterResonanceEnvA; dId = ParamId::FilterResonanceEnvD; sId = ParamId::FilterResonanceEnvS; rId = ParamId::FilterResonanceEnvR;
-        break;
-    default: // not found
-        break;
-    }
+    EnvelopeParam params = ENV_PARAMS[static_cast<size_t>(id)];
 
-    ui_->sliderAttack->setRange(PARAM_DEFS[static_cast<size_t>(aId)].min, PARAM_DEFS[static_cast<size_t>(aId)].max);
-    ui_->sliderDecay->setRange(PARAM_DEFS[static_cast<size_t>(dId)].min, PARAM_DEFS[static_cast<size_t>(dId)].max);
-    ui_->sliderSustain->setRange(PARAM_DEFS[static_cast<size_t>(sId)].min, PARAM_DEFS[static_cast<size_t>(sId)].max);
-    ui_->sliderRelease->setRange(PARAM_DEFS[static_cast<size_t>(rId)].min, PARAM_DEFS[static_cast<size_t>(rId)].max);
+    ui_->sliderAttack->setRange(PARAM_DEFS[static_cast<size_t>(params.a)].min, PARAM_DEFS[static_cast<size_t>(params.a)].max);
+    ui_->sliderDecay->setRange(PARAM_DEFS[static_cast<size_t>(params.d)].min, PARAM_DEFS[static_cast<size_t>(params.d)].max);
+    ui_->sliderSustain->setRange(PARAM_DEFS[static_cast<size_t>(params.s)].min, PARAM_DEFS[static_cast<size_t>(params.s)].max);
+    ui_->sliderRelease->setRange(PARAM_DEFS[static_cast<size_t>(params.r)].min, PARAM_DEFS[static_cast<size_t>(params.r)].max);
 
-    setAttack(PARAM_DEFS[static_cast<size_t>(aId)].def);
-    setDecay(PARAM_DEFS[static_cast<size_t>(sId)].def);
-    setSustain(PARAM_DEFS[static_cast<size_t>(sId)].def);
-    setRelease(PARAM_DEFS[static_cast<size_t>(rId)].def);
+    setAttack(PARAM_DEFS[static_cast<size_t>(params.a)].def);
+    setDecay(PARAM_DEFS[static_cast<size_t>(params.d)].def);
+    setSustain(PARAM_DEFS[static_cast<size_t>(params.s)].def);
+    setRelease(PARAM_DEFS[static_cast<size_t>(params.r)].def);
 
 }

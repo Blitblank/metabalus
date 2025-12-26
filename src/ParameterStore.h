@@ -25,7 +25,6 @@ enum class ParamId : uint16_t {
     Count // for sizing
 };
 
-// TODO: might make a map of EnvelopeIds to a struct of 4 ParamIds
 enum class EnvelopeId : uint16_t {
     Osc1Volume,
     Osc2Volume,
@@ -34,6 +33,22 @@ enum class EnvelopeId : uint16_t {
     FilterResonance,
     Count
 };
+
+struct EnvelopeParam {
+    ParamId a;
+    ParamId d;
+    ParamId s;
+    ParamId r;
+};
+
+constexpr std::array<EnvelopeParam, static_cast<size_t>(EnvelopeId::Count)> ENV_PARAMS {{
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc1Volume
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc2Volume (not implemented)
+    { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvR, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR },   // Osc3Volume (not implemented)
+    { ParamId::FilterCutoffEnvA, ParamId::FilterCutoffEnvR, ParamId::FilterCutoffEnvS, ParamId::FilterCutoffEnvR },   // FilterCutoff
+    { ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvR, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR },   // FilterResonance
+
+}};
 
 struct ParamDefault {
     float def;
