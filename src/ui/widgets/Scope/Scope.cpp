@@ -53,7 +53,7 @@ void Scope::paintEvent(QPaintEvent*) {
 
     for (int32_t i = 1; i < samples_.size(); i++) {
         p.drawLine(
-            (i - 1) * width() / samples_.size(),
+            (i) * width() / samples_.size(),
             midY - samples_[i - 1] * scaleY,
             i * width() / samples_.size(),
             midY - samples_[i] * scaleY

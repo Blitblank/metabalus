@@ -94,8 +94,25 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // TODO: wavetables should be scaled by their RMS for equal loudness (prelim standard = 0.707)
         float sineSample = std::sin(phase_);
         float squareSample = (phase_ >= M_PI) ? 0.707f : -0.707f;
-        float sawSample = ((phase_ / M_PI) - 1.0f) / 0.577f * 0.707f; 
-        sampleOut = squareSample * gain;
+        float sawSample = ((phase_ / M_PI) - 1.0f) / 0.577f * 0.707f;
+        // switch statement will be replaced with an array index for our array of wavetables
+        switch (static_cast<int32_t>(std::round(getParam(ParamId::Osc1WaveSelector1)))) {
+        case 0:
+            sampleOut = sineSample * gain;
+            break;
+        case 1:
+            sampleOut = squareSample * gain;
+            break;
+        case 2:
+            sampleOut = sawSample * gain;
+            break;
+        case 3:
+            // TODO: no triable wave yet :(
+            sampleOut = sineSample * gain;
+            break;
+        default: // unreachable
+            break;
+        }
 
         // write to buffer
         out[2*i] = sampleOut; // left
@@ -113,6 +130,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             if(!triggered) {
                 scope_->setTrigger(i); // this is where we consider the start of a waveform
                 triggered = true;
+                // TODO: investigate triggering accross buffers when a single wave period transcends a single audio buffer
             }
         }
     }

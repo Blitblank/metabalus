@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>120</width>
-    <height>300</height>
+    <width>65</width>
+    <height>280</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,8 +22,8 @@
   <widget class="QSlider" name="slider">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>90</y>
+     <x>23</x>
+     <y>80</y>
      <width>16</width>
      <height>160</height>
     </rect>
@@ -44,9 +44,9 @@
   <widget class="QDoubleSpinBox" name="spinMin">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>260</y>
-     <width>82</width>
+     <x>6</x>
+     <y>250</y>
+     <width>51</width>
      <height>24</height>
     </rect>
    </property>
@@ -55,14 +55,20 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="spinMax">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>60</y>
-     <width>82</width>
+     <x>6</x>
+     <y>50</y>
+     <width>51</width>
      <height>24</height>
     </rect>
    </property>
@@ -72,13 +78,22 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+   </property>
+   <property name="maximum">
+    <double>40000.000000000000000</double>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="spinValue">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>82</width>
+     <x>6</x>
+     <y>10</y>
+     <width>51</width>
      <height>31</height>
     </rect>
    </property>
@@ -93,14 +108,23 @@
      <pointsize>12</pointsize>
     </font>
    </property>
+   <property name="layoutDirection">
+    <enum>Qt::LayoutDirection::LeftToRight</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+   <property name="buttonSymbols">
+    <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+   </property>
   </widget>
   <widget class="Line" name="line">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>-7</x>
      <y>10</y>
      <width>20</width>
-     <height>271</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -116,10 +140,10 @@
   <widget class="Line" name="line_2">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>50</x>
      <y>10</y>
      <width>20</width>
-     <height>271</height>
+     <height>261</height>
     </rect>
    </property>
    <property name="sizePolicy">

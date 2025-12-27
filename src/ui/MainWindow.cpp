@@ -20,14 +20,32 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Connect buttons to slots
     connect(ui_->buttonReset, &QPushButton::clicked, this, &MainWindow::onResetClicked);
+    onResetClicked(); // manually reset
 
-    // connect envelopeGenerator
-    ui_->envelopeOsc1Volume->init(EnvelopeId::Osc1Volume);
+    // connect envelopeGenerators
     connect(ui_->envelopeOsc1Volume, &EnvelopeGenerator::envelopeChanged,
         this, [this](float a, float d, float s, float r) {
             audio_->parameters()->set(EnvelopeId::Osc1Volume, a, d, s, r);
         });
-    // this should be easy enough to put into a for each envelopeGenerator loop 
+    connect(ui_->envelopeFilterCutoff, &EnvelopeGenerator::envelopeChanged,
+        this, [this](float a, float d, float s, float r) {
+            audio_->parameters()->set(EnvelopeId::FilterCutoff, a, d, s, r);
+        });
+    connect(ui_->envelopeFilterResonance, &EnvelopeGenerator::envelopeChanged,
+        this, [this](float a, float d, float s, float r) {
+            audio_->parameters()->set(EnvelopeId::FilterResonance, a, d, s, r);
+        });
+    // this should be easy enough to put into a for each envelopeGenerator loop, each ui element just needs an EnvelopeId specifiers
+
+    // other ui elements
+    connect(ui_->comboOsc1WaveSelector1, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this, [this](int index) {
+            audio_->parameters()->set(ParamId::Osc1WaveSelector1, index);
+        });
+    connect(ui_->comboOsc1WaveSelector2, QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this, [this](int index) {
+            audio_->parameters()->set(ParamId::Osc1WaveSelector2, index);
+        });
 
     // synth business
     audio_->start();
@@ -49,5 +67,14 @@ void MainWindow::keyReleaseEvent(QKeyEvent* event) {
 void MainWindow::onResetClicked() {
 
     // initialize to defaults
+
+    // envelopeGenerators
     ui_->envelopeOsc1Volume->init(EnvelopeId::Osc1Volume);
+    ui_->envelopeFilterCutoff->init(EnvelopeId::FilterCutoff);
+    ui_->envelopeFilterResonance->init(EnvelopeId::FilterResonance);
+
+    // comboBoxes
+    ui_->comboOsc1WaveSelector1->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector1)].def));
+    ui_->comboOsc1WaveSelector2->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector2)].def));
+
 }

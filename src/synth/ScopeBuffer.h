@@ -4,6 +4,8 @@
 #include <vector>
 #include <atomic>
 
+// the scope buffer is used by the ui to visualize the audio waveform
+// the ui thread shouldn't read directly from memory being read from/written to so it copies the data into this class 
 class ScopeBuffer {
 public:
 
@@ -22,6 +24,7 @@ public:
 
     // NOTE: there are limits to the wavelengths that the scope can show cleanly due to the size of the audio buffer
     // at a buffer size of 256 at 44100hz the min visible steady frequency is ~172hz
+    // the min visible steady frequency can be lowered by increasing buffer size (increases latency) or decreasing sample rate (decreases audio fidelity)
 private:
 
     std::vector<float> buffer_;
