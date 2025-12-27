@@ -23,6 +23,11 @@ void Synth::updateParams() {
     }
 }
 
+void Synth::setSampleRate(uint32_t sampleRate) { 
+    sampleRate_ = sampleRate;
+    filter_.setSampleRate(static_cast<float>(sampleRate));
+}
+
 inline float Synth::getParam(ParamId id) {
     return params_[static_cast<size_t>(id)].current;
 }
@@ -37,6 +42,9 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
         if (std::find(heldNotes_.begin(), heldNotes_.end(), event.note) == heldNotes_.end()) {
             heldNotes_.push_back(event.note);
             gainEnvelope_.noteOn();
+            cutoffEnvelope_.noteOn();
+            resonanceEnvelope_.noteOn();
+            // TODO: envelopes in an array so we can loop over them
         }
     } else {
         // remove note from activeNotes list
@@ -52,6 +60,8 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
 void Synth::updateCurrentNote() {
     if(heldNotes_.empty()) {
         gainEnvelope_.noteOff(); // TODO: move somewhere else when polyphony
+        cutoffEnvelope_.noteOff();
+        resonanceEnvelope_.noteOff();
         return;
     }
 
@@ -75,7 +85,10 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // process all envelopes
         // should be easy enough if all the envelopes are in an array to loop over them
         gainEnvelope_.set(getParam(ParamId::Osc1VolumeEnvA), getParam(ParamId::Osc1VolumeEnvD), getParam(ParamId::Osc1VolumeEnvS), getParam(ParamId::Osc1VolumeEnvR));
+        cutoffEnvelope_.set(getParam(ParamId::FilterCutoffEnvA), getParam(ParamId::FilterCutoffEnvD), getParam(ParamId::FilterCutoffEnvS), getParam(ParamId::FilterCutoffEnvR));
+        resonanceEnvelope_.set(getParam(ParamId::FilterResonanceEnvA), getParam(ParamId::FilterResonanceEnvD), getParam(ParamId::FilterResonanceEnvS), getParam(ParamId::FilterResonanceEnvR));
         float gain = gainEnvelope_.process();
+        filter_.setParams(Filter::Type::BiquadLowpass, cutoffEnvelope_.process(), resonanceEnvelope_.process());
         // TODO: envelope is shared between all notes so this sequence involves a note change but only one envelope attack:
         // NOTE_A_ON > NOTE_B_ON > NOTE_A_OFF and note B starts playing part-way through note A's envelope 
 
@@ -85,9 +98,13 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             out[2*i+1] = 0.0f;
             scope_->push(0.0f);
             continue;
+            // TODO: should I have a write() function ? 
+            // maybe we change the synth.process into just returning a single float and the write can be in audioEngine
         }
         
-        float phaseInc = 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
+        // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
+        float pitchOffset = 0.5f;
+        float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
         // sample generation
         // TODO: wavetables
@@ -113,6 +130,9 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         default: // unreachable
             break;
         }
+
+        // filter sample
+        sampleOut = filter_.biquadProcess(sampleOut);
 
         // write to buffer
         out[2*i] = sampleOut; // left

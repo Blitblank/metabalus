@@ -5,6 +5,7 @@
 #include "../NoteQueue.h"
 #include "Envelope.h"
 #include "ScopeBuffer.h"
+#include "Filter.h"
 
 #include <vector>
 #include <atomic>
@@ -30,7 +31,7 @@ public:
     void handleNoteEvent(const NoteEvent& event);
 
     // setters
-    void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
+    void setSampleRate(uint32_t sampleRate);
     void setScopeBuffer(ScopeBuffer* scope) { scope_ = scope; }
 
 private:
@@ -51,20 +52,25 @@ private:
     // smoothed params creates a buffer in case the thread controlling paramStore gets blocked
     std::array<SmoothedParam, PARAM_COUNT> params_;
     uint32_t sampleRate_;
+    
+    // for the scope
+    ScopeBuffer* scope_ = nullptr;
+
+    // TODO: might make this a fixed array where index=midi-note and the value=velocity
+    // so non-zero elements are the ones currently being played
+    std::vector<uint8_t> heldNotes_;
 
     // here's where the actual sound generation happens
     // TODO: put this in an oscillator class
     float frequency_ = 220.0f;
     float phase_ = 0.0f;
 
-    // TODO: might make this a fixed array where index=midi-note and the value=velocity
-    // so non-zero elements are the ones currently being played
-    std::vector<uint8_t> heldNotes_;
-
     // envelopes !!
     Envelope gainEnvelope_;
+    Envelope cutoffEnvelope_;
+    Envelope resonanceEnvelope_;
 
-    // for the scope
-    ScopeBuffer* scope_ = nullptr;
+    // filters, just one for now
+    Filter filter_;
 
 };

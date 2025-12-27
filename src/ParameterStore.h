@@ -66,15 +66,15 @@ constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DE
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvD
     {   0.7f,  0.0f,    1.0f},   // Osc1VolumeEnvS
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvR
-    {  10.0f,  0.0f, 1000.0f},   // FilterCutoffEnvA
-    {  10.0f,  0.0f, 1000.0f},   // FilterCutoffEnvD
-    {  10.0f,  0.0f, 1000.0f},   // FilterCutoffEnvS
-    {  10.0f,  0.0f, 1000.0f},   // FilterCutoffEnvR
-    {  10.0f,  0.0f, 1000.0f},   // FilterResonanceEnvA
-    {  10.0f,  0.0f, 1000.0f},   // FilterResonanceEnvD
-    {  10.0f,  0.0f, 1000.0f},   // FilterResonanceEnvS
-    {  10.0f,  0.0f, 1000.0f},   // FilterResonanceEnvR
-    {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
+    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvA
+    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvD
+    { 1000.f,  0.0f, 40000.f},   // FilterCutoffEnvS
+    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvR
+    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvA
+    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvD
+    { 0.707f,  0.0f,    2.0f},   // FilterResonanceEnvS
+    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvR
+    {   0.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
     {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector2
 }};
 
