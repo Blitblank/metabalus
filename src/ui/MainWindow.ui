@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,6 +51,19 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="Scope" name="scope" native="true">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>540</y>
+      <width>400</width>
+      <height>200</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
  <customwidgets>
@@ -58,6 +71,12 @@
    <class>EnvelopeGenerator</class>
    <extends>QWidget</extends>
    <header>EnvelopeGenerator/EnvelopeGenerator.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Scope</class>
+   <extends>QWidget</extends>
+   <header>Scope/Scope.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -4,6 +4,7 @@
 #include "../ParameterStore.h"
 #include "../NoteQueue.h"
 #include "Envelope.h"
+#include "ScopeBuffer.h"
 
 #include <vector>
 #include <atomic>
@@ -28,8 +29,9 @@ public:
     // handles note events
     void handleNoteEvent(const NoteEvent& event);
 
-    // sample rate setter
+    // setters
     void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
+    void setScopeBuffer(ScopeBuffer* scope) { scope_ = scope; }
 
 private:
 
@@ -60,7 +62,9 @@ private:
     std::vector<uint8_t> heldNotes_;
 
     // envelopes !!
-    // TODO: set these parameters via sliders
     Envelope gainEnvelope_;
+
+    // for the scope
+    ScopeBuffer* scope_ = nullptr;
 
 };

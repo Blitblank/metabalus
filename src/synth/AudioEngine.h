@@ -23,6 +23,7 @@ public:
     // getters
     ParameterStore* parameters() { return &params_; }
     NoteQueue& noteQueue() { return noteQueue_; }
+    ScopeBuffer& scopeBuffer() { return scope_; }
 
 private:
 
@@ -35,6 +36,7 @@ private:
     ParameterStore params_; // stores the control parameters
     NoteQueue noteQueue_; // stores note events for passing between threads
     Synth synth_; // generates audio
+    ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization
 
     RtAudio audio_; // audio device
     // TODO: id like a yml config file or something for these

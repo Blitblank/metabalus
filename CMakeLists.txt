@@ -57,6 +57,8 @@ qt_add_executable(metabolus
     src/synth/Envelope.h
     src/synth/Synth.cpp
     src/synth/Synth.h
+    src/synth/SynthBuffer.cpp
+    src/synth/SynthBuffer.h
     resources/resources.qrc
     src/ui/widgets/SmartSlider/SmartSlider.cpp
     src/ui/widgets/SmartSlider/SmartSlider.h
@@ -64,6 +66,9 @@ qt_add_executable(metabolus
     src/ui/widgets/EnvelopeGenerator/EnvelopeGenerator.cpp
     src/ui/widgets/EnvelopeGenerator/EnvelopeGenerator.h
     src/ui/widgets/EnvelopeGenerator/EnvelopeGenerator.ui
+    src/ui/widgets/Scope/Scope.cpp
+    src/ui/widgets/Scope/Scope.h
+    src/ui/widgets/Scope/Scope.ui
 )
 
 set_target_properties(metabolus PROPERTIES AUTOUIC ON)

@@ -32,7 +32,7 @@ public:
     void noteOn();
     void noteOff();
 
-    // return current level
+    // calculates and returns envelope level. must only be called once per sample
     float process(); 
 
     // determine if a note is playing or not

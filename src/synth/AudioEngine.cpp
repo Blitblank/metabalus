@@ -11,6 +11,8 @@ AudioEngine::AudioEngine() : synth_(params_) {
     // TODO: get audio configurations
     synth_.setSampleRate(sampleRate_);
 
+    synth_.setScopeBuffer(&scope_);
+
 }
 
 AudioEngine::~AudioEngine() {

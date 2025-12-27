@@ -99,6 +99,12 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         out[2*i] = sampleOut; // left
         out[2*i+1] = sampleOut; // right
 
+        // write to scope buffer
+        if (scope_) {
+            scope_->push(sampleOut); // visualization tap
+            // set trigger info here too
+        }
+
         // sampling business
         phase_ += phaseInc;
         if (phase_ > 2.0f * M_PI) phase_ -= 2.0f * M_PI;
