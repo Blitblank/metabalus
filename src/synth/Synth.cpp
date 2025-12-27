@@ -65,6 +65,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
     updateParams();
 
     float sampleOut = 0.0f;
+    bool triggered = false;
 
     for (uint32_t i = 0; i < nFrames; i++) {
 
@@ -82,6 +83,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         if(!gainEnvelope_.isActive()) {
             out[2*i] = 0.0f;
             out[2*i+1] = 0.0f;
+            scope_->push(0.0f);
             continue;
         }
         
@@ -92,8 +94,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // TODO: wavetables should be scaled by their RMS for equal loudness (prelim standard = 0.707)
         float sineSample = std::sin(phase_);
         float squareSample = (phase_ >= M_PI) ? 0.707f : -0.707f;
-        float sawSample = phase_ * 4.0f / M_PI * frequency_ / static_cast<float>(sampleRate); 
-        sampleOut = sawSample * gain;
+        float sawSample = ((phase_ / M_PI) - 1.0f) / 0.577f * 0.707f; 
+        sampleOut = squareSample * gain;
 
         // write to buffer
         out[2*i] = sampleOut; // left
@@ -102,12 +104,17 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // write to scope buffer
         if (scope_) {
             scope_->push(sampleOut); // visualization tap
-            // set trigger info here too
         }
 
         // sampling business
         phase_ += phaseInc;
-        if (phase_ > 2.0f * M_PI) phase_ -= 2.0f * M_PI;
+        if (phase_ > 2.0f * M_PI) {
+            phase_ -= 2.0f * M_PI;
+            if(!triggered) {
+                scope_->setTrigger(i); // this is where we consider the start of a waveform
+                triggered = true;
+            }
+        }
     }
 
 }

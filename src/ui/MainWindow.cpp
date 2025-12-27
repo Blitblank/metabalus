@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setFocusPolicy(Qt::StrongFocus);
 
     // connect scope
-    ui_->scopeWidget->setScopeBuffer(&audioEngine_->scopeBuffer());
+    ui_->scope->setScopeBuffer(&audio_->scopeBuffer());
 
     // Connect buttons to slots
     connect(ui_->buttonReset, &QPushButton::clicked, this, &MainWindow::onResetClicked);

@@ -22,10 +22,10 @@ public:
     // setters
     void setSampleRate(float sampleRate) { sampleRate_ = sampleRate; }
     void set(float a, float d, float s, float r) { setAttack(a); setDecay(d); setSustain(s); setRelease(r); }
-    void setAttack(float seconds) { attack_ = std::max(seconds, 0.0001f); }
-    void setDecay(float seconds) { decay_ = std::max(seconds, 0.0001f); }
+    void setAttack(float seconds) { attack_ = std::max(seconds, 0.001f); }
+    void setDecay(float seconds) { decay_ = std::max(seconds, 0.001f); }
     void setSustain(float level) { sustain_ = level; }
-    void setRelease(float seconds) { release_ = std::max(seconds, 0.0001f); }
+    void setRelease(float seconds) { release_ = std::max(seconds, 0.001f); }
     // values close to zero introduce that popping sound on noteOn/noteOffs
 
     // note events

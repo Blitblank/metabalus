@@ -57,8 +57,8 @@ qt_add_executable(metabolus
     src/synth/Envelope.h
     src/synth/Synth.cpp
     src/synth/Synth.h
-    src/synth/SynthBuffer.cpp
-    src/synth/SynthBuffer.h
+    src/synth/ScopeBuffer.cpp
+    src/synth/ScopeBuffer.h
     resources/resources.qrc
     src/ui/widgets/SmartSlider/SmartSlider.cpp
     src/ui/widgets/SmartSlider/SmartSlider.h
