@@ -24,16 +24,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // connect envelopeGenerators
     connect(ui_->envelopeOsc1Volume, &EnvelopeGenerator::envelopeChanged,
-        this, [this](float a, float d, float s, float r) {
-            audio_->parameters()->set(EnvelopeId::Osc1Volume, a, d, s, r);
+        this, [this](float depth, float a, float d, float s, float r) {
+            audio_->parameters()->set(EnvelopeId::Osc1Volume, depth, a, d, s, r);
         });
     connect(ui_->envelopeFilterCutoff, &EnvelopeGenerator::envelopeChanged,
-        this, [this](float a, float d, float s, float r) {
-            audio_->parameters()->set(EnvelopeId::FilterCutoff, a, d, s, r);
+        this, [this](float depth, float a, float d, float s, float r) {
+            audio_->parameters()->set(EnvelopeId::FilterCutoff, depth, a, d, s, r);
         });
     connect(ui_->envelopeFilterResonance, &EnvelopeGenerator::envelopeChanged,
-        this, [this](float a, float d, float s, float r) {
-            audio_->parameters()->set(EnvelopeId::FilterResonance, a, d, s, r);
+        this, [this](float depth, float a, float d, float s, float r) {
+            audio_->parameters()->set(EnvelopeId::FilterResonance, depth, a, d, s, r);
         });
     // this should be easy enough to put into a for each envelopeGenerator loop, each ui element just needs an EnvelopeId specifiers
 
@@ -45,16 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui_->comboOsc1WaveSelector2, QOverload<int>::of(&QComboBox::currentIndexChanged),
         this, [this](int index) {
             audio_->parameters()->set(ParamId::Osc1WaveSelector2, index);
-        });
-
-    connect(ui_->sliderOsc1Volume, &SmartSlider::valueChanged, this, [this](float v) {
-            audio_->parameters()->set(ParamId::Osc1Volume, v);
-        });
-    connect(ui_->sliderFilterCutoff, &SmartSlider::valueChanged, this, [this](float v) {
-            audio_->parameters()->set(ParamId::FilterCutoff, v);
-        });
-    connect(ui_->sliderFilterResonance, &SmartSlider::valueChanged, this, [this](float v) {
-            audio_->parameters()->set(ParamId::FilterResonance, v);
         });
 
     // synth business
@@ -87,11 +77,4 @@ void MainWindow::onResetClicked() {
     ui_->comboOsc1WaveSelector1->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector1)].def));
     ui_->comboOsc1WaveSelector2->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector2)].def));
 
-    // misc sliders
-    ui_->sliderOsc1Volume->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].min, PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].max);
-    ui_->sliderFilterCutoff->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].min, PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].max);
-    ui_->sliderFilterResonance->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].min, PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].max);
-    ui_->sliderOsc1Volume->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].def);
-    ui_->sliderFilterCutoff->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].def);
-    ui_->sliderFilterResonance->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].def);
 }

@@ -15,6 +15,7 @@ EnvelopeGenerator::EnvelopeGenerator(QWidget* parent) : QWidget(parent), ui_(new
                 this, &EnvelopeGenerator::emitEnvelope);
     };
 
+    connectSlider(ui_->sliderDepth);
     connectSlider(ui_->sliderAttack);
     connectSlider(ui_->sliderDecay);
     connectSlider(ui_->sliderSustain);
@@ -26,6 +27,10 @@ EnvelopeGenerator::~EnvelopeGenerator() {
 }
 
 // getters are here to separate ui from header
+float EnvelopeGenerator::depth() const {
+    return ui_->sliderDepth->value();
+}
+
 float EnvelopeGenerator::attack() const {
     return ui_->sliderAttack->value();
 }
@@ -40,6 +45,10 @@ float EnvelopeGenerator::sustain() const {
 
 float EnvelopeGenerator::release() const {
     return ui_->sliderRelease->value();
+}
+
+void EnvelopeGenerator::setDepth(float v) {
+    ui_->sliderDepth->setValue(v);
 }
 
 void EnvelopeGenerator::setAttack(float v) {
@@ -60,6 +69,7 @@ void EnvelopeGenerator::setRelease(float v) {
 
 void EnvelopeGenerator::emitEnvelope() {
     emit envelopeChanged(
+        depth(),
         attack(),
         decay(),
         sustain(),
@@ -71,11 +81,13 @@ void EnvelopeGenerator::init(EnvelopeId id) {
 
     EnvelopeParam params = ENV_PARAMS[static_cast<size_t>(id)];
 
+    ui_->sliderDepth->setRange(PARAM_DEFS[static_cast<size_t>(params.depth)].min, PARAM_DEFS[static_cast<size_t>(params.depth)].max);
     ui_->sliderAttack->setRange(PARAM_DEFS[static_cast<size_t>(params.a)].min, PARAM_DEFS[static_cast<size_t>(params.a)].max);
     ui_->sliderDecay->setRange(PARAM_DEFS[static_cast<size_t>(params.d)].min, PARAM_DEFS[static_cast<size_t>(params.d)].max);
     ui_->sliderSustain->setRange(PARAM_DEFS[static_cast<size_t>(params.s)].min, PARAM_DEFS[static_cast<size_t>(params.s)].max);
     ui_->sliderRelease->setRange(PARAM_DEFS[static_cast<size_t>(params.r)].min, PARAM_DEFS[static_cast<size_t>(params.r)].max);
 
+    setDepth(PARAM_DEFS[static_cast<size_t>(params.depth)].def);
     setAttack(PARAM_DEFS[static_cast<size_t>(params.a)].def);
     setDecay(PARAM_DEFS[static_cast<size_t>(params.d)].def);
     setSustain(PARAM_DEFS[static_cast<size_t>(params.s)].def);

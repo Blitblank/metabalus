@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
-    <height>300</height>
+    <width>347</width>
+    <height>302</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,7 +22,7 @@
   <widget class="SmartSlider" name="sliderDecay" native="true">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>140</x>
      <y>20</y>
      <width>65</width>
      <height>280</height>
@@ -35,7 +35,7 @@
   <widget class="SmartSlider" name="sliderRelease" native="true">
    <property name="geometry">
     <rect>
-     <x>220</x>
+     <x>280</x>
      <y>20</y>
      <width>65</width>
      <height>280</height>
@@ -48,7 +48,7 @@
   <widget class="SmartSlider" name="sliderSustain" native="true">
    <property name="geometry">
     <rect>
-     <x>150</x>
+     <x>210</x>
      <y>20</y>
      <width>65</width>
      <height>280</height>
@@ -61,7 +61,7 @@
   <widget class="SmartSlider" name="sliderAttack" native="true">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>70</x>
      <y>20</y>
      <width>65</width>
      <height>280</height>
@@ -71,36 +71,10 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="Line" name="line">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>290</y>
-     <width>291</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
-   </property>
-  </widget>
-  <widget class="Line" name="line_2">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>10</y>
-     <width>291</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Orientation::Horizontal</enum>
-   </property>
-  </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>90</x>
      <y>-10</y>
      <width>21</width>
      <height>31</height>
@@ -121,7 +95,7 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>100</x>
+     <x>160</x>
      <y>-10</y>
      <width>21</width>
      <height>31</height>
@@ -142,7 +116,7 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>170</x>
+     <x>230</x>
      <y>-10</y>
      <width>20</width>
      <height>31</height>
@@ -163,7 +137,7 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>240</x>
+     <x>300</x>
      <y>-10</y>
      <width>20</width>
      <height>31</height>
@@ -176,6 +150,66 @@
    </property>
    <property name="text">
     <string>R</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="SmartSlider" name="sliderDepth" native="true">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>20</y>
+     <width>65</width>
+     <height>280</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="Line" name="line_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>346</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>290</y>
+     <width>346</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Orientation::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>-10</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Depth</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignmentFlag::AlignCenter</set>

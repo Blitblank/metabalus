@@ -20,19 +20,21 @@ public:
     void init(EnvelopeId id);
 
     // setters
+    void setDepth(float v);
     void setAttack(float v);
     void setDecay(float v);
     void setSustain(float v);
     void setRelease(float v);
 
     // getters
+    float depth() const;
     float attack() const;
     float decay() const;
     float sustain() const;
     float release() const;
 
 signals:
-    void envelopeChanged(double a, double d, double s, double r);
+    void envelopeChanged(double depth, double a, double d, double s, double r);
 
 private:
 

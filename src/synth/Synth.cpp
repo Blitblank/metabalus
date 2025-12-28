@@ -107,7 +107,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         float pitchOffset = 0.5f;
         float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
-        float gain = gainEnv * getParam(ParamId::Osc1Volume);
+        float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth);
 
         // sample generation
         // TODO: wavetables
@@ -135,8 +135,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
 
         // filter sample
-        float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoff)) * frequency_;
-        filter_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonance));
+        float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * frequency_;
+        filter_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
         sampleOut = filter_.biquadProcess(sampleOut);
 
         // write to buffer
