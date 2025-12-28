@@ -19,9 +19,9 @@ This synthesizer isn't very good, but it's neat :3
       Midi -> linux and Keyboard -> windows though
 - [ ] Create oscillator class where the actual tone generation occurs. Multiple
       oscillators increase the sound complexity considerably
-- [ ] Create a UI scope to visualize the synthesized composite waveform
+- [x] Create a UI scope to visualize the synthesized composite waveform
 - [ ] Create wavetables for more complex tone generation. Needs to be selectable from ui
-- [ ] Create digital filters, prob biquad. Controllable from ui obv (cutoff + resonance)
+- [x] Create digital filters, prob biquad. Controllable from ui obv (cutoff + resonance)
 - [ ] Add polyphony somewhere. Probably involves a voice class. If processing power
       allows it, tie a voice to each midi note
 - [ ] Add noise ? 
