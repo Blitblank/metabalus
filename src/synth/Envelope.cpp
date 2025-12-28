@@ -27,7 +27,7 @@ float Envelope::process() {
             state_ = State::Decay;
         }
         break;
-      case State::Decay:
+      case State::Decay: // TODO: noteOff during decay means release occurs longer than expected
         value_ -= (1.0f - sustain_) / (decay_ * sampleRate_);
         if(value_ <= sustain_) {
             value_ = sustain_;

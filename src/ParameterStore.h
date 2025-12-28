@@ -49,8 +49,8 @@ constexpr std::array<EnvelopeParam, static_cast<size_t>(EnvelopeId::Count)> ENV_
     { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc1Volume
     { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc2Volume (not implemented)
     { ParamId::Osc1VolumeEnvA, ParamId::Osc1VolumeEnvD, ParamId::Osc1VolumeEnvS, ParamId::Osc1VolumeEnvR }, // Osc3Volume (not implemented)
-    { ParamId::FilterCutoffEnvA, ParamId::FilterCutoffEnvR, ParamId::FilterCutoffEnvS, ParamId::FilterCutoffEnvR }, // FilterCutoff
-    { ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvR, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR }, // FilterResonance
+    { ParamId::FilterCutoffEnvA, ParamId::FilterCutoffEnvD, ParamId::FilterCutoffEnvS, ParamId::FilterCutoffEnvR }, // FilterCutoff
+    { ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvD, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR }, // FilterResonance
 }};
 
 struct ParamDefault {
