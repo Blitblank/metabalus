@@ -47,6 +47,16 @@ MainWindow::MainWindow(QWidget *parent) :
             audio_->parameters()->set(ParamId::Osc1WaveSelector2, index);
         });
 
+    connect(ui_->sliderOsc1Volume, &SmartSlider::valueChanged, this, [this](float v) {
+            audio_->parameters()->set(ParamId::Osc1Volume, v);
+        });
+    connect(ui_->sliderFilterCutoff, &SmartSlider::valueChanged, this, [this](float v) {
+            audio_->parameters()->set(ParamId::FilterCutoff, v);
+        });
+    connect(ui_->sliderFilterResonance, &SmartSlider::valueChanged, this, [this](float v) {
+            audio_->parameters()->set(ParamId::FilterResonance, v);
+        });
+
     // synth business
     audio_->start();
 
@@ -77,4 +87,11 @@ void MainWindow::onResetClicked() {
     ui_->comboOsc1WaveSelector1->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector1)].def));
     ui_->comboOsc1WaveSelector2->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector2)].def));
 
+    // misc sliders
+    ui_->sliderOsc1Volume->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].min, PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].max);
+    ui_->sliderFilterCutoff->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].min, PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].max);
+    ui_->sliderFilterResonance->setRange(PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].min, PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].max);
+    ui_->sliderOsc1Volume->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1Volume)].def);
+    ui_->sliderFilterCutoff->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::FilterCutoff)].def);
+    ui_->sliderFilterResonance->setValue(PARAM_DEFS[static_cast<size_t>(ParamId::FilterResonance)].def);
 }

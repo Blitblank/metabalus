@@ -87,8 +87,9 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         gainEnvelope_.set(getParam(ParamId::Osc1VolumeEnvA), getParam(ParamId::Osc1VolumeEnvD), getParam(ParamId::Osc1VolumeEnvS), getParam(ParamId::Osc1VolumeEnvR));
         cutoffEnvelope_.set(getParam(ParamId::FilterCutoffEnvA), getParam(ParamId::FilterCutoffEnvD), getParam(ParamId::FilterCutoffEnvS), getParam(ParamId::FilterCutoffEnvR));
         resonanceEnvelope_.set(getParam(ParamId::FilterResonanceEnvA), getParam(ParamId::FilterResonanceEnvD), getParam(ParamId::FilterResonanceEnvS), getParam(ParamId::FilterResonanceEnvR));
-        float gain = gainEnvelope_.process();
-        filter_.setParams(Filter::Type::BiquadLowpass, cutoffEnvelope_.process(), resonanceEnvelope_.process());
+        float gainEnv = gainEnvelope_.process();
+        float cutoffEnv = cutoffEnvelope_.process();
+        float resonanceEnv = resonanceEnvelope_.process();
         // TODO: envelope is shared between all notes so this sequence involves a note change but only one envelope attack:
         // NOTE_A_ON > NOTE_B_ON > NOTE_A_OFF and note B starts playing part-way through note A's envelope 
 
@@ -105,6 +106,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
         float pitchOffset = 0.5f;
         float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
+
+        float gain = gainEnv * getParam(ParamId::Osc1Volume);
 
         // sample generation
         // TODO: wavetables
@@ -132,6 +135,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
 
         // filter sample
+        float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoff)) * frequency_;
+        filter_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonance));
         sampleOut = filter_.biquadProcess(sampleOut);
 
         // write to buffer

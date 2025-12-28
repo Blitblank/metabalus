@@ -7,21 +7,23 @@
 
 enum class ParamId : uint16_t {
     Osc1Frequency,
-    Osc1Gain,
+    Osc1WaveSelector1,
+    Osc1WaveSelector2,
+    Osc1Volume,
     Osc1VolumeEnvA,
     Osc1VolumeEnvD,
     Osc1VolumeEnvS,
     Osc1VolumeEnvR,
+    FilterCutoff,
     FilterCutoffEnvA,
     FilterCutoffEnvD,
     FilterCutoffEnvS,
     FilterCutoffEnvR,
+    FilterResonance,
     FilterResonanceEnvA,
     FilterResonanceEnvD,
     FilterResonanceEnvS,
     FilterResonanceEnvR,
-    Osc1WaveSelector1,
-    Osc1WaveSelector2,
     // ... and so on
     // this list could be like 200 long if I really wanted to
     Count // for sizing
@@ -61,21 +63,23 @@ struct ParamDefault {
 // later TODO: and then when I have full on profile saving there will be a default profile to load from
 constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f, 20.0f,  600.0f},   // Osc1Freq
-    {   0.8f,  0.0f,    1.0f},   // Osc1Gain
+    {   0.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
+    {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector2
+    {   1.0f,  0.0f,    2.0f},   // Osc1Volume
     {  0.05f,  0.0f,    2.0f},   // Osc1VolumeEnvA
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvD
     {   0.7f,  0.0f,    1.0f},   // Osc1VolumeEnvS
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvR
+    {   1.0f,  0.0f,    8.0f},   // FilterCutoff
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvA
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvD
-    { 1000.f,  0.0f, 40000.f},   // FilterCutoffEnvS
+    {   2.0f,  0.0f,    1.0f},   // FilterCutoffEnvS
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvR
+    { 1.414f,  0.0f,    8.0f},   // FilterResonance
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvA
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvD
-    { 0.707f,  0.0f,    2.0f},   // FilterResonanceEnvS
+    {   0.5f,  0.0f,    1.0f},   // FilterResonanceEnvS
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvR
-    {   0.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
-    {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector2
 }};
 
 constexpr size_t PARAM_COUNT = static_cast<size_t>(ParamId::Count);

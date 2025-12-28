@@ -40,7 +40,7 @@ private:
     float q_ = 0.707f;
 
     // biquad filter structure
-    float a0_, a1_, a2_, b1_, b2_;
+    float a1_, a2_, b0_, b1_, b2_;
     float z1_, z2_;
 
 };

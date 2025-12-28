@@ -46,7 +46,7 @@ void Scope::paintEvent(QPaintEvent*) {
 
     // got caught playing around
     QPen pen;
-    pen.setWidthF(2.0f);
+    pen.setWidthF(3.0f);
     QColor green(50, 255, 70);
     pen.setColor(green);
     p.setPen(pen);
@@ -54,9 +54,9 @@ void Scope::paintEvent(QPaintEvent*) {
     for (int32_t i = 1; i < samples_.size(); i++) {
         p.drawLine(
             (i) * width() / samples_.size(),
-            midY - samples_[i - 1] * scaleY,
+            midY + samples_[i - 1] * scaleY,
             i * width() / samples_.size(),
-            midY - samples_[i] * scaleY
+            midY + samples_[i] * scaleY
         );
     }
 }
