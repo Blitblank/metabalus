@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // synth business
     audio_->start();
 
+    // midi
+    midi_.openPort(1); // TODO: error check
 }
 
 MainWindow::~MainWindow() {

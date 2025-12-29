@@ -41,7 +41,7 @@ private:
     RtAudio audio_; // audio device
     // TODO: id like a yml config file or something for these
     uint32_t sampleRate_ = 44100;
-    uint32_t bufferFrames_ = 256; // time per buffer = BF/SR (256/44100 = 5.8ms)
+    uint32_t bufferFrames_ = 128; // time per buffer = BF/SR (256/44100 = 5.8ms)
     uint32_t channels_ = 2; // stereo
 
 };

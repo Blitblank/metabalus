@@ -75,12 +75,12 @@ constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DE
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvA
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvD
     {   2.0f,  0.0f,    1.0f},   // FilterCutoffEnvS
-    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvR
+    {  0.08f,  0.0f,    2.0f},   // FilterCutoffEnvR
     { 1.414f,  0.0f,    8.0f},   // FilterResonanceDepth
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvA
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvD
     {   0.5f,  0.0f,    1.0f},   // FilterResonanceEnvS
-    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvR
+    {  0.10f,  0.0f,    2.0f},   // FilterResonanceEnvR
 }};
 
 constexpr size_t PARAM_COUNT = static_cast<size_t>(ParamId::Count);

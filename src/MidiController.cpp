@@ -5,10 +5,11 @@
 MidiController::MidiController(NoteQueue& queue) : noteQueue_(queue) {
     try {
         midiIn_ = std::make_unique<RtMidiIn>();
-        midiIn_->ignoreTypes(false, false, false);
+        midiIn_->ignoreTypes(false, true, false);
     } catch (RtMidiError& e) {
         std::cerr << "RtMidi init failed: " << e.getMessage() << std::endl;
     }
+    
 }
 
 MidiController::~MidiController() {
@@ -72,7 +73,4 @@ void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
             0.0f
         });
     }
-
-    // to have a peak :)
-    std::cout << msg[0] << std::endl;
 }
