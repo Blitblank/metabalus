@@ -10,6 +10,7 @@ set CONFIG=Release
 
 set QT_ROOT=C:\Qt\6.10.1\msvc2022_64
 set RTAUDIO_ROOT=C:\rtaudio
+set RTMIDI_ROOT=C:\rtmidi
 
 REM ================================
 REM Environment setup
@@ -30,7 +31,8 @@ if not exist %BUILD_DIR% (
 cmake -S . -B %BUILD_DIR% ^
     -G Ninja ^
     -DCMAKE_BUILD_TYPE=%CONFIG% ^
-    -DRTAUDIO_ROOT=%RTAUDIO_ROOT% 
+    -DRTAUDIO_ROOT=%RTAUDIO_ROOT% ^
+    -DRTMIDI_ROOT=%RTMIDI_ROOT% 
 
 if errorlevel 1 goto error
 
@@ -51,6 +53,7 @@ cd %BUILD_DIR%
 windeployqt metabolus.exe
 
 copy "%RTAUDIO_ROOT%\bin\rtaudio.dll" .
+copy "%RTMIDI_ROOT%\bin\rtmidi.dll" .
 
 echo.
 echo Build successful.

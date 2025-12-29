@@ -33,9 +33,28 @@ if (WIN32) # windows 11 x86_64
     # Public alias (this is where :: belongs)
     add_library(RtAudio::RtAudio ALIAS rtaudio)
 
+    add_library(rtmidi_headers INTERFACE)
+    target_include_directories(rtmidi_headers INTERFACE
+        "C:/rtmidi/include"
+        "C:/rtmidi/include/rtMidi"
+    )
+    add_library(rtmidi_binary SHARED IMPORTED)
+    set_target_properties(rtmidi_binary PROPERTIES
+        IMPORTED_LOCATION "C:/rtmidi/bin/rtmidi.dll"
+        IMPORTED_IMPLIB   "C:/rtmidi/lib/rtmidi.lib"
+    )
+    add_library(rtmidi INTERFACE)
+    target_link_libraries(rtmidi INTERFACE
+        rtmidi_headers
+        rtmidi_binary
+    )
+    add_library(RtMidi::RtMidi ALIAS rtmidi)
+
+    
 else() # debian 12 x86_64
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(RTAUDIO REQUIRED rtaudio)
+    pkg_check_modules(RTMIDI REQUIRED rtmidi)
 endif()
 
 qt_standard_project_setup()
@@ -49,6 +68,8 @@ qt_add_executable(metabolus
     src/ParameterStore.h
     src/KeyboardController.cpp
     src/KeyboardController.h
+    src/MidiController.cpp
+    src/MidiController.h
     src/NoteQueue.cpp
     src/NoteQueue.h
     src/synth/AudioEngine.cpp
@@ -89,6 +110,7 @@ if (WIN32)
         PRIVATE
             Qt6::Widgets
             RtAudio::RtAudio
+            RtMidi::RtMidi
     )
 
     add_custom_command(TARGET metabolus POST_BUILD
@@ -97,8 +119,14 @@ if (WIN32)
         $<TARGET_FILE_DIR:metabolus>
     )
 
+    add_custom_command(TARGET metabolus POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "C:/rtmidi/bin/rtmidi.dll"
+        $<TARGET_FILE_DIR:metabolus>
+    )
+
 else() 
-    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS})
-    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES})
+    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS} ${RTMIDI_INCLUDE_DIRS})
+    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES} ${RTMIDI_LIBARARIES})
     target_compile_options(metabolus PRIVATE ${RTAUDIO_CFLAGS_OTHER})
 endif()

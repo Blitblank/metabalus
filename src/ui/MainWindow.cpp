@@ -9,7 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui_(new Ui::MainWindow),
     audio_(new AudioEngine()),
-    keyboard_(audio_->noteQueue()) {
+    keyboard_(audio_->noteQueue()),
+    midi_(audio_->noteQueue()) {
 
     // initialize ui
     ui_->setupUi(this);
