@@ -1,15 +1,17 @@
 
 #include "MidiController.h"
+
 #include <iostream>
+#include <chrono>
 
 MidiController::MidiController(NoteQueue& queue) : noteQueue_(queue) {
     try {
         midiIn_ = std::make_unique<RtMidiIn>();
-        midiIn_->ignoreTypes(false, true, false);
+        midiIn_->ignoreTypes(true, true, true);
     } catch (RtMidiError& e) {
         std::cerr << "RtMidi init failed: " << e.getMessage() << std::endl;
     }
-    
+    // TODO: this still doesnt work on windows
 }
 
 MidiController::~MidiController() {
@@ -54,6 +56,10 @@ void MidiController::midiCallback(double /*deltaTime*/, std::vector<unsigned cha
 
 void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
     unsigned char status = msg[0] & 0xF0;
+
+    if (status == 0xFE) return;
+    if (status == 0xF8) return;
+
     unsigned char note   = msg.size() > 1 ? msg[1] : 0;
     unsigned char vel    = msg.size() > 2 ? msg[2] : 0;
 

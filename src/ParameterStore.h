@@ -64,23 +64,23 @@ struct ParamDefault {
 // later TODO: and then when I have full on profile saving there will be a default profile to load from
 constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f, 20.0f,  600.0f},   // Osc1Freq
-    {   0.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
+    {   2.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
     {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector2
     {   1.0f,  0.0f,    2.0f},   // Osc1VolumeDepth
     {  0.05f,  0.0f,    2.0f},   // Osc1VolumeEnvA
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvD
     {   0.7f,  0.0f,    1.0f},   // Osc1VolumeEnvS
     {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvR
-    {   1.0f,  0.0f,    8.0f},   // FilterCutoffDepth
+    {   4.0f,  0.0f,    8.0f},   // FilterCutoffDepth
     {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvA
-    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvD
-    {   2.0f,  0.0f,    1.0f},   // FilterCutoffEnvS
-    {  0.08f,  0.0f,    2.0f},   // FilterCutoffEnvR
-    { 1.414f,  0.0f,    8.0f},   // FilterResonanceDepth
+    {  0.20f,  0.0f,    2.0f},   // FilterCutoffEnvD
+    {   0.2f,  0.0f,    1.0f},   // FilterCutoffEnvS
+    {  0.25f,  0.0f,    2.0f},   // FilterCutoffEnvR
+    {   3.0f,  0.0f,    8.0f},   // FilterResonanceDepth
     {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvA
-    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvD
+    {  0.20f,  0.0f,    2.0f},   // FilterResonanceEnvD
     {   0.5f,  0.0f,    1.0f},   // FilterResonanceEnvS
-    {  0.10f,  0.0f,    2.0f},   // FilterResonanceEnvR
+    {  0.30f,  0.0f,    2.0f},   // FilterResonanceEnvR
 }};
 
 constexpr size_t PARAM_COUNT = static_cast<size_t>(ParamId::Count);

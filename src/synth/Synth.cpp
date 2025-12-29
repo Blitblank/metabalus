@@ -9,7 +9,7 @@
 #endif
 
 // TODO: you get it, also in a yml config
-#define SYNTH_PITCH_STANDARD 432.0f // frequency of home pitch
+#define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
 #define SYNTH_NOTES_PER_OCTAVE 12
 
@@ -104,7 +104,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
         
         // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
-        float pitchOffset = 0.5f;
+        float pitchOffset = 1.0f;
         float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
         float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth);
