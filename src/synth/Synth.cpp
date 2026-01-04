@@ -9,7 +9,7 @@
 #endif
 
 // TODO: you get it, also in a yml config
-#define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
+#define SYNTH_PITCH_STANDARD 432.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
 #define SYNTH_NOTES_PER_OCTAVE 12
 
@@ -25,7 +25,8 @@ void Synth::updateParams() {
 
 void Synth::setSampleRate(uint32_t sampleRate) { 
     sampleRate_ = sampleRate;
-    filter_.setSampleRate(static_cast<float>(sampleRate));
+    filter1_.setSampleRate(static_cast<float>(sampleRate));
+    filter2_.setSampleRate(static_cast<float>(sampleRate));
 }
 
 inline float Synth::getParam(ParamId id) {
@@ -104,7 +105,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
         
         // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
-        float pitchOffset = 1.0f;
+        float pitchOffset = 0.5f;
         float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
 
         float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth);
@@ -136,8 +137,11 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
 
         // filter sample
         float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * frequency_;
-        filter_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
-        sampleOut = filter_.biquadProcess(sampleOut);
+        filter1_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
+        filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
+        float filterSample = filter1_.biquadProcess(sampleOut);
+        filterSample = filter2_.biquadProcess(filterSample);
+        sampleOut = filterSample;
 
         // write to buffer
         out[2*i] = sampleOut; // left

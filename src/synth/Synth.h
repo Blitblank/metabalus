@@ -70,7 +70,7 @@ private:
     Envelope cutoffEnvelope_;
     Envelope resonanceEnvelope_;
 
-    // filters, just one for now
-    Filter filter_;
+    Filter filter1_;
+    Filter filter2_;
 
 };
