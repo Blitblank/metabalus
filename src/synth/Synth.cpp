@@ -9,7 +9,7 @@
 #endif
 
 // TODO: you get it, also in a yml config
-#define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
+#define SYNTH_PITCH_STANDARD 432.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
 #define SYNTH_NOTES_PER_OCTAVE 12
 
