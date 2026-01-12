@@ -7,6 +7,7 @@ KeyboardController::KeyboardController(NoteQueue& queue) : queue_(queue) {
 
     // TODO: also configurable via a yml
     keymap_ = {
+        { Qt::Key_Shift, 47 }, // B 2
         { Qt::Key_Z, 48 }, // C 3
         { Qt::Key_S, 49 }, // C#
         { Qt::Key_X, 50 }, // D

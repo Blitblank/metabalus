@@ -28,6 +28,8 @@ public:
     void setRelease(float seconds) { release_ = std::max(seconds, 0.001f); }
     // values close to zero introduce that popping sound on noteOn/noteOffs
 
+    State state() { return state_; };
+
     // note events
     void noteOn();
     void noteOff();

@@ -6,17 +6,10 @@
 #include "Envelope.h"
 #include "ScopeBuffer.h"
 #include "Filter.h"
+#include "Voice.h"
 
 #include <vector>
 #include <atomic>
-
-struct SmoothedParam {
-    float current = 0.0f;
-    float target = 0.0f;
-    float gain = 0.001f;
-
-    inline void update() { current += gain * (target - current); }
-};
 
 class Synth {
 
@@ -42,35 +35,21 @@ private:
     // small getter that abstracts all the static casts and such
     inline float getParam(ParamId);
 
-    // for calculating frequency based on midi note id
-    inline float noteToFrequency(uint8_t note);
-
-    // finds the active voice
-    void updateCurrentNote(); 
+    Voice* findFreeVoice();
+    Voice* findVoiceByNote(uint8_t note);
 
     const ParameterStore& paramStore_;
     // smoothed params creates a buffer in case the thread controlling paramStore gets blocked
     std::array<SmoothedParam, PARAM_COUNT> params_;
-    uint32_t sampleRate_;
-    
-    // for the scope
-    ScopeBuffer* scope_ = nullptr;
 
-    // TODO: might make this a fixed array where index=midi-note and the value=velocity
-    // so non-zero elements are the ones currently being played
     std::vector<uint8_t> heldNotes_;
 
-    // here's where the actual sound generation happens
-    // TODO: put this in an oscillator class
-    float frequency_ = 220.0f;
-    float phase_ = 0.0f;
+    // voices
+    static constexpr int MAX_VOICES = 12;
+    std::array<Voice, MAX_VOICES> voices_;
+    uint32_t sampleRate_;
 
-    // envelopes !!
-    Envelope gainEnvelope_;
-    Envelope cutoffEnvelope_;
-    Envelope resonanceEnvelope_;
-
-    // filters, just one for now
-    Filter filter_;
+    // for the scope
+    ScopeBuffer* scope_ = nullptr;
 
 };
