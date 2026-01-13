@@ -8,13 +8,8 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-// TODO: you get it, also in a yml config
-#define SYNTH_PITCH_STANDARD 432.0f // frequency of home pitch
-#define SYNTH_MIDI_HOME 69 // midi note index of home pitch
-#define SYNTH_NOTES_PER_OCTAVE 12
-
 Synth::Synth(const ParameterStore& params) : paramStore_(params) {
-
+    voices_.fill(Voice(params_.data()));
 }
 
 void Synth::updateParams() {
@@ -76,12 +71,18 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(auto& p : params_) p.update(); // TODO: profile this
 
         // assemble float array of parameters so that its easier for voices to retrieve
-        
+        float params[PARAM_COUNT] = {0.0f};
+        for(int i = 0; i < PARAM_COUNT; i++) {
+            params[i] = params_[i].current;
+        }
+
         // foreach voice, process...
         float mix = 0.0f;
         for(Voice& v : voices_) {
-            mix += v.process(&params_[0].current, triggered);
+            mix += v.process(params, triggered);
         }
+
+        sampleOut = mix;
 
         // write to buffer
         out[2*i] = sampleOut; // left

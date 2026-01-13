@@ -2,7 +2,7 @@
 #include "Voice.h"
 #include <cmath>
 
-Voice::Voice(std::array<SmoothedParam, PARAM_COUNT>* params) : params_(params) {
+Voice::Voice(SmoothedParam* params) : params_(params) {
 
 }
 
@@ -26,6 +26,10 @@ inline float Voice::noteToFrequency(uint8_t note) {
     return SYNTH_PITCH_STANDARD * pow(2.0f, static_cast<float>(note - SYNTH_MIDI_HOME) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
 }
 
+inline float Voice::getParam(ParamId id) {
+    return params_[static_cast<size_t>(id)].current;
+}
+
 void Voice::noteOn(int midiNote, float velocity) {
     note_ = midiNote;
     velocity_ = velocity;
@@ -43,6 +47,7 @@ void Voice::noteOff() {
     gainEnvelope_.noteOff();
     cutoffEnvelope_.noteOff();
     resonanceEnvelope_.noteOff();
+    active_ = false;
 }
 
 bool Voice::isActive() {
@@ -71,7 +76,7 @@ float Voice::process(float* params, bool& scopeTrigger) {
 
     // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
     float pitchOffset = 1.0f;
-    float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate);
+    float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate_);
 
     float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth);
     float sampleOut = 0.0f;
@@ -108,6 +113,11 @@ float Voice::process(float* params, bool& scopeTrigger) {
     filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
     sampleOut = filter1_.biquadProcess(sampleOut);
     sampleOut = filter2_.biquadProcess(sampleOut);
+
+    phase_ += phaseInc;
+    if (phase_ > 2.0f * M_PI) {
+        phase_ -= 2.0f * M_PI;
+    }
 
     return sampleOut;
 }

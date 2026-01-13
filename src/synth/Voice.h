@@ -4,7 +4,7 @@
 #include "Oscillator.h"
 #include "Envelope.h"
 #include "Filter.h"
-#include "ParameterStore.h"
+#include "../ParameterStore.h"
 
 #ifndef M_PI // I hate my stupid chungus life
     #define M_PI 3.14159265358979323846
@@ -26,7 +26,8 @@ struct SmoothedParam {
 class Voice {
 public:
 
-    Voice(std::array<SmoothedParam, PARAM_COUNT>* params);
+    Voice() = default;
+    Voice(SmoothedParam* params);
     ~Voice() = default;
 
     void setSampleRate(float sampleRate);
@@ -45,6 +46,7 @@ private:
     float sampleRate_ = 44100.0f;
 
     inline float noteToFrequency(uint8_t note);
+    inline float getParam(ParamId id);
 
     uint8_t note_ = 0;
     float velocity_ = 1.0f;
@@ -67,6 +69,6 @@ private:
     Filter filter2_;
 
     // paramstore pointer
-    std::array<SmoothedParam, PARAM_COUNT>* params_;
+    SmoothedParam* params_;
 
 };
