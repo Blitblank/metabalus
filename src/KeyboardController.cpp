@@ -45,7 +45,8 @@ void KeyboardController::handleKeyPress(QKeyEvent* e) {
     queue_.push({
         NoteEventType::NoteOn,
         it->second,
-        0.8f
+        0.8f,
+        std::chrono::high_resolution_clock::now()
     });
 }
 
@@ -59,6 +60,7 @@ void KeyboardController::handleKeyRelease(QKeyEvent* e) {
     queue_.push({
         NoteEventType::NoteOff,
         it->second,
-        0.8f
+        0.8f,
+        std::chrono::high_resolution_clock::now()
     });
 }

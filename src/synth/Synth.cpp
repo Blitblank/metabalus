@@ -31,6 +31,10 @@ inline float Synth::getParam(ParamId id) {
 }
 
 void Synth::handleNoteEvent(const NoteEvent& event) {
+
+    std::cout << "Synth::handleNoteEvent: " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - event.timestamp) << std::endl;
+    lastTime = event.timestamp;
+
     if(event.type == NoteEventType::NoteOn) {
 
         // TODO: find quietest voice and assign a note to it instead of just the first inactive one
@@ -105,5 +109,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             }
         }
     }
+
+    //std::cout << "Notequeue::push: " << std::chrono::high_resolution_clock::now() - lastTime << std::endl;
 
 }

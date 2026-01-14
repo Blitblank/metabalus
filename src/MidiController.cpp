@@ -68,7 +68,8 @@ void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
         noteQueue_.push({
             NoteEventType::NoteOn,
             static_cast<uint8_t>(note),
-            vel / 127.0f
+            vel / 127.0f,
+            std::chrono::high_resolution_clock::now()
         });
     }
     // Note Off (or Note On with velocity 0)
@@ -76,7 +77,10 @@ void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
         noteQueue_.push({
             NoteEventType::NoteOff,
             static_cast<uint8_t>(note),
-            0.0f
+            0.0f,
+            std::chrono::high_resolution_clock::now()
         });
     }
+
+    std::cout << "MidiHandleMessage start (0)" << std::endl;
 }

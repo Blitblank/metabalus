@@ -52,4 +52,6 @@ private:
     // for the scope
     ScopeBuffer* scope_ = nullptr;
 
+    std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
+
 };

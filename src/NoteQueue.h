@@ -4,6 +4,7 @@
 #include <array>
 #include <atomic>
 #include <cstdint>
+#include <chrono>
 
 enum class NoteEventType {
     NoteOn,
@@ -14,6 +15,7 @@ struct NoteEvent {
     NoteEventType type; // noteOn or noteOff
     uint8_t note; // 0-128, a keyboard goes 0-87
     float velocity; // 0-1, from a midi instrument its 0-127 though
+    std::chrono::time_point<std::chrono::high_resolution_clock> timestamp;
 };
 
 // the queue is to keep track of note events from the UI/input thread to the audio engine thread

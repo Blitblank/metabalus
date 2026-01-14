@@ -1,5 +1,6 @@
 
 #include "NoteQueue.h"
+#include <iostream>
 
 bool NoteQueue::push(const NoteEvent& event) {
     size_t head = head_.load(std::memory_order_relaxed);
@@ -9,6 +10,9 @@ bool NoteQueue::push(const NoteEvent& event) {
 
     buffer_[head] = event;
     head_.store(next, std::memory_order_relaxed);
+
+    std::cout << "Notequeue::push: " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - event.timestamp) << std::endl;
+
     return true;
 }
 
@@ -19,5 +23,8 @@ bool NoteQueue::pop(NoteEvent& event) {
 
     event = buffer_[tail];
     tail_.store((tail + 1) % SIZE, std::memory_order_release);
+
+    std::cout << "Notequeue::pop: " << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - event.timestamp) << std::endl;
+
     return true;
 }
