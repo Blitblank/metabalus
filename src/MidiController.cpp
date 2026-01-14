@@ -82,5 +82,4 @@ void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
         });
     }
 
-    std::cout << "MidiHandleMessage start (0)" << std::endl;
 }
