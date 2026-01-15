@@ -45,7 +45,7 @@ private:
     std::vector<uint8_t> heldNotes_;
 
     // voices
-    static constexpr int MAX_VOICES = 12;
+    static constexpr int MAX_VOICES = 32;
     std::array<Voice, MAX_VOICES> voices_;
     uint32_t sampleRate_;
 

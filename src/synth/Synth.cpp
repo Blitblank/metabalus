@@ -92,6 +92,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(Voice& v : voices_) {
             mix += v.process(params, triggered);
         }
+        mix /= 4.0f; // for number of voices to prevent clipping
+        mix = tanh(mix); // really prevents clipping
 
         sampleOut = mix;
 
