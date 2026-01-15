@@ -13,6 +13,7 @@ void Filter::setSampleRate(float sampleRate) {
     calculateCoefficients();
 }
 
+// recalculate filter based on params
 void Filter::setParams(Type type, float frequency, float q) {
     type_ = type;
     frequency_ = std::min(frequency, sampleRate_ / 2.0f * 0.999f);
@@ -20,6 +21,7 @@ void Filter::setParams(Type type, float frequency, float q) {
     calculateCoefficients();
 }
 
+// update current state and output filtered value
 float Filter::biquadProcess(float in) {
 
     // calculate filtered sample
@@ -32,6 +34,7 @@ float Filter::biquadProcess(float in) {
     return out;
 }
 
+// internal control system emulation
 void Filter::calculateCoefficients() {
 
     if(q_ < 0.001f) q_ = 0.001f;
@@ -72,7 +75,7 @@ void Filter::calculateCoefficients() {
         break;
     }
 
-    // Normalize
+    // values need to be normalized
     b0_ = b0 / a0;
     b1_ = b1 / a0;
     b2_ = b2 / a0;

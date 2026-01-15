@@ -18,6 +18,7 @@ MidiController::~MidiController() {
     close();
 }
 
+// this dont work too well but whatever
 bool MidiController::openDefaultPort() {
     if (!midiIn_) return false;
     if (midiIn_->getPortCount() == 0) {
@@ -33,8 +34,7 @@ bool MidiController::openPort(unsigned int index) {
     try {
         midiIn_->openPort(index);
         midiIn_->setCallback(&MidiController::midiCallback, this);
-        std::cout << "Opened MIDI port: "
-                  << midiIn_->getPortName(index) << "\n";
+        std::cout << "Opened MIDI port: " << midiIn_->getPortName(index) << "\n";
         return true;
     } catch (RtMidiError& e) {
         std::cerr << e.getMessage() << std::endl;
@@ -48,42 +48,45 @@ void MidiController::close() {
     }
 }
 
+// called by RtMidi on receive of a midi message. deltaTime is time since last midi message, not useful atm
 void MidiController::midiCallback(double /*deltaTime*/, std::vector<unsigned char>* message, void* userData) {
     auto* self = static_cast<MidiController*>(userData);
     if (!message || message->empty()) return;
-    self->handleMessage(*message);
+    self->handleMessage(*message); // pass to parsing function if valid
 }
 
 void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
 
-    if(msg.size() <= 1) return;
+    if(msg.size() <= 1) return; // msg doesn't contain useful note info
 
     uint8_t status = msg[0] & 0xF0;
     uint8_t data1 = msg[1];
     uint8_t data2 = msg[2];
 
-    if(status == 0xFE) return;
-    if(status == 0xF8) return;
+    if(status == 0xFE) return; // "Active Sensing" -> 300ms heartbeat. could be useful to sense if this is missing for device failure detection
+    if(status == 0xF8) return; // "Timing Clock" -> 24 pulses per quarter note, for steady rhythm. not useful for this instrument
 
+    // sustain pedal message event
     if(status == 0xB0 && data1 == 64) {
         handleSustain(data2 >= 64);
         return;
     }
 
-    unsigned char note = msg.size() > 1 ? msg[1] : 0;
-    unsigned char vel = msg.size() > 2 ? msg[2] : 0;
+    unsigned char note = msg.size() > 1 ? msg[1] : 0; // note number
+    unsigned char vel = msg.size() > 2 ? msg[2] : 0; // velocity
 
-    // Note On (velocity > 0)
+    // note on (velocity > 0)
     if (status == 0x90 && vel > 0) {
         noteOn(note, vel);
     }
-    // Note Off (or Note On with velocity 0)
+    // note off (or note on with 0 velocity)
     else if (status == 0x80 || (status == 0x90 && vel == 0)) {
         noteOff(note);
     }
 
 }
 
+// construct note on event and add to noteQueue
 void MidiController::noteOn(uint8_t note, uint8_t vel) {
     sustainedNotes_.erase(note);
 
@@ -95,6 +98,7 @@ void MidiController::noteOn(uint8_t note, uint8_t vel) {
     });
 }
 
+// add note off event to noteQueue if no sustain active
 void MidiController::noteOff(uint8_t note) {
     if(sustainDown_) {
         sustainedNotes_.insert(note);
@@ -108,6 +112,7 @@ void MidiController::noteOff(uint8_t note) {
     });
 }
 
+// if sustain goes from on->off, then noteOff all the active ntoes
 void MidiController::handleSustain(bool down) {
     if(down == sustainDown_) return;
 

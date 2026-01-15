@@ -50,7 +50,6 @@ void KeyboardController::handleKeyPress(QKeyEvent* e) {
     });
 }
 
-// TODO: something like a sustain pedal will suspend note-off events. probably control that in the midi controller
 void KeyboardController::handleKeyRelease(QKeyEvent* e) {
     if (e->isAutoRepeat()) return;
 

@@ -14,6 +14,7 @@ void Envelope::noteOff() {
     if(state_ != State::Idle) state_ = State::Release;
 }
 
+// returns current value based on state and steps forward one sample
 float Envelope::process() {
     
     switch (state_) {

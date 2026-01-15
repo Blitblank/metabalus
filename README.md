@@ -21,10 +21,11 @@ This synthesizer isn't very good, but it's neat :3
       oscillators increase the sound complexity considerably
 - [x] Create a UI scope to visualize the synthesized composite waveform
 - [ ] Create wavetables for more complex tone generation. Needs to be selectable from ui
+- [ ] Wavetable file loading
 - [x] Create digital filters, prob biquad. Controllable from ui obv (cutoff + resonance)
 - [x] Add polyphony somewhere. Probably involves a voice class. If processing power
       allows it, tie a voice to each midi note
-- [ ] polyphony is lacking sustain pedal rn
+- [x] polyphony is lacking sustain pedal rn
 - [ ] planning gets sparse this far out because its how far I got with the ESP32 synth
 - [ ] Filter upgrades including some more complex solving techniques (State Variable Filter),
       better key tracking, more natural envelope curves, filter drive, etc.
@@ -34,6 +35,7 @@ This synthesizer isn't very good, but it's neat :3
 - [ ] Profile saving and loading, also includes loading configurations like keymaps, audio
       engine config, etc. from a yaml instead of being hardcoded
 - [ ] Noise 
+- [ ] LFO modulation
 
 ## setup
 TODO: instructions on build setup

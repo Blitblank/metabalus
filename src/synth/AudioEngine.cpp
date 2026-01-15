@@ -21,9 +21,10 @@ AudioEngine::~AudioEngine() {
 
 bool AudioEngine::start() {
 
+    // initialize the audio engine
     RtAudio::StreamParameters params;
     params.deviceId = audio_.getDefaultOutputDevice();
-    params.nChannels = channels_;
+    params.nChannels = channels_; // we're doing two duplicate channels for pseudo-mono
     params.firstChannel = 0;
 
     RtAudio::StreamOptions options;
@@ -47,7 +48,8 @@ void AudioEngine::stop() {
 
 int32_t AudioEngine::audioCallback( void* outputBuffer, void*, uint32_t nFrames, double, RtAudioStreamStatus status, void* userData) {
     
-    if (status) std::cerr << "Stream underflow!" << std::endl;
+    // error if process is too slow for the callback. If this is consistent, then need to optimize synth.process() or whatever cascades from it
+    if (status) std::cerr << "Stream underflow" << std::endl;
 
     return static_cast<AudioEngine*>(userData)->process(static_cast<float*>(outputBuffer), nFrames);
 }

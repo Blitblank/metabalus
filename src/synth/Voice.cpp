@@ -7,6 +7,7 @@ Voice::Voice(SmoothedParam* params) : params_(params) {
 
 }
 
+// cascade sample rate to all descendant objects
 void Voice::setSampleRate(float sampleRate) {
     sampleRate_ = sampleRate; 
 
@@ -23,6 +24,7 @@ void Voice::setSampleRate(float sampleRate) {
     //osc1_.setSampleRate(sampleRate);
 }
 
+// calculates oscillator frequency based on midi note
 inline float Voice::noteToFrequency(uint8_t note) {
     return SYNTH_PITCH_STANDARD * pow(2.0f, static_cast<float>(note - SYNTH_MIDI_HOME) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
 }
@@ -55,6 +57,7 @@ bool Voice::isActive() {
     return active_;
 }
 
+// generates a single sample, called from synth.process()
 float Voice::process(float* params, bool& scopeTrigger) {
 
     // process all envelopes
@@ -69,11 +72,10 @@ float Voice::process(float* params, bool& scopeTrigger) {
         return 0.0f;
     }
     
+    // process all envelopes
     float gainEnv = gainEnvelope_.process();
     float cutoffEnv = cutoffEnvelope_.process();
     float resonanceEnv = resonanceEnvelope_.process();
-    // TODO: envelope is shared between all notes so this sequence involves a note change but only one envelope attack:
-    // NOTE_A_ON > NOTE_B_ON > NOTE_A_OFF and note B starts playing part-way through note A's envelope 
 
     // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
     float pitchOffset = 1.0f;
@@ -120,6 +122,7 @@ float Voice::process(float* params, bool& scopeTrigger) {
     sampleOut = filter1_.biquadProcess(sampleOut);
     sampleOut = filter2_.biquadProcess(sampleOut);
 
+    // state tracking, may keep this here even if oscillators store their own phase because it might help with scope triggering
     phase_ += phaseInc;
     if (phase_ > 2.0f * M_PI) {
         phase_ -= 2.0f * M_PI;

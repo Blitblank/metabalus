@@ -30,6 +30,8 @@ inline float Synth::getParam(ParamId id) {
     return params_[static_cast<size_t>(id)].current;
 }
 
+// called by audio engine before process (because it has the reference to the noteEvent store)
+// this function consumes the noteEvents in the noteEvent store (whether produced by MIDI or keyboard)
 void Synth::handleNoteEvent(const NoteEvent& event) {
 
     lastTime = event.timestamp;
@@ -45,7 +47,6 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
             }
         }
 
-        // TODO: find quietest voice and assign a note to it instead of just the first inactive one
         // find inactive voice and start it with the given note
         for(Voice& v : voices_) {
             if(!v.isActive()) {
@@ -85,7 +86,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         float params[PARAM_COUNT] = {0.0f};
         for(int i = 0; i < PARAM_COUNT; i++) {
             params[i] = params_[i].current;
-        }
+        } // maybe take this outside the loop if performance is an issue
 
         // foreach voice, process...
         float mix = 0.0f;
@@ -94,6 +95,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
         mix /= 4.0f; // for number of voices to prevent clipping
         mix = tanh(mix); // really prevents clipping
+        // TODO: these saturation function work kinda like magic, use them elsewhere
 
         sampleOut = mix;
 

@@ -11,10 +11,10 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    MainWindow window;
+    MainWindow window; // entry point goes to MainWindow::MainWindow()
     window.show();
-
-    int status = app.exec();
+    
+    int status = app.exec(); // assembles ui
 
     return status;
 }

@@ -2,6 +2,7 @@
 #include "NoteQueue.h"
 #include <iostream>
 
+// add event to noteQueue, called by MidiController or keyboardController
 bool NoteQueue::push(const NoteEvent& event) {
     size_t head = head_.load(std::memory_order_relaxed);
     size_t next = (head + 1) % SIZE;
@@ -14,6 +15,7 @@ bool NoteQueue::push(const NoteEvent& event) {
     return true;
 }
 
+// take event from noteQueue, called by synth
 bool NoteQueue::pop(NoteEvent& event) {
     size_t tail = tail_.load(std::memory_order_relaxed);
 
