@@ -71,4 +71,8 @@ private:
     // paramstore pointer
     SmoothedParam* params_;
 
+    // TODO: add a parameter in the paramstore for this
+    float velocitySensitivity = 0.7f;
+    float velocityCenter = 2.0f;
+
 };

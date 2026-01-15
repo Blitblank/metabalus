@@ -1,6 +1,7 @@
 
 #include "Voice.h"
 #include <cmath>
+#include <iostream>
 
 Voice::Voice(SmoothedParam* params) : params_(params) {
 
@@ -78,7 +79,11 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float pitchOffset = 1.0f;
     float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate_);
 
-    float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth);
+    // calculate the change that the velocity will make
+    // TODO: make velocity parameters configurable, probably also for filterCutoff and filterResonance
+    float velocityGain = std::lerp(velocityCenter, velocity_, velocitySensitivity);
+
+    float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth) * velocityGain;
     float sampleOut = 0.0f;
 
     // sample generation
@@ -108,9 +113,10 @@ float Voice::process(float* params, bool& scopeTrigger) {
     }
 
     // filter sample
-    float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * frequency_;
-    filter1_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
-    filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonanceEnv * getParam(ParamId::FilterResonanceDepth));
+    float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * frequency_ * velocityGain;
+    float resonance = resonanceEnv * getParam(ParamId::FilterResonanceDepth) * velocityGain;
+    filter1_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
+    filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     sampleOut = filter1_.biquadProcess(sampleOut);
     sampleOut = filter2_.biquadProcess(sampleOut);
 
