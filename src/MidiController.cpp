@@ -7,7 +7,7 @@
 MidiController::MidiController(NoteQueue& queue) : noteQueue_(queue) {
     try {
         midiIn_ = std::make_unique<RtMidiIn>();
-        midiIn_->ignoreTypes(true, true, true);
+        midiIn_->ignoreTypes(false, false, false);
     } catch (RtMidiError& e) {
         std::cerr << "RtMidi init failed: " << e.getMessage() << std::endl;
     }
@@ -55,21 +55,23 @@ void MidiController::midiCallback(double /*deltaTime*/, std::vector<unsigned cha
 }
 
 void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
-    unsigned char status = msg[0] & 0xF0;
-    unsigned char data1 = msg[1];
-    unsigned char data2 = msg[2];
+
+    if(msg.size() <= 1) return;
+
+    uint8_t status = msg[0] & 0xF0;
+    uint8_t data1 = msg[1];
+    uint8_t data2 = msg[2];
 
     if(status == 0xFE) return;
     if(status == 0xF8) return;
 
     if(status == 0xB0 && data1 == 64) {
         handleSustain(data2 >= 64);
-        std::cout << "sustain event: " << data2 << std::endl;
         return;
     }
 
-    unsigned char note   = msg.size() > 1 ? msg[1] : 0;
-    unsigned char vel    = msg.size() > 2 ? msg[2] : 0;
+    unsigned char note = msg.size() > 1 ? msg[1] : 0;
+    unsigned char vel = msg.size() > 2 ? msg[2] : 0;
 
     // Note On (velocity > 0)
     if (status == 0x90 && vel > 0) {
@@ -83,6 +85,8 @@ void MidiController::handleMessage(const std::vector<unsigned char>& msg) {
 }
 
 void MidiController::noteOn(uint8_t note, uint8_t vel) {
+    sustainedNotes_.erase(note);
+
     noteQueue_.push({
         NoteEventType::NoteOn,
         static_cast<uint8_t>(note),
@@ -92,6 +96,10 @@ void MidiController::noteOn(uint8_t note, uint8_t vel) {
 }
 
 void MidiController::noteOff(uint8_t note) {
+    if(sustainDown_) {
+        sustainedNotes_.insert(note);
+        return;
+    }
     noteQueue_.push({
         NoteEventType::NoteOff,
         static_cast<uint8_t>(note),

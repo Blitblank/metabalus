@@ -36,6 +36,15 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
 
     if(event.type == NoteEventType::NoteOn) {
 
+        // TODO: this should get fixed if we tie voices to midi notes
+        // end all voices already playing this note
+        for(Voice& v : voices_) {
+            if(v.isActive() && v.note() == event.note) {
+                v.noteOff();
+                break;
+            }
+        }
+
         // TODO: find quietest voice and assign a note to it instead of just the first inactive one
         // find inactive voice and start it with the given note
         for(Voice& v : voices_) {
@@ -44,7 +53,6 @@ void Synth::handleNoteEvent(const NoteEvent& event) {
                 break;
             }
         }
-        
 
     } else {
 
