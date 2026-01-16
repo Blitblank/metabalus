@@ -78,6 +78,20 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
     bool triggered = false;
     bool once = false;
 
+    // some things need to be done only once per buffer instead of once per sample
+    
+    // find the lowest active voice for scope triggering
+    int lowestVoice = 0;
+    float lowestFreq = 100000.0f;
+    for(int i = 0; i < voices_.size(); i++) {
+        if(!voices_[i].isActive()) continue;
+        float currentFreq = voices_[i].frequency();
+        if(currentFreq < lowestFreq) {
+            lowestVoice = i;
+            lowestFreq = currentFreq;
+        }
+    }
+
     for (uint32_t i = 0; i < nFrames; i++) {
 
         // updates internal buffered parameters for smoothing
@@ -88,18 +102,6 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         for(int i = 0; i < PARAM_COUNT; i++) {
             params[i] = params_[i].current;
         } // maybe take this outside the loop if performance is an issue
-
-        // find the lowest voice for scope triggering
-        int lowestVoice = 0;
-        float lowestFreq = 100000.0f;
-        for(int i = 0; i < voices_.size(); i++) {
-            if(!voices_[i].isActive()) continue;
-            float currentFreq = voices_[i].frequency();
-            if(currentFreq < lowestFreq) {
-                lowestVoice = i;
-                lowestFreq = currentFreq;
-            }
-        }
 
         // foreach voice, process...
         float mix = 0.0f;
