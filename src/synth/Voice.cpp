@@ -125,6 +125,7 @@ float Voice::process(float* params, bool& scopeTrigger) {
     // state tracking, may keep this here even if oscillators store their own phase because it might help with scope triggering
     phase_ += phaseInc;
     if (phase_ > 2.0f * M_PI) {
+        scopeTrigger = true;
         phase_ -= 2.0f * M_PI;
     }
 

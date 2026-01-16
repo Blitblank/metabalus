@@ -40,6 +40,7 @@ public:
     float process(float* params, bool& scopeTrigger);
 
     uint8_t note() { return note_; }
+    float frequency() { return frequency_; }
 
 private:
 

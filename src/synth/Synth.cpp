@@ -76,6 +76,7 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
 
     float sampleOut = 0.0f;
     bool triggered = false;
+    bool once = false;
 
     for (uint32_t i = 0; i < nFrames; i++) {
 
@@ -88,10 +89,24 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             params[i] = params_[i].current;
         } // maybe take this outside the loop if performance is an issue
 
+        // find the lowest voice for scope triggering
+        int lowestVoice = 0;
+        float lowestFreq = 100000.0f;
+        for(int i = 0; i < voices_.size(); i++) {
+            if(!voices_[i].isActive()) continue;
+            float currentFreq = voices_[i].frequency();
+            if(currentFreq < lowestFreq) {
+                lowestVoice = i;
+                lowestFreq = currentFreq;
+            }
+        }
+
         // foreach voice, process...
         float mix = 0.0f;
-        for(Voice& v : voices_) {
-            mix += v.process(params, triggered);
+        for(int i = 0; i < voices_.size(); i++) {
+            bool temp = false;
+            mix += voices_[i].process(params, temp);
+            if(i == lowestVoice) triggered = temp;
         }
         mix /= 4.0f; // for number of voices to prevent clipping
         mix = tanh(mix); // really prevents clipping
@@ -109,15 +124,10 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
 
         // triggering business
-        // TODO: get trigger info from voice (lowest frequency voice)
-        float phase_ = 0.0f;
-        if (phase_ > 2.0f * M_PI) {
-            phase_ -= 2.0f * M_PI;
-            if(!triggered) {
-                scope_->setTrigger(i); // this is where we consider the start of a waveform
-                triggered = true;
-                // TODO: investigate triggering accross buffers when a single wave period transcends a single audio buffer
-            }
+        if(triggered && (!once)) {
+            scope_->setTrigger(i); // this is where we consider the start of a waveform
+            once = true;
+            // TODO: investigate triggering accross buffers when a single wave period transcends a single audio buffer
         }
     }
 
