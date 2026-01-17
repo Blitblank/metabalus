@@ -21,12 +21,9 @@ void Voice::setSampleRate(float sampleRate) {
     filter2_.setSampleRate(sampleRate);
 
     // then foreach oscillator
-    //osc1_.setSampleRate(sampleRate);
-}
-
-// calculates oscillator frequency based on midi note
-inline float Voice::noteToFrequency(uint8_t note) {
-    return SYNTH_PITCH_STANDARD * pow(2.0f, static_cast<float>(note - SYNTH_MIDI_HOME) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
+    for(Oscillator& o : oscillators_) {
+        o.setSampleRate(sampleRate);
+    }
 }
 
 inline float Voice::getParam(ParamId id) {
@@ -36,13 +33,13 @@ inline float Voice::getParam(ParamId id) {
 void Voice::noteOn(int midiNote, float velocity) {
     note_ = midiNote;
     velocity_ = velocity;
-    frequency_ = noteToFrequency(midiNote);
     active_ = true;
 
     // TODO: for each envelope ...
     gainEnvelope_.noteOn();
     cutoffEnvelope_.noteOn();
     resonanceEnvelope_.noteOn();
+
 }
 
 void Voice::noteOff() {
@@ -77,57 +74,26 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float cutoffEnv = cutoffEnvelope_.process();
     float resonanceEnv = resonanceEnvelope_.process();
 
-    // TODO: make pitchOffset variable for each oscillator (maybe three values like octave, semitone offset, and pitch offset in cents)
-    float pitchOffset = 1.0f;
-    float phaseInc = pitchOffset * 2.0f * M_PI * frequency_ / static_cast<float>(sampleRate_);
-
     // calculate the change that the velocity will make
     // TODO: make velocity parameters configurable, probably also for filterCutoff and filterResonance
     float velocityGain = std::lerp(velocityCenter, velocity_, velocitySensitivity);
 
     float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth) * velocityGain;
-    float sampleOut = 0.0f;
 
     // sample generation
-    // TODO: move this into the oscillator class
-    // TODO: wavetables
-    // TODO: wavetables should be scaled by their RMS for equal loudness (prelim standard = 0.707)
-    float sineSample = std::sin(phase_);
-    float squareSample = (phase_ >= M_PI) ? 0.707f : -0.707f;
-    float sawSample = ((phase_ / M_PI) - 1.0f) / 0.577f * 0.707f;
-    // switch statement will be replaced with an array index for our array of wavetables
-    switch (static_cast<int32_t>(std::round(getParam(ParamId::Osc1WaveSelector1)))) {
-    case 0:
-        sampleOut = sineSample * gain;
-        break;
-    case 1:
-        sampleOut = squareSample * gain;
-        break;
-    case 2:
-        sampleOut = sawSample * gain;
-        break;
-    case 3:
-        // TODO: no triable wave yet :(
-        sampleOut = sineSample * gain;
-        break;
-    default: // unreachable
-        break;
-    }
+    uint8_t osc1Wave = (static_cast<uint8_t>(std::round(getParam(ParamId::Osc1WaveSelector1))));
+    oscillators_[0].setWavetable(osc1Wave);
+
+    float sampleOut = oscillators_[0].process(note_, scopeTrigger) * gain;
 
     // filter sample
-    float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * frequency_ * velocityGain;
+    float baseFreq = oscillators_[0].frequency();
+    float cutoffFreq = cutoffEnv * pow(2.0f, getParam(ParamId::FilterCutoffDepth)) * baseFreq * velocityGain;
     float resonance = resonanceEnv * getParam(ParamId::FilterResonanceDepth) * velocityGain;
     filter1_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     sampleOut = filter1_.biquadProcess(sampleOut);
     sampleOut = filter2_.biquadProcess(sampleOut);
-
-    // state tracking, may keep this here even if oscillators store their own phase because it might help with scope triggering
-    phase_ += phaseInc;
-    if (phase_ > 2.0f * M_PI) {
-        scopeTrigger = true;
-        phase_ -= 2.0f * M_PI;
-    }
 
     return sampleOut;
 }

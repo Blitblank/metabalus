@@ -10,10 +10,8 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-// TODO: you get it, also in a yml config
-#define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
-#define SYNTH_MIDI_HOME 69 // midi note index of home pitch
-#define SYNTH_NOTES_PER_OCTAVE 12
+// TODO: make configurable
+#define SYNTH_OSCILLATOR_COUNT 3
 
 struct SmoothedParam {
     float current = 0.0f;
@@ -40,7 +38,7 @@ public:
     float process(float* params, bool& scopeTrigger);
 
     uint8_t note() { return note_; }
-    float frequency() { return frequency_; }
+    float frequency() { return oscillators_[0].frequency(); }
 
 private:
 
@@ -52,12 +50,9 @@ private:
     uint8_t note_ = 0;
     float velocity_ = 1.0f;
     bool active_ = false;
-
-    // here's where the actual sound generation happens
-    // TODO: put this in an oscillator class
-    float frequency_ = 220.0f;
     float phase_ = 0.0f;
-    //Oscillator osc_; // example
+
+    std::array<Oscillator, 3> oscillators_;
 
     // envelopes !!
     // TODO: foreach envelope in vector<Envelope> envelopes_
