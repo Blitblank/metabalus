@@ -7,6 +7,7 @@
 #include "ScopeBuffer.h"
 #include "Filter.h"
 #include "Voice.h"
+#include "WavetableController.h"
 
 #include <vector>
 #include <atomic>
@@ -54,4 +55,7 @@ private:
 
     std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
 
+    // waveforms
+    WavetableController wavetable_;
+    
 };

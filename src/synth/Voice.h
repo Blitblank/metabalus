@@ -25,7 +25,7 @@ class Voice {
 public:
 
     Voice() = default;
-    Voice(SmoothedParam* params);
+    Voice(SmoothedParam* params, WavetableController* wavetable);
     ~Voice() = default;
 
     void setSampleRate(float sampleRate);
@@ -66,6 +66,9 @@ private:
 
     // paramstore pointer
     SmoothedParam* params_;
+
+    // wavetables
+    WavetableController* wavetable_;
 
     // TODO: add a parameter in the paramstore for this
     float velocitySensitivity = 0.7f;

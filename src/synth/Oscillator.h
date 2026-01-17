@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "WavetableController.h"
+
 #include <cstdint>
 #include <cmath>
 #include <array>
@@ -13,12 +15,12 @@
 #define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
 #define SYNTH_NOTES_PER_OCTAVE 12
-#define SYNTH_WAVETABLE_SIZE 2048
 
 class Oscillator {
 public:
 
     Oscillator() = default;
+    Oscillator(WavetableController* wavetable);
     ~Oscillator() = default;
 
     void setWavetable(uint8_t waveTableId);
@@ -39,12 +41,7 @@ private:
     uint8_t activeWavetable_;
     float frequency_ = 220.0f;
 
-    // TODO: implement
-    // TODO: wavetable class that can load from files
-    // TODO: wavetables should be shared among the entire synth
-    std::array<float, SYNTH_WAVETABLE_SIZE> wavetable1_;
-    std::array<float, SYNTH_WAVETABLE_SIZE> wavetable2_;
-    std::array<float, SYNTH_WAVETABLE_SIZE> wavetable3_;
-    std::array<float, SYNTH_WAVETABLE_SIZE> wavetable4_;
+    // wavetables
+    WavetableController* wavetable_;
 
 };

@@ -3,8 +3,9 @@
 #include <cmath>
 #include <iostream>
 
-Voice::Voice(SmoothedParam* params) : params_(params) {
+Voice::Voice(SmoothedParam* params, WavetableController* wavetable) : params_(params), wavetable_(wavetable) {
 
+    oscillators_.fill(Oscillator(wavetable_));
 }
 
 // cascade sample rate to all descendant objects
@@ -82,9 +83,17 @@ float Voice::process(float* params, bool& scopeTrigger) {
 
     // sample generation
     uint8_t osc1Wave = (static_cast<uint8_t>(std::round(getParam(ParamId::Osc1WaveSelector1))));
-    oscillators_[0].setWavetable(osc1Wave);
+    for(Oscillator& o : oscillators_) {
+        o.setWavetable(osc1Wave);
+    }
 
-    float sampleOut = oscillators_[0].process(note_, scopeTrigger) * gain;
+    // TODO: oscillator pitch offset
+    bool temp = false;
+    float osc1 = oscillators_[0].process(note_, scopeTrigger);
+    float osc2 = oscillators_[1].process(static_cast<uint8_t>(note_+12), temp);
+    float osc3 = oscillators_[2].process(static_cast<uint8_t>(note_+19), temp);
+    
+    float sampleOut = (osc1 + osc2*0.5f + osc3*0.25f) * gain;
 
     // filter sample
     float baseFreq = oscillators_[0].frequency();

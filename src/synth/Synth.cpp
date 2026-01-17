@@ -9,7 +9,7 @@
 #endif
 
 Synth::Synth(const ParameterStore& params) : paramStore_(params) {
-    voices_.fill(Voice(params_.data()));
+    voices_.fill(Voice(params_.data(), &wavetable_));
 }
 
 void Synth::updateParams() {
