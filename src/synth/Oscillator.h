@@ -11,6 +11,8 @@
     #define M_PI 3.14159265358979323846
 #endif
 
+#define SYNTH_TWELFTH_ROOT_TWO 1.05946309435929526463
+
 // TODO: you get it, also in a yml config
 #define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
 #define SYNTH_MIDI_HOME 69 // midi note index of home pitch
@@ -27,14 +29,14 @@ public:
     void setSampleRate(float sampleRate);
     float frequency();
 
-    float process(uint8_t note, bool& scopeTrigger);
+    float process(uint8_t note, float detune, bool& scopeTrigger); // detune (-1, 1)
     float process(float frequency, bool& scopeTrigger);
 
 private:
 
     float sampleRate_ = 44100.0f;
 
-    inline float noteToFrequency(uint8_t note);
+    inline float noteToFrequency(uint8_t note, float detune);
 
     // internal state tracking
     float phase_ = 0.0f;

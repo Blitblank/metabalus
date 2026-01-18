@@ -17,8 +17,8 @@ float Oscillator::frequency() {
     return frequency_;
 }
 
-float Oscillator::process(uint8_t note, bool& scopeTrigger) {
-    frequency_ = noteToFrequency(note);
+float Oscillator::process(uint8_t note, float detune, bool& scopeTrigger) {
+    frequency_ = noteToFrequency(note, detune);
     return process(frequency_, scopeTrigger);
 }
 
@@ -38,7 +38,6 @@ float Oscillator::process(float frequency, bool& scopeTrigger) {
     return sampleOut;
 }
 
-
-inline float Oscillator::noteToFrequency(uint8_t note) {
-    return SYNTH_PITCH_STANDARD * pow(2.0f, static_cast<float>(note - SYNTH_MIDI_HOME) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
+inline float Oscillator::noteToFrequency(uint8_t note, float detune) {
+    return SYNTH_PITCH_STANDARD * pow(2.0f, (static_cast<float>(note - SYNTH_MIDI_HOME) + detune) / static_cast<float>(SYNTH_NOTES_PER_OCTAVE));
 }

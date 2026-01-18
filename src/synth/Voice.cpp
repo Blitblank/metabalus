@@ -87,12 +87,17 @@ float Voice::process(float* params, bool& scopeTrigger) {
         o.setWavetable(osc1Wave);
     }
 
-    // TODO: oscillator pitch offset
+    // calculate the note/pitch of the oscillators
     bool temp = false;
-    float osc1 = oscillators_[0].process(note_, scopeTrigger);
-    float osc2 = oscillators_[1].process(static_cast<uint8_t>(note_+12), temp);
-    float osc3 = oscillators_[2].process(static_cast<uint8_t>(note_+19), temp);
+    uint8_t osc1NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc1OctaveOffset) + getParam(ParamId::Osc1SemitoneOffset));
+    uint8_t osc2NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc2OctaveOffset) + getParam(ParamId::Osc2SemitoneOffset));
+    uint8_t osc3NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc3OctaveOffset) + getParam(ParamId::Osc3SemitoneOffset));
+    // sample oscillators
+    float osc1 = oscillators_[0].process(osc1NoteOffset + note_, getParam(ParamId::Osc1PitchOffset)/100.0f, scopeTrigger);
+    float osc2 = oscillators_[1].process(osc2NoteOffset + note_, getParam(ParamId::Osc2PitchOffset)/100.0f, temp);
+    float osc3 = oscillators_[2].process(osc3NoteOffset + note_, getParam(ParamId::Osc3PitchOffset)/100.0f, temp);
     
+    // mix oscillators
     float sampleOut = (osc1 + osc2*0.5f + osc3*0.25f) * gain;
 
     // filter sample

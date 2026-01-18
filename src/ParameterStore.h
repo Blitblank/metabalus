@@ -9,6 +9,15 @@ enum class ParamId : uint16_t {
     Osc1Frequency,
     Osc1WaveSelector1,
     Osc1WaveSelector2,
+    Osc1OctaveOffset,
+    Osc1SemitoneOffset,
+    Osc1PitchOffset,
+    Osc2OctaveOffset,
+    Osc2SemitoneOffset,
+    Osc2PitchOffset,
+    Osc3OctaveOffset,
+    Osc3SemitoneOffset,
+    Osc3PitchOffset,
     Osc1VolumeDepth,
     Osc1VolumeEnvA,
     Osc1VolumeEnvD,
@@ -63,24 +72,33 @@ struct ParamDefault {
 // TODO: make these configurable via yml file too
 // later TODO: and then when I have full on profile saving there will be a default profile to load from
 constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
-    { 100.0f, 20.0f,  600.0f},   // Osc1Freq
-    {   2.0f,  0.0f,    0.0f},   // Osc1WaveSelector1
-    {   1.0f,  0.0f,    0.0f},   // Osc1WaveSelector2
-    {   1.0f,  0.0f,    2.0f},   // Osc1VolumeDepth
-    {  0.05f,  0.0f,    2.0f},   // Osc1VolumeEnvA
-    {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvD
-    {   0.7f,  0.0f,    1.0f},   // Osc1VolumeEnvS
-    {   0.2f,  0.0f,    2.0f},   // Osc1VolumeEnvR
-    {   4.0f,  0.0f,    8.0f},   // FilterCutoffDepth
-    {  0.05f,  0.0f,    2.0f},   // FilterCutoffEnvA
-    {  0.20f,  0.0f,    2.0f},   // FilterCutoffEnvD
-    {   0.2f,  0.0f,    1.0f},   // FilterCutoffEnvS
-    {  0.25f,  0.0f,    2.0f},   // FilterCutoffEnvR
-    {   3.0f,  0.0f,    8.0f},   // FilterResonanceDepth
-    {  0.05f,  0.0f,    2.0f},   // FilterResonanceEnvA
-    {  0.20f,  0.0f,    2.0f},   // FilterResonanceEnvD
-    {   0.5f,  0.0f,    1.0f},   // FilterResonanceEnvS
-    {  0.30f,  0.0f,    2.0f},   // FilterResonanceEnvR
+    { 100.0f,   20.0f,  600.0f},   // Osc1Freq
+    {   2.0f,    0.0f,    0.0f},   // OscWaveSelector1
+    {   1.0f,    0.0f,    0.0f},   // OscWaveSelector2
+    {   0.0f,   -5.0f,    5.0f},   // Osc1OctaveOffset
+    {   0.0f,  -12.0f,   12.0f},   // Osc1SemitoneOffset
+    {   0.0f, -100.0f,  100.0f},   // Osc1PitchOffset
+    {   1.0f,   -5.0f,    5.0f},   // Osc2OctaveOffset
+    {   0.0f,  -12.0f,   12.0f},   // Osc2SemitoneOffset
+    {   0.0f, -100.0f,  100.0f},   // Osc2PitchOffset
+    {   1.0f,   -5.0f,    5.0f},   // Osc3OctaveOffset
+    {   7.0f,  -12.0f,   12.0f},   // Osc3SemitoneOffset
+    {  1.96f, -100.0f,  100.0f},   // Osc3PitchOffset
+    {   1.0f,    0.0f,    2.0f},   // Osc1VolumeDepth
+    {  0.05f,    0.0f,    2.0f},   // Osc1VolumeEnvA
+    {   0.2f,    0.0f,    2.0f},   // Osc1VolumeEnvD
+    {   0.7f,    0.0f,    1.0f},   // Osc1VolumeEnvS
+    {   0.2f,    0.0f,    2.0f},   // Osc1VolumeEnvR
+    {   4.0f,    0.0f,    8.0f},   // FilterCutoffDepth
+    {  0.05f,    0.0f,    2.0f},   // FilterCutoffEnvA
+    {  0.20f,    0.0f,    2.0f},   // FilterCutoffEnvD
+    {   0.2f,    0.0f,    1.0f},   // FilterCutoffEnvS
+    {  0.25f,    0.0f,    2.0f},   // FilterCutoffEnvR
+    {   3.0f,    0.0f,    8.0f},   // FilterResonanceDepth
+    {  0.05f,    0.0f,    2.0f},   // FilterResonanceEnvA
+    {  0.20f,    0.0f,    2.0f},   // FilterResonanceEnvD
+    {   0.5f,    0.0f,    1.0f},   // FilterResonanceEnvS
+    {  0.30f,    0.0f,    2.0f},   // FilterResonanceEnvR
 }};
 
 constexpr size_t PARAM_COUNT = static_cast<size_t>(ParamId::Count);
