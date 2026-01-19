@@ -2,6 +2,7 @@
 #include "Scope.h"
 #include "ui_Scope.h"
 
+// TODO: fix include directories because what is this
 #include "../../../synth/ScopeBuffer.h"
 
 #include <QPainter>

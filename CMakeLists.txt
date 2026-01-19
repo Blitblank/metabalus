@@ -9,28 +9,23 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 if (WIN32) # windows 11 x86_64
 
-    # Header-only target (real target, no ::)
+    # dont judge me i had a lot of issues with this
     add_library(rtaudio_headers INTERFACE)
     target_include_directories(rtaudio_headers INTERFACE
         "C:/rtaudio/include"
         "C:/rtaudio/include/rtAudio"
     )
-
-    # Imported binary (real target, no ::)
     add_library(rtaudio_binary SHARED IMPORTED)
     set_target_properties(rtaudio_binary PROPERTIES
         IMPORTED_LOCATION "C:/rtaudio/bin/rtaudio.dll"
         IMPORTED_IMPLIB   "C:/rtaudio/lib/rtaudio.lib"
     )
-
-    # Unified interface target
     add_library(rtaudio INTERFACE)
     target_link_libraries(rtaudio INTERFACE
         rtaudio_headers
         rtaudio_binary
     )
 
-    # Public alias (this is where :: belongs)
     add_library(RtAudio::RtAudio ALIAS rtaudio)
 
     add_library(rtmidi_headers INTERFACE)
@@ -59,6 +54,7 @@ endif()
 
 qt_standard_project_setup()
 
+# TODO: prob fix this to make it less ugly
 qt_add_executable(metabolus
     src/main.cpp
     src/ui/MainWindow.cpp

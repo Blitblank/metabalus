@@ -1,9 +1,7 @@
 @echo off
 setlocal
 
-REM ================================
-REM Configuration
-REM ================================
+REM config
 
 set BUILD_DIR=build
 set CONFIG=Release
@@ -12,21 +10,17 @@ set QT_ROOT=C:\Qt\6.10.1\msvc2022_64
 set RTAUDIO_ROOT=C:\rtaudio
 set RTMIDI_ROOT=C:\rtmidi
 
-REM ================================
-REM Environment setup
-REM ================================
+REM setup
 
 call "%ProgramFiles%\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
 
 set PATH=%QT_ROOT%\bin;%PATH%
 
-REM ================================
-REM Configure
-REM ================================
-
 if not exist %BUILD_DIR% (
     mkdir %BUILD_DIR%
 )
+
+REM configure
 
 cmake -S . -B %BUILD_DIR% ^
     -G Ninja ^
@@ -36,17 +30,12 @@ cmake -S . -B %BUILD_DIR% ^
 
 if errorlevel 1 goto error
 
-REM ================================
-REM Build
-REM ================================
-
+REM build
 cmake --build %BUILD_DIR%
 
 if errorlevel 1 goto error
 
-REM ================================
-REM Deploy Qt + RtAudio
-REM ================================
+REM link dlls
 
 cd %BUILD_DIR%
 
@@ -56,12 +45,12 @@ copy "%RTAUDIO_ROOT%\bin\rtaudio.dll" .
 copy "%RTMIDI_ROOT%\bin\rtmidi.dll" .
 
 echo.
-echo Build successful.
+echo Build successful
 goto end
 
 :error
 echo.
-echo Build FAILED.
+echo Build failed
 exit /b 1
 
 :end

@@ -4,8 +4,6 @@
 
 #include <iostream>
 
-// TODO: package the rogue sliders into the envelopeGenerators with a "base" column (its what the "peak" slider in the esp synth was supposed to be)
-
 EnvelopeGenerator::EnvelopeGenerator(QWidget* parent) : QWidget(parent), ui_(new Ui::EnvelopeGenerator) {
 
     ui_->setupUi(this);

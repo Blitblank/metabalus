@@ -9,7 +9,7 @@ WavetableController::WavetableController() {
 
     init();
 
-    std::cout << "wavetable init" << std::endl;
+    //std::cout << "wavetable init" << std::endl;
 
 }
 

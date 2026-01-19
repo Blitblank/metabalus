@@ -11,6 +11,7 @@ void ScopeBuffer::push(float sample) {
     buffer_[w % buffer_.size()] = sample;
 }
 
+// TODO: needs a mutex to prevent flickering
 // outputs value from the scope buffer, called by the scope widget
 void ScopeBuffer::read(std::vector<float>& out) const {
     size_t w = writeIndex_.load(std::memory_order_relaxed);
