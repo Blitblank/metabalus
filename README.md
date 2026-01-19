@@ -39,6 +39,8 @@ This synthesizer isn't very good, but it's neat :3
 
 ## setup
 TODO: instructions on build setup
+TODO: add dependencies into lib
+TODO: autobuild libs in build scripts
 Package Dependencies: Qt 6, RtAudio, RtMidi
 
 $ ./scripts/build.sh
