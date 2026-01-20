@@ -1,9 +1,10 @@
-[submodule "rtmidi"]
-	path = lib/rtmidi
-	url = https://github.com/thestk/rtmidi.git
-[submodule "rtaudio"]
+[submodule "lib/rtaudio"]
 	path = lib/rtaudio
 	url = https://github.com/thestk/rtaudio.git
-[submodule "qtbase"]
-	path = lib/qtbase
-	url = https://github.com/qt/qtbase.git
+[submodule "lib/rtmidi"]
+	path = lib/rtmidi
+	url = https://github.com/thestk/rtmidi.git
+[submodule "lib/qt5"]
+	path = lib/qt5
+	url = https://github.com/qt/qt5.git
+	branch = 6.11

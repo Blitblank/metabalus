@@ -46,11 +46,13 @@ void AudioEngine::stop() {
     if(audio_.isStreamOpen()) audio_.closeStream();
 }
 
-int32_t AudioEngine::audioCallback( void* outputBuffer, void*, uint32_t nFrames, double, RtAudioStreamStatus status, void* userData) {
+// called by RtAudio continuously, sends outputBuffer to audio drivers
+int32_t AudioEngine::audioCallback(void* outputBuffer, void*, uint32_t nFrames, double, RtAudioStreamStatus status, void* userData) {
     
     // error if process is too slow for the callback. If this is consistent, then need to optimize synth.process() or whatever cascades from it
     if (status) std::cerr << "Stream underflow" << std::endl;
 
+    // populate audio buffer
     return static_cast<AudioEngine*>(userData)->process(static_cast<float*>(outputBuffer), nFrames);
 }
 
