@@ -1,13 +1,15 @@
 
+$PROJECT_ROOT = $PWD
+
 # config
 
-$BUILD_DIR = "build"
+$BUILD_DIR = "$PWD/build"
 $CONFIG = "Release"
 
 # change these to the build libs
-$QT_ROOT = "C:\Qt\6.10.1\msvc2022_64"
-$RTAUDIO_ROOT = "C:\rtaudio"
-$RTMIDI_ROOT = "C:\rtmidi"
+$QT_ROOT = "$BUILD_DIR\lib\qt\install"
+$RTAUDIO_ROOT = "$BUILD_DIR\lib\rtaudio"
+$RTMIDI_ROOT = "$BUILD_DIR\lib\rtmidi"
 
 # setup
 
@@ -21,7 +23,7 @@ if (-not (Test-Path -Path $BUILD_DIR)) {
 
 # detect dependencies
 
-$libraries = @("qt", "rtaudio", "rtmidi", "yaml-cpp")
+$libraries = @("qt", "rtaudio", "rtmidi")
 $dependencies_found = 0
 foreach ($lib in $libraries) {
     if (Test-Path -Path ".\build\lib\$lib") {
@@ -34,44 +36,27 @@ foreach ($lib in $libraries) {
 
 if (-not ($dependencies_found -eq $libraries.Count)) {
     & "scripts\install_dependencies.ps1"
+} else {
+    Write-Host "All dependencies detected, skipping depency install step..."
 }
 
 # configure
-
-<#
-cmake -S . -B $BUILD_DIR ^
-    -G Ninja ^
-    -DCMAKE_BUILD_TYPE=$CONFIG ^
-    -DRTAUDIO_ROOT=$RTAUDIO_ROOT ^
-    -DRTMIDI_ROOT=$RTMIDI_ROOT 
-
-
-if errorlevel 1 goto error
+Write-Host "Configuring metabolus..."
+cmake -S . -B $BUILD_DIR -G Ninja -DCMAKE_BUILD_TYPE=$CONFIG -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" -DRTAUDIO_ROOT=$RTAUDIO_ROOT -DRTMIDI_ROOT=$RTMIDI_ROOT 
 
 # build
+Write-Host "Building metabolus..."
 cmake --build $BUILD_DIR
 
-if errorlevel 1 goto error
-
 # link dlls
+Write-Host "Deploying metabolus..."
+cd $BUILD_DIR
 
-cd %BUILD_DIR%
+& "$QT_ROOT\bin\windeployqt.exe" metabolus.exe
 
-windeployqt metabolus.exe
+Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .
+Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .
 
-copy "%RTAUDIO_ROOT%\bin\rtaudio.dll" .
-copy "%RTMIDI_ROOT%\bin\rtmidi.dll" .
 
-echo.
-echo Build successful
-goto end
-
-:error
-echo.
-echo Build failed
-exit /b 1
-
-:end
-endlocal
-pause
-#>
+# TODO: allow input of an external qt install because this one is huge 
+# TODO: remove unnecessary qt modules bc why is this install like 80 gb

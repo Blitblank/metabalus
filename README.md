@@ -37,11 +37,45 @@ This synthesizer isn't very good, but it's neat :3
 - [ ] Noise 
 - [ ] LFO modulation
 
-## setup
-TODO: instructions on build setup
-TODO: add dependencies into lib
-TODO: autobuild libs in build scripts
-Package Dependencies: Qt 6, RtAudio, RtMidi
+## Build Instructions
 
-$ ./scripts/build.sh
-PS ./scripts/build.bat
+Prerequisites:
+CMake: https://cmake.org/download/
+Ninja: https://github.com/ninja-build/ninja/releases
+
+Windows: MSVC
+Linux: GCC
+
+Clone repository
+```PowerShell
+git clone https://github.com/Blitblank/metabalus.git --recursive
+```
+or if you forgot to --recursive:
+```PowerShell
+git clone https://github.com/Blitblank/metabalus.git
+git submodule update --init --recursive
+```
+Build. The script will build and install dependencies automatically
+
+On Windows (MSVC):
+```PowerShell
+.\scripts\build.ps1
+```
+
+On Linux (GCC):
+```Bash
+./scripts/build.sh
+```
+
+Configure the CMake/build script if you have issues
+
+To clean:
+```
+.\scripts\clean.ps1
+./scripts/clean.sh
+```
+Note: dependencies are built into build/lib, so don't delete that unless you want to rebuild qt which takes forever :)
+Use the install_dependencies script to manually install dependencies.
+
+Build troubleshooting:
+On windows, `bcdedit /set IncreaseUserVa 3072` solved cc1plus.exe: out of memory errors while building qt for me

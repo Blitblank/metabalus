@@ -111,18 +111,6 @@ if (WIN32)
             RtMidi::RtMidi
     )
 
-    add_custom_command(TARGET metabolus POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "C:/rtaudio/bin/rtaudio.dll"
-        $<TARGET_FILE_DIR:metabolus>
-    )
-
-    add_custom_command(TARGET metabolus POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "C:/rtmidi/bin/rtmidi.dll"
-        $<TARGET_FILE_DIR:metabolus>
-    )
-
 else() 
     target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS} ${RTMIDI_INCLUDE_DIRS})
     target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES} ${RTMIDI_LIBRARIES})

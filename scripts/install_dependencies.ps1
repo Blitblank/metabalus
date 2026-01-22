@@ -2,12 +2,20 @@
 echo "Installing dependencies ... "
 
 $project_root = $PWD
+
+if (-not (Test-Path -Path "$PWD\build\lib")) {
+    mkdir "$PWD\build\lib"
+}
+
 $build_lib_dir = "$PWD\build\lib"
 
-
 # qt
-mkdir "$build_lib_dir\qt"
-cd $project_root\lib\qtbase
+mkdir "$build_lib_dir\qt" -Force
+#cd $project_root\lib\qt5
+cd $build_lib_dir\qt
+& "$project_root\lib\qt5\configure.bat" -prefix .\install -submodules qttools,qtbase -widgets
+cmake --build . --parallel
+cmake --install .
 
 
 # rtaudio
