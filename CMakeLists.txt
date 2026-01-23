@@ -75,7 +75,6 @@ qt_add_executable(metabolus
 )
 
 set_target_properties(metabolus PROPERTIES AUTOUIC ON)
-target_compile_options(metabolus PUBLIC "/Zc:__cplusplus")
 
 target_include_directories(metabolus PRIVATE
     ${CMAKE_SOURCE_DIR}/src/ui
@@ -83,6 +82,9 @@ target_include_directories(metabolus PRIVATE
 )
 
 if (WIN32)
+
+    target_compile_options(metabolus PUBLIC "/Zc:__cplusplus")
+
     target_link_libraries(metabolus
         PRIVATE
             RtAudio::rtaudio
