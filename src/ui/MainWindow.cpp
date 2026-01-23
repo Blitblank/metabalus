@@ -52,7 +52,10 @@ MainWindow::MainWindow(QWidget *parent) :
     audio_->start();
 
     // midi
+#ifndef _WIN32
     midi_.openPort(1); // TODO: error check
+#endif
+
 }
 
 MainWindow::~MainWindow() {

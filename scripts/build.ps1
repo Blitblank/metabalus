@@ -6,8 +6,8 @@ $PROJECT_ROOT = $PWD
 $BUILD_DIR = "$PWD/build"
 $CONFIG = "Release"
 
-# change these to the build libs
-$QT_ROOT = "$BUILD_DIR\lib\qt\install"
+# change these to your need
+$QT_ROOT = "C:\Qt\6.10.1\msvc2022_64"
 $RTAUDIO_ROOT = "$BUILD_DIR\lib\rtaudio"
 $RTMIDI_ROOT = "$BUILD_DIR\lib\rtmidi"
 
@@ -23,7 +23,7 @@ if (-not (Test-Path -Path $BUILD_DIR)) {
 
 # detect dependencies
 
-$libraries = @("qt", "rtaudio", "rtmidi")
+$libraries = @("rtaudio", "rtmidi")
 $dependencies_found = 0
 foreach ($lib in $libraries) {
     if (Test-Path -Path ".\build\lib\$lib") {
@@ -37,12 +37,12 @@ foreach ($lib in $libraries) {
 if (-not ($dependencies_found -eq $libraries.Count)) {
     & "scripts\install_dependencies.ps1"
 } else {
-    Write-Host "All dependencies detected, skipping depency install step..."
+    Write-Host "All dependencies detected, skipping dependency install step..."
 }
 
 # configure
 Write-Host "Configuring metabolus..."
-cmake -S . -B $BUILD_DIR -G Ninja -DCMAKE_BUILD_TYPE=$CONFIG -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" -DRTAUDIO_ROOT=$RTAUDIO_ROOT -DRTMIDI_ROOT=$RTMIDI_ROOT 
+cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" -DRtAudio_ROOT="$RTAUDIO_ROOT" -DRtMidi_ROOT="$RTMIDI_ROOT"
 
 # build
 Write-Host "Building metabolus..."
@@ -52,11 +52,13 @@ cmake --build $BUILD_DIR
 Write-Host "Deploying metabolus..."
 cd $BUILD_DIR
 
-& "$QT_ROOT\bin\windeployqt.exe" metabolus.exe
+& "$QT_ROOT\bin\windeployqt6.exe" .\Debug\metabolus.exe
 
-Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .
-Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .
+Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .\Debug
+Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .\Debug
 
 
 # TODO: allow input of an external qt install because this one is huge 
 # TODO: remove unnecessary qt modules bc why is this install like 80 gb
+
+cd $PROJECT_ROOT

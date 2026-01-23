@@ -40,10 +40,10 @@ This synthesizer isn't very good, but it's neat :3
 ## Build Instructions
 
 Prerequisites:
-CMake: https://cmake.org/download/
-Ninja: https://github.com/ninja-build/ninja/releases
+CMake: https://cmake.org/download/ \
+QtWidgets: https://www.qt.io/development/download-qt-installer-oss
 
-Windows: MSVC
+Windows: MSVC (The build scripts use Visual Studio 17 2022)
 Linux: GCC
 
 Clone repository
@@ -55,6 +55,7 @@ or if you forgot to --recursive:
 git clone https://github.com/Blitblank/metabalus.git
 git submodule update --init --recursive
 ```
+\
 Build. The script will build and install dependencies automatically
 
 On Windows (MSVC):

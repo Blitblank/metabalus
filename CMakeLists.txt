@@ -9,41 +9,19 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 if (WIN32) # windows 11 x86_64
 
-    # dont judge me i had a lot of issues with this
-    add_library(rtaudio_headers INTERFACE)
-    target_include_directories(rtaudio_headers INTERFACE
-        "C:/rtaudio/include"
-        "C:/rtaudio/include/rtAudio"
+    add_library(RtAudio::rtaudio SHARED IMPORTED)
+    set_target_properties(RtAudio::rtaudio PROPERTIES
+        IMPORTED_LOCATION "${RtAudio_ROOT}/bin/rtaudio.dll"
+        IMPORTED_IMPLIB "${RtAudio_ROOT}/lib/rtaudio.lib"
+        INTERFACE_INCLUDE_DIRECTORIES "${RtAudio_ROOT}/include/rtaudio"
     )
-    add_library(rtaudio_binary SHARED IMPORTED)
-    set_target_properties(rtaudio_binary PROPERTIES
-        IMPORTED_LOCATION "C:/rtaudio/bin/rtaudio.dll"
-        IMPORTED_IMPLIB   "C:/rtaudio/lib/rtaudio.lib"
+    
+    add_library(RtMidi::rtmidi SHARED IMPORTED)
+    set_target_properties(RtMidi::rtmidi PROPERTIES
+        IMPORTED_LOCATION "${RtMidi_ROOT}/bin/rtmidi.dll"
+        IMPORTED_IMPLIB "${RtMidi_ROOT}/lib/rtmidi.lib"
+        INTERFACE_INCLUDE_DIRECTORIES "${RtMidi_ROOT}/include/rtmidi"
     )
-    add_library(rtaudio INTERFACE)
-    target_link_libraries(rtaudio INTERFACE
-        rtaudio_headers
-        rtaudio_binary
-    )
-
-    add_library(RtAudio::RtAudio ALIAS rtaudio)
-
-    add_library(rtmidi_headers INTERFACE)
-    target_include_directories(rtmidi_headers INTERFACE
-        "C:/rtmidi/include"
-        "C:/rtmidi/include/rtMidi"
-    )
-    add_library(rtmidi_binary SHARED IMPORTED)
-    set_target_properties(rtmidi_binary PROPERTIES
-        IMPORTED_LOCATION "C:/rtmidi/bin/rtmidi.dll"
-        IMPORTED_IMPLIB   "C:/rtmidi/lib/rtmidi.lib"
-    )
-    add_library(rtmidi INTERFACE)
-    target_link_libraries(rtmidi INTERFACE
-        rtmidi_headers
-        rtmidi_binary
-    )
-    add_library(RtMidi::RtMidi ALIAS rtmidi)
 
     
 else() # debian 12 x86_64
@@ -97,6 +75,7 @@ qt_add_executable(metabolus
 )
 
 set_target_properties(metabolus PROPERTIES AUTOUIC ON)
+target_compile_options(metabolus PUBLIC "/Zc:__cplusplus")
 
 target_include_directories(metabolus PRIVATE
     ${CMAKE_SOURCE_DIR}/src/ui
@@ -106,9 +85,9 @@ target_include_directories(metabolus PRIVATE
 if (WIN32)
     target_link_libraries(metabolus
         PRIVATE
+            RtAudio::rtaudio
+            RtMidi::rtmidi
             Qt6::Widgets
-            RtAudio::RtAudio
-            RtMidi::RtMidi
     )
 
 else() 
