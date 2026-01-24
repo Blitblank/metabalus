@@ -17,7 +17,7 @@ This synthesizer isn't very good, but it's neat :3
       responds to note-on/note-off events
 - [x] Make midi/keyboard control cross-platform. Use case will mostly be
       Midi -> linux and Keyboard -> windows though
-- [ ] Create oscillator class where the actual tone generation occurs. Multiple
+- [x] Create oscillator class where the actual tone generation occurs. Multiple
       oscillators increase the sound complexity considerably
 - [x] Create a UI scope to visualize the synthesized composite waveform
 - [ ] Create wavetables for more complex tone generation. Needs to be selectable from ui
@@ -60,7 +60,7 @@ Build. The script will build and install dependencies automatically
 
 On Windows (MSVC):
 ```PowerShell
-.\scripts\build.ps1
+.\scripts\build.ps1 # builds in build/Debug/
 ```
 
 On Linux (GCC):

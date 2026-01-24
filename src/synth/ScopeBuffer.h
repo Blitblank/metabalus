@@ -21,6 +21,7 @@ public:
     void setWavelength(int32_t wavelength) { wavelength_ = wavelength; }
     int32_t trigger() { return trigger_; }
     int32_t wavelength() { return wavelength_; }
+    void spinlock(bool lock) { spinLock_ = lock; };
 
     // NOTE: there are limits to the wavelengths that the scope can show cleanly due to the size of the audio buffer
     // at a buffer size of 256 at 44100hz the min visible steady frequency is ~172hz
@@ -32,5 +33,7 @@ private:
 
     int32_t trigger_ = 0; // units in array indices
     int32_t wavelength_ = 400;
+
+    bool spinLock_ = false;
 
 };

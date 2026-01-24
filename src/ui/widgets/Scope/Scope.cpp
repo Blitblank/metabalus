@@ -24,7 +24,7 @@ void Scope::setScopeBuffer(ScopeBuffer* buffer) {
 }
 
 void Scope::paintEvent(QPaintEvent*) {
-    if (!buffer_) return;
+    if(!buffer_) return;
 
     int32_t wavelength = buffer_->wavelength();
     int32_t trigger = buffer_->trigger();

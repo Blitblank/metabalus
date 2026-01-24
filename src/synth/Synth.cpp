@@ -92,6 +92,9 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
     }
 
+    // lock the scope from the buffer
+    scope_->spinlock(true);
+
     for (uint32_t i = 0; i < nFrames; i++) {
 
         // updates internal buffered parameters for smoothing
@@ -132,5 +135,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             // TODO: investigate triggering accross buffers when a single wave period transcends a single audio buffer
         }
     }
+
+    // unlock the scope from the buffer
+    scope_->spinlock(false);
 
 }
