@@ -7,9 +7,11 @@ $BUILD_DIR = "$PWD/build"
 $CONFIG = "Release"
 
 # change these to your need
+# or TODO: make qt_root configurable
 $QT_ROOT = "C:\Qt\6.10.1\msvc2022_64"
 $RTAUDIO_ROOT = "$BUILD_DIR\lib\rtaudio"
 $RTMIDI_ROOT = "$BUILD_DIR\lib\rtmidi"
+$YAMLCPP_ROOT = "$BUILD_DIR\lib\yaml-cpp"
 
 # setup
 
@@ -23,7 +25,7 @@ if (-not (Test-Path -Path $BUILD_DIR)) {
 
 # detect dependencies
 
-$libraries = @("rtaudio", "rtmidi")
+$libraries = @("rtaudio", "rtmidi", "yaml-cpp")
 $dependencies_found = 0
 foreach ($lib in $libraries) {
     if (Test-Path -Path ".\build\lib\$lib") {
@@ -42,7 +44,13 @@ if (-not ($dependencies_found -eq $libraries.Count)) {
 
 # configure
 Write-Host "Configuring metabolus..."
-cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE=Release -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" -DRtAudio_ROOT="$RTAUDIO_ROOT" -DRtMidi_ROOT="$RTMIDI_ROOT"
+cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" `
+    -DCMAKE_BUILD_TYPE=Release `
+    -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" `
+    -DRtAudio_ROOT="$RTAUDIO_ROOT" `
+    -DRtMidi_ROOT="$RTMIDI_ROOT" `
+    -Dyaml-cpp_ROOT="$YAMLCPP_ROOT" `
+
 
 # build
 Write-Host "Building metabolus..."
@@ -56,6 +64,7 @@ cd $BUILD_DIR
 
 Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .\Debug
 Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .\Debug
+Copy-Item -Path "$YAMLCPP_ROOT\bin\yaml-cpp.dll" -Destination .\Debug
 
 
 # TODO: allow input of an external qt install because this one is huge 

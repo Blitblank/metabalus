@@ -23,16 +23,24 @@ if (WIN32) # windows 11 x86_64
         INTERFACE_INCLUDE_DIRECTORIES "${RtMidi_ROOT}/include/rtmidi"
     )
 
+    add_library(yaml-cpp SHARED IMPORTED)
+    set_target_properties(yaml-cpp PROPERTIES
+        IMPORTED_LOCATION "${yaml-cpp_ROOT}/bin/yaml-cpp.dll"
+        IMPORTED_IMPLIB "${yaml-cpp_ROOT}/lib/yaml-cpp.lib"
+        INTERFACE_INCLUDE_DIRECTORIES "${yaml-cpp_ROOT}/include"
+    )
     
 else() # debian 12 x86_64
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(RTAUDIO REQUIRED rtaudio)
     pkg_check_modules(RTMIDI REQUIRED rtmidi)
+    pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
 endif()
 
 qt_standard_project_setup()
 
 # TODO: prob fix this to make it less ugly
+# might nest CMakeList.txt files once I clean up the directory structure
 qt_add_executable(metabolus
     src/main.cpp
     src/ui/MainWindow.cpp
@@ -46,6 +54,8 @@ qt_add_executable(metabolus
     src/MidiController.h
     src/NoteQueue.cpp
     src/NoteQueue.h
+    src/ConfigInterface.cpp
+    src/ConfigInterface.h
     src/synth/AudioEngine.cpp
     src/synth/AudioEngine.h
     src/synth/Envelope.cpp
@@ -89,11 +99,12 @@ if (WIN32)
         PRIVATE
             RtAudio::rtaudio
             RtMidi::rtmidi
+            yaml-cpp
             Qt6::Widgets
     )
 
 else() 
-    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS} ${RTMIDI_INCLUDE_DIRS})
-    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES} ${RTMIDI_LIBRARIES})
+    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS} ${RTMIDI_INCLUDE_DIRS} ${YAMLCPP_INCLUDE_DIRS})
+    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES} ${RTMIDI_LIBRARIES} ${YAMLCPP_LIBARIES})
     target_compile_options(metabolus PRIVATE ${RTAUDIO_CFLAGS_OTHER})
 endif()

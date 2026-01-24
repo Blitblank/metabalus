@@ -16,7 +16,6 @@ cmake -S . -B build -G "Visual Studio 17 2022" -DRTDUIO_API_WASAPI=ON -DRTAUDIO_
 cmake --build build --config Release
 cmake --install build --prefix "$build_lib_dir\rtaudio"
 
-
 # rtmidi
 mkdir "$build_lib_dir\rtmidi" -Force
 cd $project_root\lib\rtmidi
@@ -25,9 +24,10 @@ cmake --build build --config Release
 cmake --install build --prefix "$build_lib_dir\rtmidi"
 
 # yaml-cpp
-<#
-cd $project_root\lib\qtbase
-
-#>
+mkdir "$build_lib_dir\yaml-cpp" -Force
+cd $project_root\lib\yaml-cpp
+cmake -S . -B build -G "Visual Studio 17 2022" -DYAML_BUILD_SHARED_LIBS=ON
+cmake --build build --config Release
+cmake --install build --prefix "$build_lib_dir\yaml-cpp"
 
 cd $project_root
