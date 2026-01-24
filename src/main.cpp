@@ -9,9 +9,7 @@
 int main(int argc, char *argv[]) {
 
     // std::cout << "Main()" << std::endl;
-
-    ConfigInterface config = ConfigInterface();
-
+    
     QApplication app(argc, argv);
 
     MainWindow window; // entry point goes to MainWindow::MainWindow()

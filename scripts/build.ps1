@@ -47,7 +47,6 @@ if (-not ($dependencies_found -eq $libraries.Count)) {
 # configure
 Write-Host "Configuring metabolus..."
 cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" `
-    -DCMAKE_BUILD_TYPE=Release `
     -DQt6_ROOT="$QT_ROOT\lib\cmake\Qt6" `
     -DRtAudio_ROOT="$RTAUDIO_ROOT" `
     -DRtMidi_ROOT="$RTMIDI_ROOT" `
@@ -56,7 +55,7 @@ cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" `
 
 # build
 Write-Host "Building metabolus..."
-cmake --build $BUILD_DIR
+cmake --build $BUILD_DIR --config $CONFIG
 
 # TODO: install
 
@@ -64,14 +63,14 @@ cmake --build $BUILD_DIR
 Write-Host "Deploying metabolus..."
 cd $BUILD_DIR
 
-& "$QT_ROOT\bin\windeployqt6.exe" .\Debug\metabolus.exe
+& "$QT_ROOT\bin\windeployqt6.exe" .\$CONFIG\metabolus.exe
 
 # copy dlls
-Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .\Debug
-Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .\Debug
-Copy-Item -Path "$YAMLCPP_ROOT\bin\yaml-cpp.dll" -Destination .\Debug
+Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .\$CONFIG
+Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .\$CONFIG
+Copy-Item -Path "$YAMLCPP_ROOT\bin\yaml-cpp.dll" -Destination .\$CONFIG
 
 # copy configs, but don't overwrite
-Copy-Item -Path "$CONFIG_ROOT" -Destination ".\Debug\" -Recurse -ErrorAction SilentlyContinue
+Copy-Item -Path "$CONFIG_ROOT" -Destination ".\$CONFIG\" -Recurse -ErrorAction SilentlyContinue
 
 cd $PROJECT_ROOT

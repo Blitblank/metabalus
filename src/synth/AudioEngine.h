@@ -7,6 +7,7 @@
 
 #include "Synth.h"
 #include "../KeyboardController.h"
+#include "../ConfigInterface.h"
 
 #if defined(_WIN32)
     #define AUDIO_API RtAudio::WINDOWS_WASAPI
@@ -17,7 +18,7 @@
 class AudioEngine {
 
 public:
-    AudioEngine();
+    AudioEngine(ConfigInterface* config);
     ~AudioEngine();
 
     // starts the audio stream. returns true on success and false on failure
@@ -43,6 +44,7 @@ private:
     NoteQueue noteQueue_; // stores note events for passing between threads
     Synth synth_; // generates audio
     ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization
+    ConfigInterface* config_; // access to config files
 
     RtAudio audio_{AUDIO_API}; // audio device
     // TODO: id like a yml config file or something for these

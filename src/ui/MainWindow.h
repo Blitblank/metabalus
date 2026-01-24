@@ -6,6 +6,7 @@
 
 #include "../synth/AudioEngine.h"
 #include "../MidiController.h"
+#include "../ConfigInterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,5 +33,6 @@ private:
     AudioEngine* audio_ = nullptr;
     KeyboardController keyboard_;
     MidiController midi_;
+    ConfigInterface config_;
 
 };

@@ -3,13 +3,10 @@
 
 #include <iostream>
 
-AudioEngine::AudioEngine() : synth_(params_) {
+AudioEngine::AudioEngine(ConfigInterface* config) : synth_(params_), config_(config) {
     if(audio_.getDeviceCount() < 1) {
         throw std::runtime_error("No audio devices found");
     }
-
-    // TODO: get audio configurations
-    synth_.setSampleRate(sampleRate_);
 
     synth_.setScopeBuffer(&scope_);
 
@@ -20,6 +17,13 @@ AudioEngine::~AudioEngine() {
 }
 
 bool AudioEngine::start() {
+
+    // get config values
+    sampleRate_ = config_->getValue(ConfigFile::Audio, "sampleRate", sampleRate_);
+    bufferFrames_ = config_->getValue(ConfigFile::Audio, "bufferSize", bufferFrames_);
+    channels_ = config_->getValue(ConfigFile::Audio, "channels", channels_);
+
+    synth_.setSampleRate(sampleRate_);
 
     // initialize the audio engine
     RtAudio::StreamParameters params;
