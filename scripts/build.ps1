@@ -13,6 +13,8 @@ $RTAUDIO_ROOT = "$BUILD_DIR\lib\rtaudio"
 $RTMIDI_ROOT = "$BUILD_DIR\lib\rtmidi"
 $YAMLCPP_ROOT = "$BUILD_DIR\lib\yaml-cpp"
 
+$CONFIG_ROOT = "$PROJECT_ROOT\config"
+
 # setup
 
 & "$Env:Programfiles\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
@@ -56,18 +58,20 @@ cmake -S . -B $BUILD_DIR -G "Visual Studio 17 2022" `
 Write-Host "Building metabolus..."
 cmake --build $BUILD_DIR
 
+# TODO: install
+
 # link dlls
 Write-Host "Deploying metabolus..."
 cd $BUILD_DIR
 
 & "$QT_ROOT\bin\windeployqt6.exe" .\Debug\metabolus.exe
 
+# copy dlls
 Copy-Item -Path "$RTAUDIO_ROOT\bin\rtaudio.dll" -Destination .\Debug
 Copy-Item -Path "$RTMIDI_ROOT\bin\rtmidi.dll" -Destination .\Debug
 Copy-Item -Path "$YAMLCPP_ROOT\bin\yaml-cpp.dll" -Destination .\Debug
 
-
-# TODO: allow input of an external qt install because this one is huge 
-# TODO: remove unnecessary qt modules bc why is this install like 80 gb
+# copy configs, but don't overwrite
+Copy-Item -Path "$CONFIG_ROOT" -Destination ".\Debug\" -Recurse -ErrorAction SilentlyContinue
 
 cd $PROJECT_ROOT

@@ -68,6 +68,8 @@ On Linux (GCC):
 ./scripts/build.sh
 ```
 
+TODO: right now you need to run the executable from the executable's directory because of CWD paths and such. Needs to be fixed because annoying
+
 Configure the CMake/build script if you have issues
 
 To clean:
@@ -75,8 +77,16 @@ To clean:
 .\scripts\clean.ps1
 ./scripts/clean.sh
 ```
-Note: dependencies are built into build/lib, so don't delete that unless you want to rebuild qt which takes forever :)
+Note: dependencies are built into build/lib, so don't delete unless you need to rebuild the libraries
 Use the install_dependencies script to manually install dependencies.
 
 Build troubleshooting:
 On windows, `bcdedit /set IncreaseUserVa 3072` solved cc1plus.exe: out of memory errors while building qt for me
+
+## Configurations (NOT YET IMPLEMENTED)
+Default config files are located in the config/ directory, and they are replicated into build/config/ if they dont already exist there. To edit the configurations, edit the config files in the build directory, not the defaults. Most config files are loaded/parsed at startup (TODO: investigate some reloading functions), so the program must be restarted, although not recompiled, for new configs to take effect. \
+Voice profiles are saved into config files into a human-readable format (YAML) and can be edited manually or by saving within the app. \
+
+## Wavetables (NOT YET IMPLEMENTED)
+Wavetables are this synthesizer's starting point for audio synthesis. A wavetable (as defined for this synthesizer, not elsewhere) contains a single period of a particular wave-shape with a discrete number of samples. Wavetables are loaded at runtime and sampled by oscillator objects to define and mix different wave shapes. Further specifications, as well as instructions for generating your own wavetable (including an example python script << TODO), are located within config/wavetables/README.md
+
