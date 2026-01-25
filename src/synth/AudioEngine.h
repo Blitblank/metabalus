@@ -40,11 +40,11 @@ private:
     // calls the synth.process to generate a buffer of audio samples
     int32_t process(float* out, uint32_t nFrames);
 
+    ConfigInterface* config_; // access to config files
     ParameterStore params_; // stores the control parameters
     NoteQueue noteQueue_; // stores note events for passing between threads
     Synth synth_; // generates audio
     ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization
-    ConfigInterface* config_; // access to config files
 
     RtAudio audio_{AUDIO_API}; // audio device
     // TODO: id like a yml config file or something for these

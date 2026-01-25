@@ -3,7 +3,6 @@
 
 #include "yaml-cpp/yaml.h"
 
-#include <iostream>
 #include <fstream>
 #include <filesystem>
 
@@ -24,6 +23,7 @@ int ConfigInterface::getValue(ConfigFile file, std::string key, int defaultVal) 
     // attempt to open file
     YAML::Node config;
     try {
+        
         YAML::Node config = YAML::LoadFile(filepath);
 
         // read key if it exists

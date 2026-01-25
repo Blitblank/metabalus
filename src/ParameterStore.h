@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "ConfigInterface.h"
+
 #include <cstdint>
 #include <array>
 #include <atomic>
@@ -107,7 +109,7 @@ class ParameterStore {
 
 public:
 
-    ParameterStore();
+    ParameterStore(ConfigInterface* config);
     ~ParameterStore() = default;
 
     void set(ParamId id, float value);
@@ -120,5 +122,7 @@ public:
 private:
 
     std::array<std::atomic<float>, PARAM_COUNT> values_;
+
+    ConfigInterface* config_;
 
 };

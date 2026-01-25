@@ -1,0 +1,45 @@
+
+# default.yaml
+# Default voice profile
+
+# sequences in the form [x, x, x] denote [setValue, sliderMinimum, sliderMaximum]
+
+version: 00001
+
+# deprecated, useless
+Osc1Freq: [100, 20, 600]
+
+# wavetable selections
+OscWaveSelector1: 2
+OscWaveSelector2: 1
+
+# Oscillator frequency parameters
+Osc1OctaveOffset: [0, -5, 5]
+Osc1SemitoneOffset: [0, -12, 12]
+Osc1PitchOffset: [0, -100, 100]
+Osc2OctaveOffset: [1, -5, 5]
+Osc2SemitoneOffset: [0, -12, 12]
+Osc2PitchOffset: [0, -100, 100]
+Osc3OctaveOffset: [1, -5, 5]
+Osc3SemitoneOffset: [7, -12, 12]
+Osc3PitchOffset: [1.96, -100, 100]
+
+# Envelope generator parameters
+Osc1Volume:
+  - [1, 0, 2] # Depth
+  - [0.05, 0, 2] # Attack
+  - [0.2, 0, 2] # Decay
+  - [0.7, 0, 1] # Sustain
+  - [0.2, 0, 2] # Release
+FilterCutoff:
+  - [4, 0, 8] # Depth
+  - [0.05, 0, 2] # Attack
+  - [0.2, 0, 2] # Decay
+  - [0.2, 0, 1] # Sustain
+  - [0.25, 0, 2] # Release
+FilterResonance:
+  - [3, 0, 8] # Depth
+  - [0.05, 0, 2] # Attack
+  - [0.2, 0, 2] # Decay
+  - [0.5, 0, 1] # Sustain
+  - [0.3, 0, 2] # Release

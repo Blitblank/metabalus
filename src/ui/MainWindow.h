@@ -30,9 +30,9 @@ private slots:
 private:
     Ui::MainWindow *ui_;
 
+    ConfigInterface config_;
     AudioEngine* audio_ = nullptr;
     KeyboardController keyboard_;
     MidiController midi_;
-    ConfigInterface config_;
 
 };

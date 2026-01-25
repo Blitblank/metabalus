@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-AudioEngine::AudioEngine(ConfigInterface* config) : synth_(params_), config_(config) {
+AudioEngine::AudioEngine(ConfigInterface* config) : params_(ParameterStore(config)), synth_(params_), config_(config) {
     if(audio_.getDeviceCount() < 1) {
         throw std::runtime_error("No audio devices found");
     }

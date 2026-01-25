@@ -1,7 +1,9 @@
 
 #include "ParameterStore.h"
 
-ParameterStore::ParameterStore() {
+#include <iostream>
+
+ParameterStore::ParameterStore(ConfigInterface* config) : config_(config) {
     resetToDefaults();
 }
 
@@ -30,6 +32,15 @@ void ParameterStore::resetToDefaults() {
     for(size_t i = 0; i < PARAM_COUNT; i++) {
         values_[i].store(PARAM_DEFS[i].def, std::memory_order_relaxed);
     }
+
+    if(config_) {
+        int x = config_->getValue(ConfigFile::Audio, "sampleRate", 0);
+        std::cout << "test: " << x << std::endl;
+    } else {
+        std::cout << "pointer null" << std::endl;
+    }
+
+
 }
 
 // TODO: applying parameter profiles will work similarly to above function
