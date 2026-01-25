@@ -7,6 +7,8 @@
 #include <array>
 #include <atomic>
 
+#define CONFIG_VERSION 0x0001
+
 enum class ParamId : uint16_t {
     Osc1Frequency,
     Osc1WaveSelector1,
@@ -120,6 +122,8 @@ public:
     void resetToDefaults();
 
 private:
+
+    void loadParameterProfile(std::string filepath);
 
     std::array<std::atomic<float>, PARAM_COUNT> values_;
 

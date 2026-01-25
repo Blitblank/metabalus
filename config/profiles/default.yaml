@@ -4,7 +4,7 @@
 
 # sequences in the form [x, x, x] denote [setValue, sliderMinimum, sliderMaximum]
 
-version: 00001
+version: 0x0002
 
 # deprecated, useless
 Osc1Freq: [100, 20, 600]
