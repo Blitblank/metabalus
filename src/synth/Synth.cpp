@@ -8,13 +8,13 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-Synth::Synth(const ParameterStore& params) : paramStore_(params) {
+Synth::Synth(ParameterStore* params) : paramStore_(params) {
     voices_.fill(Voice(params_.data(), &wavetable_));
 }
 
 void Synth::updateParams() {
     for(size_t i = 0; i < PARAM_COUNT; i++) {
-        params_[i].target = paramStore_.get(static_cast<ParamId>(i));
+        params_[i].target = paramStore_->get(static_cast<ParamId>(i));
     }
 }
 

@@ -92,3 +92,21 @@ void EnvelopeGenerator::init(EnvelopeId id) {
     setRelease(PARAM_DEFS[static_cast<size_t>(params.r)].def);
 
 }
+
+void EnvelopeGenerator::init(EnvelopeId id, std::array<ParamDefault, 5> profile) {
+
+    EnvelopeParam params = ENV_PARAMS[static_cast<size_t>(id)];
+
+    ui_->sliderDepth->setRange(profile[0].min, profile[0].max);
+    ui_->sliderAttack->setRange(profile[1].min, profile[1].max);
+    ui_->sliderDecay->setRange(profile[2].min, profile[2].max);
+    ui_->sliderSustain->setRange(profile[3].min, profile[3].max);
+    ui_->sliderRelease->setRange(profile[4].min, profile[4].max);
+
+    setDepth(profile[0].def);
+    setAttack(profile[1].def);
+    setDecay(profile[2].def);
+    setSustain(profile[3].def);
+    setRelease(profile[4].def);
+
+}

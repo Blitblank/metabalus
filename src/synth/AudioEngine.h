@@ -5,9 +5,9 @@
 #include <stdint.h>
 #include <atomic>
 
+#include "../ConfigInterface.h"
 #include "Synth.h"
 #include "../KeyboardController.h"
-#include "../ConfigInterface.h"
 
 #if defined(_WIN32)
     #define AUDIO_API RtAudio::WINDOWS_WASAPI
@@ -18,7 +18,9 @@
 class AudioEngine {
 
 public:
-    AudioEngine(ConfigInterface* config);
+
+    AudioEngine() = default;
+    AudioEngine(ConfigInterface* config, ParameterStore* params);
     ~AudioEngine();
 
     // starts the audio stream. returns true on success and false on failure
@@ -28,7 +30,7 @@ public:
     void stop();
 
     // getters
-    ParameterStore* parameters() { return &params_; }
+    ParameterStore* parameters() { return params_; }
     NoteQueue& noteQueue() { return noteQueue_; }
     ScopeBuffer& scopeBuffer() { return scope_; }
 
@@ -41,7 +43,7 @@ private:
     int32_t process(float* out, uint32_t nFrames);
 
     ConfigInterface* config_; // access to config files
-    ParameterStore params_; // stores the control parameters
+    ParameterStore* params_; // stores the control parameters
     NoteQueue noteQueue_; // stores note events for passing between threads
     Synth synth_; // generates audio
     ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization

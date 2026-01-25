@@ -8,7 +8,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui_(new Ui::MainWindow),
-    audio_(new AudioEngine(&config_)),
+    config_(ConfigInterface(&params_)),
+    audio_(new AudioEngine(&config_, &params_)),
     keyboard_(audio_->noteQueue()),
     midi_(audio_->noteQueue()) {
 
@@ -74,12 +75,13 @@ void MainWindow::onResetClicked() {
 
     // initialize to defaults
 
-    // envelopeGenerators
-    ui_->envelopeOsc1Volume->init(EnvelopeId::Osc1Volume);
-    ui_->envelopeFilterCutoff->init(EnvelopeId::FilterCutoff);
-    ui_->envelopeFilterResonance->init(EnvelopeId::FilterResonance);
+    config_.loadProfile("default");
 
-    // comboBoxes
+    // update ui from the paramstore
+    ui_->envelopeOsc1Volume->init(EnvelopeId::Osc1Volume, config_.loadEnvProfile("default", "Osc1Volume"));
+    ui_->envelopeFilterCutoff->init(EnvelopeId::FilterCutoff, config_.loadEnvProfile("default", "FilterCutoff"));
+    ui_->envelopeFilterResonance->init(EnvelopeId::FilterResonance, config_.loadEnvProfile("default", "FilterResonance"));
+
     ui_->comboOsc1WaveSelector1->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector1)].def));
     ui_->comboOsc1WaveSelector2->setCurrentIndex(static_cast<int>(PARAM_DEFS[static_cast<size_t>(ParamId::Osc1WaveSelector2)].def));
 

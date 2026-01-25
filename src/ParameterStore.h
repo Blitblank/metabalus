@@ -1,13 +1,9 @@
 
 #pragma once
 
-#include "ConfigInterface.h"
-
 #include <cstdint>
 #include <array>
 #include <atomic>
-
-#define CONFIG_VERSION 0x0001
 
 enum class ParamId : uint16_t {
     Osc1Frequency,
@@ -111,7 +107,7 @@ class ParameterStore {
 
 public:
 
-    ParameterStore(ConfigInterface* config);
+    ParameterStore();
     ~ParameterStore() = default;
 
     void set(ParamId id, float value);
@@ -123,10 +119,6 @@ public:
 
 private:
 
-    void loadParameterProfile(std::string filepath);
-
     std::array<std::atomic<float>, PARAM_COUNT> values_;
-
-    ConfigInterface* config_;
 
 };

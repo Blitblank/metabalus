@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 
+#include "../ConfigInterface.h"
 #include "../synth/AudioEngine.h"
 #include "../MidiController.h"
-#include "../ConfigInterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,8 +28,10 @@ private slots:
     void onResetClicked();
 
 private:
+
     Ui::MainWindow *ui_;
 
+    ParameterStore params_;
     ConfigInterface config_;
     AudioEngine* audio_ = nullptr;
     KeyboardController keyboard_;
