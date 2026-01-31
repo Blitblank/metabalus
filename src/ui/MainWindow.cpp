@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_(new Ui::MainWindow),
     config_(ConfigInterface(&params_)),
     audio_(new AudioEngine(&config_, &params_)),
-    keyboard_(audio_->noteQueue()),
+    keyboard_(audio_->noteQueue(), &config_),
     midi_(audio_->noteQueue()) {
 
     // initialize ui

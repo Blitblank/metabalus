@@ -72,7 +72,6 @@ qt_add_executable(metabolus
     src/synth/Voice.h
     src/synth/WavetableController.cpp
     src/synth/WavetableController.h
-    resources/resources.qrc
     src/ui/widgets/SmartSlider/SmartSlider.cpp
     src/ui/widgets/SmartSlider/SmartSlider.h
     src/ui/widgets/SmartSlider/SmartSlider.ui
