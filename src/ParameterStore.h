@@ -9,6 +9,9 @@ enum class ParamId : uint16_t {
     Osc1Frequency,
     Osc1WaveSelector1,
     Osc1WaveSelector2,
+    MasterOctaveOffset,
+    MasterSemitoneOffset,
+    MasterPitchOffset,
     Osc1OctaveOffset,
     Osc1SemitoneOffset,
     Osc1PitchOffset,
@@ -73,6 +76,9 @@ constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DE
     { 100.0f,   20.0f,  600.0f},   // Osc1Freq
     {   2.0f,    0.0f,    0.0f},   // OscWaveSelector1
     {   1.0f,    0.0f,    0.0f},   // OscWaveSelector2
+    {   0.0f,   -5.0f,    5.0f},   // MasterOctaveOffset
+    {   0.0f,  -12.0f,   12.0f},   // MasterSemitoneOffset
+    {   0.0f, -100.0f,  100.0f},   // MasterPitchOffset
     {   0.0f,   -5.0f,    5.0f},   // Osc1OctaveOffset
     {   0.0f,  -12.0f,   12.0f},   // Osc1SemitoneOffset
     {   0.0f, -100.0f,  100.0f},   // Osc1PitchOffset
