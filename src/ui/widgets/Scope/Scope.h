@@ -32,4 +32,5 @@ private:
     ScopeBuffer* buffer_ = nullptr;
     std::vector<float> samples_;
     QTimer timer_;
+    
 };

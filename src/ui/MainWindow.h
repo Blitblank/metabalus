@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QKeyEvent>
 
+#include "../ConfigInterface.h"
 #include "../synth/AudioEngine.h"
 #include "../MidiController.h"
 
@@ -27,8 +28,11 @@ private slots:
     void onResetClicked();
 
 private:
+
     Ui::MainWindow *ui_;
 
+    ParameterStore params_;
+    ConfigInterface config_;
     AudioEngine* audio_ = nullptr;
     KeyboardController keyboard_;
     MidiController midi_;

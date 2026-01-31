@@ -6,6 +6,8 @@
 #include <cstdint>
 #include <chrono>
 
+#define SYNTH_NOTE_QUEUE_SIZE 128
+
 enum class NoteEventType {
     NoteOn,
     NoteOff
@@ -29,9 +31,8 @@ public:
     bool pop(NoteEvent& event);
 
 private:
-    static constexpr size_t SIZE = 128;
     
-    std::array<NoteEvent, SIZE> buffer_;
+    std::array<NoteEvent, SYNTH_NOTE_QUEUE_SIZE> buffer_;
     std::atomic<size_t> head_{ 0 };
     std::atomic<size_t> tail_{ 0 };
 

@@ -11,8 +11,13 @@ void ScopeBuffer::push(float sample) {
     buffer_[w % buffer_.size()] = sample;
 }
 
+// TODO: needs a mutex/spinlock to prevent flickering
 // outputs value from the scope buffer, called by the scope widget
 void ScopeBuffer::read(std::vector<float>& out) const {
+
+    // yeah this didn't work, maybe it needs to be atomic or something
+    //while(!spinLock_) { int x = 1 + 1; }
+
     size_t w = writeIndex_.load(std::memory_order_relaxed);
     for (size_t i = 0; i < out.size(); i++) {
         size_t idx = (w + trigger_ + i * wavelength_ / out.size()) % buffer_.size();

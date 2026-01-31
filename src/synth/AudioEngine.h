@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <atomic>
 
+#include "../ConfigInterface.h"
 #include "Synth.h"
 #include "../KeyboardController.h"
 
@@ -17,7 +18,9 @@
 class AudioEngine {
 
 public:
-    AudioEngine();
+
+    AudioEngine() = default;
+    AudioEngine(ConfigInterface* config, ParameterStore* params);
     ~AudioEngine();
 
     // starts the audio stream. returns true on success and false on failure
@@ -27,7 +30,7 @@ public:
     void stop();
 
     // getters
-    ParameterStore* parameters() { return &params_; }
+    ParameterStore* parameters() { return params_; }
     NoteQueue& noteQueue() { return noteQueue_; }
     ScopeBuffer& scopeBuffer() { return scope_; }
 
@@ -39,7 +42,8 @@ private:
     // calls the synth.process to generate a buffer of audio samples
     int32_t process(float* out, uint32_t nFrames);
 
-    ParameterStore params_; // stores the control parameters
+    ConfigInterface* config_; // access to config files
+    ParameterStore* params_; // stores the control parameters
     NoteQueue noteQueue_; // stores note events for passing between threads
     Synth synth_; // generates audio
     ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization

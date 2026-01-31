@@ -3,13 +3,11 @@
 
 #include <iostream>
 
-AudioEngine::AudioEngine() : synth_(params_) {
+AudioEngine::AudioEngine(ConfigInterface* config, ParameterStore* params) : params_(params), synth_(params), config_(config) {
+    
     if(audio_.getDeviceCount() < 1) {
         throw std::runtime_error("No audio devices found");
     }
-
-    // TODO: get audio configurations
-    synth_.setSampleRate(sampleRate_);
 
     synth_.setScopeBuffer(&scope_);
 
@@ -20,6 +18,13 @@ AudioEngine::~AudioEngine() {
 }
 
 bool AudioEngine::start() {
+
+    // get config values
+    sampleRate_ = config_->getValue(ConfigFile::Audio, "sampleRate", sampleRate_);
+    bufferFrames_ = config_->getValue(ConfigFile::Audio, "bufferSize", bufferFrames_);
+    channels_ = config_->getValue(ConfigFile::Audio, "channels", channels_);
+
+    synth_.setSampleRate(sampleRate_);
 
     // initialize the audio engine
     RtAudio::StreamParameters params;
@@ -46,11 +51,13 @@ void AudioEngine::stop() {
     if(audio_.isStreamOpen()) audio_.closeStream();
 }
 
-int32_t AudioEngine::audioCallback( void* outputBuffer, void*, uint32_t nFrames, double, RtAudioStreamStatus status, void* userData) {
+// called by RtAudio continuously, sends outputBuffer to audio drivers
+int32_t AudioEngine::audioCallback(void* outputBuffer, void*, uint32_t nFrames, double, RtAudioStreamStatus status, void* userData) {
     
     // error if process is too slow for the callback. If this is consistent, then need to optimize synth.process() or whatever cascades from it
     if (status) std::cerr << "Stream underflow" << std::endl;
 
+    // populate audio buffer
     return static_cast<AudioEngine*>(userData)->process(static_cast<float*>(outputBuffer), nFrames);
 }
 

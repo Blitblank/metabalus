@@ -1,8 +1,12 @@
 
 #include "ParameterStore.h"
 
+#include <iostream>
+#include "yaml-cpp/yaml.h" // TODO: using yaml.h outside of ConfigInterface feels spaghetti to me
+#include <filesystem>
+
 ParameterStore::ParameterStore() {
-    resetToDefaults();
+    //resetToDefaults();
 }
 
 // set parameter value
@@ -27,9 +31,9 @@ float ParameterStore::get(ParamId id) const {
 }
 
 void ParameterStore::resetToDefaults() {
+
     for(size_t i = 0; i < PARAM_COUNT; i++) {
         values_[i].store(PARAM_DEFS[i].def, std::memory_order_relaxed);
     }
-}
 
-// TODO: applying parameter profiles will work similarly to above function
+}

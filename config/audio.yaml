@@ -1,0 +1,16 @@
+
+# audio.yaml
+# Configures properties for the RtAudio engine
+
+# Number of samples per second
+sampleRate: 44100 
+# unconfigurable: sampleFormat; [-1, 1] float
+
+# number of audio channels
+channels: 2 
+
+# 0 = mono, 1 = stereo, 2 = pseudo-stereo 
+stereoMode: 2 
+
+# number of samples per audio buffer
+bufferSize: 512 

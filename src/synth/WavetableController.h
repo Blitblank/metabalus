@@ -3,6 +3,7 @@
 
 #include <array>
 #include <vector>
+#include <cstdint>
 
 #define SYNTH_WAVETABLE_SIZE 2048
 #ifndef M_PI // I hate my stupid chungus life

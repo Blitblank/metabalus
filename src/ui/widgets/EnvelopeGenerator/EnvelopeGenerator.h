@@ -18,6 +18,7 @@ public:
 
     // connects signals, sets parameters to the defaults defined in paramStore
     void init(EnvelopeId id);
+    void init(EnvelopeId id, std::array<ParamDefault, 5> profile);
 
     // setters
     void setDepth(float v);

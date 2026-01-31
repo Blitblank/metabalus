@@ -63,6 +63,7 @@ private:
     // filters
     Filter filter1_;
     Filter filter2_;
+    // TODO: I think the filter's state being uninitialized is what's causing popping when a voice starts for the first time
 
     // paramstore pointer
     SmoothedParam* params_;

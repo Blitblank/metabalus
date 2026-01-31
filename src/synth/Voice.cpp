@@ -98,7 +98,7 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float osc3 = oscillators_[2].process(osc3NoteOffset + note_, getParam(ParamId::Osc3PitchOffset)/100.0f, temp);
     
     // mix oscillators
-    float sampleOut = (osc1 + osc2*0.5f + osc3*0.25f) * gain;
+    float sampleOut = (osc1 + osc2*0.25f + osc3*0.125f) * gain;
 
     // filter sample
     float baseFreq = oscillators_[0].frequency();
@@ -106,8 +106,8 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float resonance = resonanceEnv * getParam(ParamId::FilterResonanceDepth) * velocityGain;
     filter1_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
-    sampleOut = filter1_.biquadProcess(sampleOut);
-    sampleOut = filter2_.biquadProcess(sampleOut);
+    float filteredSample = filter1_.biquadProcess(sampleOut);
+    // sampleOut = filter2_.biquadProcess(sampleOut); // TODO: for some reason second filter is unstable only on windows 🤷
 
-    return sampleOut;
+    return filteredSample;
 }

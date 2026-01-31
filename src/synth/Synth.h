@@ -15,7 +15,8 @@
 class Synth {
 
 public:
-    Synth(const ParameterStore& params);
+    Synth() = default;
+    Synth(ParameterStore* params);
     ~Synth() = default;
 
     // generates a buffer of audio samples nFrames long
@@ -39,7 +40,7 @@ private:
     Voice* findFreeVoice();
     Voice* findVoiceByNote(uint8_t note);
 
-    const ParameterStore& paramStore_;
+    ParameterStore* paramStore_;
     // smoothed params creates a buffer in case the thread controlling paramStore gets blocked
     std::array<SmoothedParam, PARAM_COUNT> params_;
 

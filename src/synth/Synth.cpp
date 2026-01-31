@@ -8,13 +8,13 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-Synth::Synth(const ParameterStore& params) : paramStore_(params) {
+Synth::Synth(ParameterStore* params) : paramStore_(params) {
     voices_.fill(Voice(params_.data(), &wavetable_));
 }
 
 void Synth::updateParams() {
     for(size_t i = 0; i < PARAM_COUNT; i++) {
-        params_[i].target = paramStore_.get(static_cast<ParamId>(i));
+        params_[i].target = paramStore_->get(static_cast<ParamId>(i));
     }
 }
 
@@ -92,6 +92,9 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
         }
     }
 
+    // lock the scope from the buffer
+    scope_->spinlock(true);
+
     for (uint32_t i = 0; i < nFrames; i++) {
 
         // updates internal buffered parameters for smoothing
@@ -132,5 +135,8 @@ void Synth::process(float* out, uint32_t nFrames, uint32_t sampleRate) {
             // TODO: investigate triggering accross buffers when a single wave period transcends a single audio buffer
         }
     }
+
+    // unlock the scope from the buffer
+    scope_->spinlock(false);
 
 }

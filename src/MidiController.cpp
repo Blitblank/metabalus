@@ -9,7 +9,7 @@ MidiController::MidiController(NoteQueue& queue) : noteQueue_(queue) {
         midiIn_ = std::make_unique<RtMidiIn>();
         midiIn_->ignoreTypes(false, false, false);
     } catch (RtMidiError& e) {
-        std::cerr << "RtMidi init failed: " << e.getMessage() << std::endl;
+        std::cout << "RtMidi init failed: " << e.getMessage() << std::endl;
     }
     // TODO: this still doesnt work on windows
 }
@@ -22,7 +22,7 @@ MidiController::~MidiController() {
 bool MidiController::openDefaultPort() {
     if (!midiIn_) return false;
     if (midiIn_->getPortCount() == 0) {
-        std::cerr << "No MIDI input ports available\n";
+        std::cout << "No MIDI input ports available" << std::endl;
         return false;
     }
     return openPort(0);
@@ -34,7 +34,7 @@ bool MidiController::openPort(unsigned int index) {
     try {
         midiIn_->openPort(index);
         midiIn_->setCallback(&MidiController::midiCallback, this);
-        std::cout << "Opened MIDI port: " << midiIn_->getPortName(index) << "\n";
+        std::cout << "Opened MIDI port: " << midiIn_->getPortName(index) << std::endl;
         return true;
     } catch (RtMidiError& e) {
         std::cerr << e.getMessage() << std::endl;
