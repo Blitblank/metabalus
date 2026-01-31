@@ -49,7 +49,8 @@ private:
     ScopeBuffer scope_ { 1024 }; // stores audio samples for visualization
 
     RtAudio audio_{AUDIO_API}; // audio device
-    // TODO: id like a yml config file or something for these
+
+    // Configurable in the audio.yaml file, assigned defaults if the file is not found
     uint32_t sampleRate_ = 44100;
     uint32_t bufferFrames_ = 512; // time per buffer = BF/SR (256/44100 = 5.8ms)
     uint32_t channels_ = 2; // stereo

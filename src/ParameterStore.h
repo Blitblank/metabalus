@@ -69,8 +69,6 @@ struct ParamDefault {
     float max;
 };
 
-// TODO: make these configurable via yml file too
-// later TODO: and then when I have full on profile saving there will be a default profile to load from
 constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
     { 100.0f,   20.0f,  600.0f},   // Osc1Freq
     {   2.0f,    0.0f,    0.0f},   // OscWaveSelector1

@@ -12,6 +12,7 @@
 
 // TODO: make configurable
 #define SYNTH_OSCILLATOR_COUNT 3
+// if there's different oscillator amounts then we need to be able to dynamically create the ui for each of them
 
 struct SmoothedParam {
     float current = 0.0f;
@@ -63,7 +64,6 @@ private:
     // filters
     Filter filter1_;
     Filter filter2_;
-    // TODO: I think the filter's state being uninitialized is what's causing popping when a voice starts for the first time
 
     // paramstore pointer
     SmoothedParam* params_;

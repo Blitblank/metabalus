@@ -35,9 +35,17 @@ bool AudioEngine::start() {
     RtAudio::StreamOptions options;
     options.flags = RTAUDIO_MINIMIZE_LATENCY;
 
-    // TODO: error check this please
-    audio_.openStream(&params, nullptr, RTAUDIO_FLOAT32, sampleRate_, &bufferFrames_, &AudioEngine::audioCallback, this, &options);
-    audio_.startStream();
+    RtAudioErrorType status = audio_.openStream(&params, nullptr, RTAUDIO_FLOAT32, sampleRate_, &bufferFrames_, &AudioEngine::audioCallback, this, &options);
+    if(status != RTAUDIO_NO_ERROR) {
+        std::cout << "Error opening RtAudio stream" << std::endl;
+        return false;
+    } 
+    
+    status = audio_.startStream();
+    if(status != RTAUDIO_NO_ERROR) {
+        std::cout << "Error starting RtAudio stream" << std::endl;
+        return false;
+    } 
 
     // sanity check
     std::cout << "sample rate: " << sampleRate_ << "  buffer frames: " << bufferFrames_ << std::endl;

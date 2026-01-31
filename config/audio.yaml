@@ -3,7 +3,7 @@
 # Configures properties for the RtAudio engine
 
 # Number of samples per second
-sampleRate: 44100 
+sampleRate: 96000 
 # unconfigurable: sampleFormat; [-1, 1] float
 
 # number of audio channels
