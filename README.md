@@ -30,9 +30,9 @@ This synthesizer isn't very good, but it's neat :3
 - [ ] Filter upgrades including some more complex solving techniques (State Variable Filter),
       better key tracking, more natural envelope curves, filter drive, etc.
 - [ ] Reverb (quite a few ways to do this, needs more research)
-- [ ] Pitch tuning with the multiple oscillators (Octave > Semitone > Fine-tune)
+- [x] Pitch tuning with the multiple oscillators (Octave > Semitone > Fine-tune)
 - [ ] Frequency Modulation (huge)
-- [ ] Profile saving and loading, also includes loading configurations like keymaps, audio
+- [x] Profile saving and loading, also includes loading configurations like keymaps, audio
       engine config, etc. from a yaml instead of being hardcoded
 - [ ] Noise 
 - [ ] LFO modulation
