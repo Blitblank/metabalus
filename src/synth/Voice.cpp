@@ -2,6 +2,7 @@
 #include "Voice.h"
 #include <cmath>
 #include <iostream>
+#include <random>
 
 Voice::Voice(SmoothedParam* params, WavetableController* wavetable) : params_(params), wavetable_(wavetable) {
 
@@ -97,8 +98,14 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float osc2 = oscillators_[1].process(osc2NoteOffset + note_, (getParam(ParamId::Osc2PitchOffset) + getParam(ParamId::MasterPitchOffset))/100.0f, temp);
     float osc3 = oscillators_[2].process(osc3NoteOffset + note_, (getParam(ParamId::Osc3PitchOffset) + getParam(ParamId::MasterPitchOffset))/100.0f, temp);
 
+    // TODO: implement controls for noise
+    //float scale = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // Range [0.0, 1.0]
+    //float noise = -1.0f + 2.0f * scale;
+    // these values didn't sound good so I commented them out before I get controls for them
+
     // mix oscillators
-    float sampleOut = (osc1 + osc2*0.25f + osc3*0.125f) * gain;
+    // TODO: implement gain controls for the other oscillators
+    float sampleOut = (osc1 + osc2*0.4f + osc3*0.15f) * gain; // pre-filtered noise
 
     // filter sample
     float baseFreq = oscillators_[0].frequency();
@@ -108,6 +115,8 @@ float Voice::process(float* params, bool& scopeTrigger) {
     filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     float filteredSample = filter1_.biquadProcess(sampleOut);
     // sampleOut = filter2_.biquadProcess(sampleOut); // TODO: for some reason second filter is unstable only on windows 🤷
+
+    //filteredSample += noise*0.125f; // post-filtered noise
 
     return filteredSample;
 }

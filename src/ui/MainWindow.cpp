@@ -144,6 +144,7 @@ void MainWindow::onResetClicked() {
     ui_->envelopeFilterResonance->init(EnvelopeId::FilterResonance, config_.loadEnvProfile("default", "FilterResonance"));
 
     // TODO: clean these up, maybe put them in a package like the envelope generators (it'll help encapsulate the int-snapping business)
+    // what I might do is make a variable-length slider-package object
     ui_->sliderMasterOctave->setResolution(configRoot["MasterOctaveOffset"][2].as<int>() - configRoot["MasterOctaveOffset"][1].as<int>());
     ui_->sliderMasterOctave->setRange(configRoot["MasterOctaveOffset"][1].as<int>(), configRoot["MasterOctaveOffset"][2].as<int>());
     ui_->sliderMasterOctave->setValue(configRoot["MasterOctaveOffset"][0].as<int>());

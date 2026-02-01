@@ -17,6 +17,11 @@ void WavetableController::init() {
 
     wavetables_.resize(4); // resize for however many files we find
 
+    // don't really know how the files are gonna work
+    // but I'd like two files- a yaml that contains metadata like name, length, range, datatype, etc.
+    // and the main data be just a big array of that data type in a binary file
+    // although having it all in a single bin makes the most sense with the metadata being in the header
+
     float phase = 0.0f;
     float phaseInc = 2.0f * M_PI / static_cast<float>(SYNTH_WAVETABLE_SIZE);
 

@@ -27,9 +27,15 @@ Osc3OctaveOffset: [1, -5, 5]
 Osc3SemitoneOffset: [7, -12, 12]
 Osc3PitchOffset: [-8.79, -100, 100]
 
+# gonna have something like this:
+#MasterPitchOffset:
+# - [0, -5, 5] # Octave
+# - [0, -12, -12] # Semitone
+# - [0, -100, 100] # Pitch
+
 # Envelope generator parameters
 Osc1Volume:
-  - [1, 0, 2] # Depth
+  - [1, 0, 10] # Depth
   - [0.05, 0, 2] # Attack
   - [0.2, 0, 2] # Decay
   - [0.7, 0, 1] # Sustain
