@@ -24,11 +24,9 @@ KeyboardController::KeyboardController(NoteQueue& queue, ConfigInterface* config
 
     // for each element in the keymap
     for (const auto& entry : keymapNode) {
-        
+
         std::string keyString = entry.first.as<std::string>();
         std::string noteString = entry.second.as<std::string>();
-
-        std::cout << keyString << ": " << noteString << std::endl;
 
         // match the strings to ints 
         uint8_t noteValue = notesNode[noteString].as<uint8_t>();

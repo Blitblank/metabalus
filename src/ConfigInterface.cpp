@@ -47,7 +47,7 @@ int ConfigInterface::getValue(ConfigFile file, std::string key, int defaultVal) 
 }
 
 // ugly but if it works it works
-void ConfigInterface::loadProfile(std::string filename) {
+YAML::Node ConfigInterface::loadProfile(std::string filename) {
 
     // load file
     std::string filepath = "config/profiles/" + filename + ".yaml";
@@ -57,14 +57,14 @@ void ConfigInterface::loadProfile(std::string filename) {
         config = YAML::LoadFile(filepath);
     } catch(const std::exception& e) {
         std::cerr << e.what() << std::endl;
-        return;
+        return config;
     }
     
     // check version
     int version = config["version"].as<int>(); // yaml-cpp parses unquoted hex as integers
     if(version < CONFIG_VERSION) {
         std::cout << "Parameter profile version " << version << "is outdated below the compatible version " << CONFIG_VERSION << std::endl;
-        return;
+        return config;
     } else {
         std::cout << "Parameter profile version " << version << std::endl;
     }
@@ -119,6 +119,8 @@ void ConfigInterface::loadProfile(std::string filename) {
     // TODO:
     // load wavetable settings
     // load oscillator pitch settings
+
+    return config;
 
 }
 

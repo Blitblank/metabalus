@@ -11,11 +11,11 @@ Osc1Freq: [100, 20, 600]
 
 # wavetable selections
 OscWaveSelector1: 2
-OscWaveSelector2: 1
+OscWaveSelector2: 3
 
 # Frequency parameters
-MasterOctaveOffset: [1, -5, 5]
-MasterSemitoneOffset: [1, -12, 12]
+MasterOctaveOffset: [0, -5, 5]
+MasterSemitoneOffset: [0, -12, 12]
 MasterPitchOffset: [0, -100, 100]
 Osc1OctaveOffset: [0, -5, 5]
 Osc1SemitoneOffset: [0, -12, 12]

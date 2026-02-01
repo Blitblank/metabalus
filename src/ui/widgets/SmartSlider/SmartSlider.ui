@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="isInt" stdset="0">
+   <bool>false</bool>
+  </property>
   <widget class="QSlider" name="slider">
    <property name="geometry">
     <rect>
@@ -62,6 +65,12 @@
    <property name="buttonSymbols">
     <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
    </property>
+   <property name="minimum">
+    <double>-100000.000000000000000</double>
+   </property>
+   <property name="maximum">
+    <double>100000.000000000000000</double>
+   </property>
   </widget>
   <widget class="QDoubleSpinBox" name="spinMax">
    <property name="geometry">
@@ -84,8 +93,11 @@
    <property name="buttonSymbols">
     <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
    </property>
+   <property name="minimum">
+    <double>-100000.000000000000000</double>
+   </property>
    <property name="maximum">
-    <double>40000.000000000000000</double>
+    <double>100000.000000000000000</double>
    </property>
   </widget>
   <widget class="QDoubleSpinBox" name="spinValue">
@@ -117,8 +129,11 @@
    <property name="buttonSymbols">
     <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
    </property>
+   <property name="minimum">
+    <double>-100000.000000000000000</double>
+   </property>
    <property name="maximum">
-    <double>80000.000000000000000</double>
+    <double>100000.000000000000000</double>
    </property>
   </widget>
   <widget class="Line" name="line">
