@@ -31,10 +31,15 @@ if (WIN32) # windows 11 x86_64
     )
     
 else() # debian 12 x86_64
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(RTAUDIO REQUIRED rtaudio)
-    pkg_check_modules(RTMIDI REQUIRED rtmidi)
-    pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
+    #find_package(PkgConfig REQUIRED)
+    #pkg_check_modules(RTAUDIO REQUIRED rtaudio)
+    #pkg_check_modules(RTMIDI REQUIRED rtmidi)
+    #pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
+
+    find_package(rtaudio)
+    find_package(rtmidi)
+    find_package(yaml-cpp)
+
 endif()
 
 qt_standard_project_setup()
