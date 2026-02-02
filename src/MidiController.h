@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <RtMidi.h>
+#include <rtmidi/RtMidi.h>
 #include <memory>
 #include "NoteQueue.h"
 #include <unordered_set>

@@ -115,7 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // midi
 #ifndef _WIN32
-    midi_.openPort(1); // TODO: error check
+    //midi_.openDefaultPort(); // TODO: error check
+    midi_.openPort(1);
 #endif
 
 }

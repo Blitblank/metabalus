@@ -13,14 +13,14 @@ if (WIN32) # windows 11 x86_64
     set_target_properties(RtAudio::rtaudio PROPERTIES
         IMPORTED_LOCATION "${RtAudio_ROOT}/bin/rtaudio.dll"
         IMPORTED_IMPLIB "${RtAudio_ROOT}/lib/rtaudio.lib"
-        INTERFACE_INCLUDE_DIRECTORIES "${RtAudio_ROOT}/include/rtaudio"
+        INTERFACE_INCLUDE_DIRECTORIES "${RtAudio_ROOT}/include"
     )
     
     add_library(RtMidi::rtmidi SHARED IMPORTED)
     set_target_properties(RtMidi::rtmidi PROPERTIES
         IMPORTED_LOCATION "${RtMidi_ROOT}/bin/rtmidi.dll"
         IMPORTED_IMPLIB "${RtMidi_ROOT}/lib/rtmidi.lib"
-        INTERFACE_INCLUDE_DIRECTORIES "${RtMidi_ROOT}/include/rtmidi"
+        INTERFACE_INCLUDE_DIRECTORIES "${RtMidi_ROOT}/include"
     )
 
     add_library(yaml-cpp SHARED IMPORTED)
@@ -31,14 +31,13 @@ if (WIN32) # windows 11 x86_64
     )
     
 else() # debian 12 x86_64
-    #find_package(PkgConfig REQUIRED)
-    #pkg_check_modules(RTAUDIO REQUIRED rtaudio)
-    #pkg_check_modules(RTMIDI REQUIRED rtmidi)
-    #pkg_check_modules(YAMLCPP REQUIRED yaml-cpp)
 
-    find_package(rtaudio)
-    find_package(rtmidi)
-    find_package(yaml-cpp)
+    find_package(RtAudio REQUIRED)
+    find_package(RtMidi REQUIRED)
+    find_package(yaml-cpp REQUIRED)
+
+    get_target_property(RTMIDI_INCLUDES RtMidi::rtmidi INTERFACE_INCLUDE_DIRECTORIES)
+    message(STATUS "RtMidi includes: ${RTMIDI_INCLUDES}")
 
 endif()
 
@@ -95,20 +94,17 @@ target_include_directories(metabolus PRIVATE
     ${CMAKE_SOURCE_DIR}/src/ui/widgets
 )
 
+# some extra cross platform business
 if (WIN32)
-
     target_compile_options(metabolus PUBLIC "/Zc:__cplusplus")
-
-    target_link_libraries(metabolus
-        PRIVATE
-            RtAudio::rtaudio
-            RtMidi::rtmidi
-            yaml-cpp
-            Qt6::Widgets
-    )
-
-else() 
-    target_include_directories(metabolus PRIVATE ${RTAUDIO_INCLUDE_DIRS} ${RTMIDI_INCLUDE_DIRS} ${YAMLCPP_INCLUDE_DIRS})
-    target_link_libraries(metabolus PRIVATE Qt6::Widgets ${RTAUDIO_LIBRARIES} ${RTMIDI_LIBRARIES} ${YAMLCPP_LIBARIES})
+else()
     target_compile_options(metabolus PRIVATE ${RTAUDIO_CFLAGS_OTHER})
 endif()
+
+target_link_libraries(metabolus
+    PRIVATE
+        RtAudio::rtaudio
+        RtMidi::rtmidi
+        yaml-cpp
+        Qt6::Widgets
+)

@@ -23,6 +23,7 @@ mkdir ${BUILD_LIB_DIR}/rtmidi -p
 cd ${PROJECT_ROOT}/lib/rtmidi
 cmake -S . -B build -G Ninja \
     -DRTMIDI_BUILD_SHARED_LIBS=ON \
+    -DRTMIDI_API_ALSA=ON \
     -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 cmake --install build --prefix ${BUILD_LIB_DIR}/rtmidi

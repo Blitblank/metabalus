@@ -6,7 +6,7 @@
 
 MidiController::MidiController(NoteQueue& queue) : noteQueue_(queue) {
     try {
-        midiIn_ = std::make_unique<RtMidiIn>();
+        midiIn_ = std::make_unique<RtMidiIn>(RtMidi::LINUX_ALSA);
         midiIn_->ignoreTypes(false, false, false);
     } catch (RtMidiError& e) {
         std::cout << "RtMidi init failed: " << e.getMessage() << std::endl;
@@ -18,14 +18,23 @@ MidiController::~MidiController() {
     close();
 }
 
-// this dont work too well but whatever
+// open the first for thats successful
 bool MidiController::openDefaultPort() {
     if (!midiIn_) return false;
     if (midiIn_->getPortCount() == 0) {
         std::cout << "No MIDI input ports available" << std::endl;
         return false;
     }
-    return openPort(0);
+
+    uint32_t portCount = midiIn_->getPortCount();
+    std::cout << "Available MidiIn ports: " << portCount << std::endl;
+    for (int i = 0; i < portCount; i++) {
+        std::cout << "#" << i << " : " << midiIn_->getPortName(i) << std::endl;
+
+        if(openPort(i)) return true;
+    }
+
+    return false;
 }
 
 bool MidiController::openPort(unsigned int index) {
@@ -37,6 +46,7 @@ bool MidiController::openPort(unsigned int index) {
         std::cout << "Opened MIDI port: " << midiIn_->getPortName(index) << std::endl;
         return true;
     } catch (RtMidiError& e) {
+        std::cout << "Midi Port error" << std::endl;
         std::cerr << e.getMessage() << std::endl;
         return false;
     }
