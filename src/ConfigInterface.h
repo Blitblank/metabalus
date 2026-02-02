@@ -32,7 +32,7 @@ public:
 
     int getValue(ConfigFile file, std::string key, int defaultVal);
 
-    void loadProfile(std::string filename);
+    YAML::Node loadProfile(std::string filename);
     std::array<ParamDefault, 5> loadEnvProfile(YAML::Node* node, std::string profile);
     std::array<ParamDefault, 5> loadEnvProfile(std::string filename, std::string profile);
 

@@ -47,7 +47,7 @@ int ConfigInterface::getValue(ConfigFile file, std::string key, int defaultVal) 
 }
 
 // ugly but if it works it works
-void ConfigInterface::loadProfile(std::string filename) {
+YAML::Node ConfigInterface::loadProfile(std::string filename) {
 
     // load file
     std::string filepath = "config/profiles/" + filename + ".yaml";
@@ -57,22 +57,43 @@ void ConfigInterface::loadProfile(std::string filename) {
         config = YAML::LoadFile(filepath);
     } catch(const std::exception& e) {
         std::cerr << e.what() << std::endl;
-        return;
+        return config;
     }
     
     // check version
     int version = config["version"].as<int>(); // yaml-cpp parses unquoted hex as integers
     if(version < CONFIG_VERSION) {
         std::cout << "Parameter profile version " << version << "is outdated below the compatible version " << CONFIG_VERSION << std::endl;
-        return;
+        return config;
     } else {
-        std::cout << version << std::endl;
+        std::cout << "Parameter profile version " << version << std::endl;
     }
 
     // extract values from the config file
     std::array<ParamDefault, 5> osc1VolumeProfile = loadEnvProfile(&config, "Osc1Volume");
     std::array<ParamDefault, 5> fCutoffProfile = loadEnvProfile(&config, "FilterCutoff");
     std::array<ParamDefault, 5> fResonanceProfile = loadEnvProfile(&config, "FilterResonance");
+
+    std::array<ParamDefault, 3> masterPitchOffsets = {{
+        { config["MasterOctaveOffset"][0].as<float>(), config["MasterOctaveOffset"][1].as<float>(), config["MasterOctaveOffset"][2].as<float>() },
+        { config["MasterSemitoneOffset"][0].as<float>(), config["MasterSemitoneOffset"][1].as<float>(), config["MasterSemitoneOffset"][2].as<float>() },
+        { config["MasterPitchOffset"][0].as<float>(), config["MasterPitchOffset"][1].as<float>(), config["MasterPitchOffset"][2].as<float>() },
+    }};
+    std::array<ParamDefault, 3> osc1PitchOffsets = {{
+        { config["Osc1OctaveOffset"][0].as<float>(), config["Osc1OctaveOffset"][1].as<float>(), config["Osc1OctaveOffset"][2].as<float>() },
+        { config["Osc1SemitoneOffset"][0].as<float>(), config["Osc1SemitoneOffset"][1].as<float>(), config["Osc1SemitoneOffset"][2].as<float>() },
+        { config["Osc1PitchOffset"][0].as<float>(), config["Osc1PitchOffset"][1].as<float>(), config["Osc1PitchOffset"][2].as<float>() },
+    }};
+    std::array<ParamDefault, 3> osc2PitchOffsets = {{
+        { config["Osc2OctaveOffset"][0].as<float>(), config["Osc2OctaveOffset"][1].as<float>(), config["Osc2OctaveOffset"][2].as<float>() },
+        { config["Osc2SemitoneOffset"][0].as<float>(), config["Osc2SemitoneOffset"][1].as<float>(), config["Osc2SemitoneOffset"][2].as<float>() },
+        { config["Osc2PitchOffset"][0].as<float>(), config["Osc2PitchOffset"][1].as<float>(), config["Osc2PitchOffset"][2].as<float>() },
+    }};
+    std::array<ParamDefault, 3> osc3PitchOffsets = {{
+        { config["Osc3OctaveOffset"][0].as<float>(), config["Osc3OctaveOffset"][1].as<float>(), config["Osc3OctaveOffset"][2].as<float>() },
+        { config["Osc3SemitoneOffset"][0].as<float>(), config["Osc3SemitoneOffset"][1].as<float>(), config["Osc3SemitoneOffset"][2].as<float>() },
+        { config["Osc3PitchOffset"][0].as<float>(), config["Osc3PitchOffset"][1].as<float>(), config["Osc3PitchOffset"][2].as<float>() },
+    }};
 
     // TODO: remove this once all the parameters are set properly
     params_->resetToDefaults();
@@ -81,12 +102,25 @@ void ConfigInterface::loadProfile(std::string filename) {
     params_->set(EnvelopeId::Osc1Volume, osc1VolumeProfile[0].def, osc1VolumeProfile[1].def, osc1VolumeProfile[2].def, osc1VolumeProfile[3].def, osc1VolumeProfile[4].def);
     params_->set(EnvelopeId::FilterCutoff, fCutoffProfile[0].def, fCutoffProfile[1].def, fCutoffProfile[2].def, fCutoffProfile[3].def, fCutoffProfile[4].def);
     params_->set(EnvelopeId::FilterResonance, fResonanceProfile[0].def, fResonanceProfile[1].def, fResonanceProfile[2].def, fResonanceProfile[3].def, fResonanceProfile[4].def);
-    // TODO: why do I bother passing in 5 values independently when I can just do an array ?
-    // VVV look down there its so easy
+    // TODO: why do I bother passing in 5 values independently when I can just do an array like in loadEnvProfile ?
+    params_->set(ParamId::MasterOctaveOffset, masterPitchOffsets[0].def);
+    params_->set(ParamId::MasterSemitoneOffset, masterPitchOffsets[1].def);
+    params_->set(ParamId::MasterPitchOffset, masterPitchOffsets[2].def);
+    params_->set(ParamId::Osc1OctaveOffset, osc1PitchOffsets[0].def);
+    params_->set(ParamId::Osc1SemitoneOffset, osc1PitchOffsets[1].def);
+    params_->set(ParamId::Osc1PitchOffset, osc1PitchOffsets[2].def);
+    params_->set(ParamId::Osc2OctaveOffset, osc2PitchOffsets[0].def);
+    params_->set(ParamId::Osc2SemitoneOffset, osc2PitchOffsets[1].def);
+    params_->set(ParamId::Osc2PitchOffset, osc2PitchOffsets[2].def);
+    params_->set(ParamId::Osc3OctaveOffset, osc3PitchOffsets[0].def);
+    params_->set(ParamId::Osc3SemitoneOffset, osc3PitchOffsets[1].def);
+    params_->set(ParamId::Osc3PitchOffset, osc3PitchOffsets[2].def);
 
     // TODO:
     // load wavetable settings
     // load oscillator pitch settings
+
+    return config;
 
 }
 

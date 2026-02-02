@@ -16,8 +16,7 @@ public:
     explicit EnvelopeGenerator(QWidget* parent = nullptr);
     ~EnvelopeGenerator();
 
-    // connects signals, sets parameters to the defaults defined in paramStore
-    void init(EnvelopeId id);
+    // connects signals, sets parameters to a provided profile
     void init(EnvelopeId id, std::array<ParamDefault, 5> profile);
 
     // setters

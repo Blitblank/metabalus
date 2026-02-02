@@ -75,24 +75,6 @@ void EnvelopeGenerator::emitEnvelope() {
     );
 }
 
-void EnvelopeGenerator::init(EnvelopeId id) {
-
-    EnvelopeParam params = ENV_PARAMS[static_cast<size_t>(id)];
-
-    ui_->sliderDepth->setRange(PARAM_DEFS[static_cast<size_t>(params.depth)].min, PARAM_DEFS[static_cast<size_t>(params.depth)].max);
-    ui_->sliderAttack->setRange(PARAM_DEFS[static_cast<size_t>(params.a)].min, PARAM_DEFS[static_cast<size_t>(params.a)].max);
-    ui_->sliderDecay->setRange(PARAM_DEFS[static_cast<size_t>(params.d)].min, PARAM_DEFS[static_cast<size_t>(params.d)].max);
-    ui_->sliderSustain->setRange(PARAM_DEFS[static_cast<size_t>(params.s)].min, PARAM_DEFS[static_cast<size_t>(params.s)].max);
-    ui_->sliderRelease->setRange(PARAM_DEFS[static_cast<size_t>(params.r)].min, PARAM_DEFS[static_cast<size_t>(params.r)].max);
-
-    setDepth(PARAM_DEFS[static_cast<size_t>(params.depth)].def);
-    setAttack(PARAM_DEFS[static_cast<size_t>(params.a)].def);
-    setDecay(PARAM_DEFS[static_cast<size_t>(params.d)].def);
-    setSustain(PARAM_DEFS[static_cast<size_t>(params.s)].def);
-    setRelease(PARAM_DEFS[static_cast<size_t>(params.r)].def);
-
-}
-
 void EnvelopeGenerator::init(EnvelopeId id, std::array<ParamDefault, 5> profile) {
 
     EnvelopeParam params = ENV_PARAMS[static_cast<size_t>(id)];

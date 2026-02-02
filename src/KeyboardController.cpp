@@ -2,38 +2,40 @@
 #include "KeyboardController.h"
 
 #include <iostream>
+#include <yaml-cpp/yaml.h>
+#include <filesystem>
 
-KeyboardController::KeyboardController(NoteQueue& queue) : queue_(queue) {
+KeyboardController::KeyboardController(NoteQueue& queue, ConfigInterface* config) : queue_(queue), config_(config) {
 
-    // TODO: also configurable via a yml
-    keymap_ = {
-        { Qt::Key_Shift, 47 }, // B 2
-        { Qt::Key_Z, 48 }, // C 3
-        { Qt::Key_S, 49 }, // C#
-        { Qt::Key_X, 50 }, // D
-        { Qt::Key_D, 51 }, // D#
-        { Qt::Key_C, 52 }, // E
-        { Qt::Key_V, 53 }, // F
-        { Qt::Key_G, 54 }, // F#
-        { Qt::Key_B, 55 }, // G
-        { Qt::Key_H, 56 }, // G#
-        { Qt::Key_N, 57 }, // A
-        { Qt::Key_J, 58 }, // A#
-        { Qt::Key_M, 59 }, // B 3
-        { Qt::Key_Q, 60 }, // C 4
-        { Qt::Key_2, 61 }, // C#
-        { Qt::Key_W, 62 }, // D
-        { Qt::Key_3, 63 }, // D#
-        { Qt::Key_E, 64 }, // E
-        { Qt::Key_R, 65 }, // F
-        { Qt::Key_5, 66 }, // F#
-        { Qt::Key_T, 67 }, // G
-        { Qt::Key_6, 68 }, // G#
-        { Qt::Key_Y, 69 }, // A
-        { Qt::Key_7, 70 }, // A#
-        { Qt::Key_U, 71 }, // B 4
-        { Qt::Key_I, 72 }, // C 5
-    };
+    // load keymap from config file
+    std::string filepath = "config/keymap.yaml";
+    filepath = std::filesystem::absolute(filepath).string();
+    YAML::Node file;
+    try {
+        file = YAML::LoadFile(filepath);
+    } catch(const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return;
+    }
+
+    YAML::Node keymapNode = file["keymap"]; // node for string to string mappings
+    YAML::Node notesNode = file["notes"]; // string to midi int mappings
+    YAML::Node keysNode = file["keys"]; // string to qt key id mappings
+
+    // for each element in the keymap
+    for (const auto& entry : keymapNode) {
+
+        std::string keyString = entry.first.as<std::string>();
+        std::string noteString = entry.second.as<std::string>();
+
+        // match the strings to ints 
+        uint8_t noteValue = notesNode[noteString].as<uint8_t>();
+        uint32_t keyValue = keysNode[keyString].as<uint32_t>();
+
+        // insert into map
+        keymap_.emplace(keyValue, noteValue);
+    }
+
 }
 
 void KeyboardController::handleKeyPress(QKeyEvent* e) {

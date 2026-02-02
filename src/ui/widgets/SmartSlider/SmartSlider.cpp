@@ -42,6 +42,7 @@ void SmartSlider::setRange(float min, float max) {
 
     ui_->slider->setValue(sliderValue);
     ui_->spinValue->setValue(value);
+
 }
 
 // sets value of the slider and the spinBox, called by other classes
@@ -55,6 +56,10 @@ void SmartSlider::setValue(float value) {
     ui_->spinValue->setValue(value);
 
     emit valueChanged(value);
+}
+
+void SmartSlider::setResolution(int resolution) {
+    sliderResolution_ = resolution;
 }
 
 float SmartSlider::value() {

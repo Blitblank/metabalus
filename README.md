@@ -20,7 +20,7 @@ This synthesizer isn't very good, but it's neat :3
 - [x] Create oscillator class where the actual tone generation occurs. Multiple
       oscillators increase the sound complexity considerably
 - [x] Create a UI scope to visualize the synthesized composite waveform
-- [ ] Create wavetables for more complex tone generation. Needs to be selectable from ui
+- [x] Create wavetables for more complex tone generation. Needs to be selectable from ui
 - [ ] Wavetable file loading
 - [x] Create digital filters, prob biquad. Controllable from ui obv (cutoff + resonance)
 - [x] Add polyphony somewhere. Probably involves a voice class. If processing power
@@ -30,9 +30,9 @@ This synthesizer isn't very good, but it's neat :3
 - [ ] Filter upgrades including some more complex solving techniques (State Variable Filter),
       better key tracking, more natural envelope curves, filter drive, etc.
 - [ ] Reverb (quite a few ways to do this, needs more research)
-- [ ] Pitch tuning with the multiple oscillators (Octave > Semitone > Fine-tune)
+- [x] Pitch tuning with the multiple oscillators (Octave > Semitone > Fine-tune)
 - [ ] Frequency Modulation (huge)
-- [ ] Profile saving and loading, also includes loading configurations like keymaps, audio
+- [x] Profile saving and loading, also includes loading configurations like keymaps, audio
       engine config, etc. from a yaml instead of being hardcoded
 - [ ] Noise 
 - [ ] LFO modulation

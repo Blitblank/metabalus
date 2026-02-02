@@ -5,12 +5,13 @@
 #include <unordered_map>
 
 #include "NoteQueue.h"
+#include "ConfigInterface.h"
 
 // The keyboardcontroller handles user inputs from a keyboard and maps them to note events
 class KeyboardController {
 
 public:
-    explicit KeyboardController(NoteQueue& queue);
+    explicit KeyboardController(NoteQueue& queue, ConfigInterface* config);
     ~KeyboardController() = default;
 
     void handleKeyPress(QKeyEvent* e);
@@ -19,6 +20,7 @@ public:
 private:
 
     NoteQueue& queue_;
+    ConfigInterface* config_;
 
     // keymap is key -> midi note id
     std::unordered_map<int32_t, uint8_t> keymap_;

@@ -2,6 +2,7 @@
 #include "Voice.h"
 #include <cmath>
 #include <iostream>
+#include <random>
 
 Voice::Voice(SmoothedParam* params, WavetableController* wavetable) : params_(params), wavetable_(wavetable) {
 
@@ -89,16 +90,22 @@ float Voice::process(float* params, bool& scopeTrigger) {
 
     // calculate the note/pitch of the oscillators
     bool temp = false;
-    uint8_t osc1NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc1OctaveOffset) + getParam(ParamId::Osc1SemitoneOffset));
-    uint8_t osc2NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc2OctaveOffset) + getParam(ParamId::Osc2SemitoneOffset));
-    uint8_t osc3NoteOffset = static_cast<uint8_t>((SYNTH_NOTES_PER_OCTAVE+1) * getParam(ParamId::Osc3OctaveOffset) + getParam(ParamId::Osc3SemitoneOffset));
+    uint8_t osc1NoteOffset = static_cast<uint8_t>(std::round((SYNTH_NOTES_PER_OCTAVE) * (getParam(ParamId::Osc1OctaveOffset) + getParam(ParamId::MasterOctaveOffset)) + getParam(ParamId::Osc1SemitoneOffset) + getParam(ParamId::MasterSemitoneOffset)));
+    uint8_t osc2NoteOffset = static_cast<uint8_t>(std::round((SYNTH_NOTES_PER_OCTAVE) * (getParam(ParamId::Osc2OctaveOffset) + getParam(ParamId::MasterOctaveOffset)) + getParam(ParamId::Osc2SemitoneOffset) + getParam(ParamId::MasterSemitoneOffset)));
+    uint8_t osc3NoteOffset = static_cast<uint8_t>(std::round((SYNTH_NOTES_PER_OCTAVE) * (getParam(ParamId::Osc3OctaveOffset) + getParam(ParamId::MasterOctaveOffset)) + getParam(ParamId::Osc3SemitoneOffset) + getParam(ParamId::MasterSemitoneOffset)));
     // sample oscillators
-    float osc1 = oscillators_[0].process(osc1NoteOffset + note_, getParam(ParamId::Osc1PitchOffset)/100.0f, scopeTrigger);
-    float osc2 = oscillators_[1].process(osc2NoteOffset + note_, getParam(ParamId::Osc2PitchOffset)/100.0f, temp);
-    float osc3 = oscillators_[2].process(osc3NoteOffset + note_, getParam(ParamId::Osc3PitchOffset)/100.0f, temp);
-    
+    float osc1 = oscillators_[0].process(osc1NoteOffset + note_, (getParam(ParamId::Osc1PitchOffset) + getParam(ParamId::MasterPitchOffset))/100.0f, scopeTrigger);
+    float osc2 = oscillators_[1].process(osc2NoteOffset + note_, (getParam(ParamId::Osc2PitchOffset) + getParam(ParamId::MasterPitchOffset))/100.0f, temp);
+    float osc3 = oscillators_[2].process(osc3NoteOffset + note_, (getParam(ParamId::Osc3PitchOffset) + getParam(ParamId::MasterPitchOffset))/100.0f, temp);
+
+    // TODO: implement controls for noise
+    //float scale = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // Range [0.0, 1.0]
+    //float noise = -1.0f + 2.0f * scale;
+    // these values didn't sound good so I commented them out before I get controls for them
+
     // mix oscillators
-    float sampleOut = (osc1 + osc2*0.25f + osc3*0.125f) * gain;
+    // TODO: implement gain controls for the other oscillators
+    float sampleOut = (osc1 + osc2*0.4f + osc3*0.15f) * gain; // pre-filtered noise
 
     // filter sample
     float baseFreq = oscillators_[0].frequency();
@@ -108,6 +115,8 @@ float Voice::process(float* params, bool& scopeTrigger) {
     filter2_.setParams(Filter::Type::BiquadLowpass, cutoffFreq, resonance);
     float filteredSample = filter1_.biquadProcess(sampleOut);
     // sampleOut = filter2_.biquadProcess(sampleOut); // TODO: for some reason second filter is unstable only on windows 🤷
+
+    //filteredSample += noise*0.125f; // post-filtered noise
 
     return filteredSample;
 }

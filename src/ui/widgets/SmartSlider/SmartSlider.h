@@ -9,6 +9,7 @@ QT_END_NAMESPACE
 
 // SmartSlider is the widget including a slider, min/max settings, and a value setting parameter
 class SmartSlider : public QWidget {
+
     Q_OBJECT
 
 public:
@@ -18,6 +19,8 @@ public:
     // setters
     void setRange(float min, float max);
     void setValue(float value);
+    void setResolution(int resolution);
+    void setResolution() { setResolution(static_cast<int>(max_ - min_)); }
 
     // getters
     float value();
