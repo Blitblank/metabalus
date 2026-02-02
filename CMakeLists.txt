@@ -13,7 +13,7 @@ if (WIN32) # windows 11 x86_64
     set_target_properties(RtAudio::rtaudio PROPERTIES
         IMPORTED_LOCATION "${RtAudio_ROOT}/bin/rtaudio.dll"
         IMPORTED_IMPLIB "${RtAudio_ROOT}/lib/rtaudio.lib"
-        INTERFACE_INCLUDE_DIRECTORIES "${RtAudio_ROOT}/include"
+        INTERFACE_INCLUDE_DIRECTORIES "${RtAudio_ROOT}/include/rtaudio"
     )
     
     add_library(RtMidi::rtmidi SHARED IMPORTED)
