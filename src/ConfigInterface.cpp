@@ -95,9 +95,6 @@ YAML::Node ConfigInterface::loadProfile(std::string filename) {
         { config["Osc3PitchOffset"][0].as<float>(), config["Osc3PitchOffset"][1].as<float>(), config["Osc3PitchOffset"][2].as<float>() },
     }};
 
-    // TODO: remove this once all the parameters are set properly
-    params_->resetToDefaults();
-
     // set the values in the paramstore
     params_->set(EnvelopeId::Osc1Volume, osc1VolumeProfile[0].def, osc1VolumeProfile[1].def, osc1VolumeProfile[2].def, osc1VolumeProfile[3].def, osc1VolumeProfile[4].def);
     params_->set(EnvelopeId::FilterCutoff, fCutoffProfile[0].def, fCutoffProfile[1].def, fCutoffProfile[2].def, fCutoffProfile[3].def, fCutoffProfile[4].def);
@@ -116,9 +113,8 @@ YAML::Node ConfigInterface::loadProfile(std::string filename) {
     params_->set(ParamId::Osc3SemitoneOffset, osc3PitchOffsets[1].def);
     params_->set(ParamId::Osc3PitchOffset, osc3PitchOffsets[2].def);
 
-    // TODO:
-    // load wavetable settings
-    // load oscillator pitch settings
+    params_->set(ParamId::Osc1WaveSelector1, static_cast<float>(config["OscWaveSelector1"].as<int>()));
+    params_->set(ParamId::Osc1WaveSelector2, static_cast<float>(config["OscWaveSelector2"].as<int>()));
 
     return config;
 

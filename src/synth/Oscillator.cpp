@@ -24,8 +24,7 @@ float Oscillator::process(uint8_t note, float detune, bool& scopeTrigger) {
 
 float Oscillator::process(float frequency, bool& scopeTrigger) {
 
-    float pitchOffset = 0.5f;
-    float phaseInc = pitchOffset * 2.0f * M_PI * frequency / sampleRate_;
+    float phaseInc = 2.0f * M_PI * frequency / sampleRate_;
 
     float sampleOut = wavetable_->sample(activeWavetable_, phase_);
 

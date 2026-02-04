@@ -72,39 +72,6 @@ struct ParamDefault {
     float max;
 };
 
-constexpr std::array<ParamDefault, static_cast<size_t>(ParamId::Count)> PARAM_DEFS {{
-    { 100.0f,   20.0f,  600.0f},   // Osc1Freq
-    {   2.0f,    0.0f,    0.0f},   // OscWaveSelector1
-    {   1.0f,    0.0f,    0.0f},   // OscWaveSelector2
-    {   0.0f,   -5.0f,    5.0f},   // MasterOctaveOffset
-    {   0.0f,  -12.0f,   12.0f},   // MasterSemitoneOffset
-    {   0.0f, -100.0f,  100.0f},   // MasterPitchOffset
-    {   0.0f,   -5.0f,    5.0f},   // Osc1OctaveOffset
-    {   0.0f,  -12.0f,   12.0f},   // Osc1SemitoneOffset
-    {   0.0f, -100.0f,  100.0f},   // Osc1PitchOffset
-    {   1.0f,   -5.0f,    5.0f},   // Osc2OctaveOffset
-    {   0.0f,  -12.0f,   12.0f},   // Osc2SemitoneOffset
-    {   0.0f, -100.0f,  100.0f},   // Osc2PitchOffset
-    {   1.0f,   -5.0f,    5.0f},   // Osc3OctaveOffset
-    {   7.0f,  -12.0f,   12.0f},   // Osc3SemitoneOffset
-    {  1.96f, -100.0f,  100.0f},   // Osc3PitchOffset
-    {   1.0f,    0.0f,    2.0f},   // Osc1VolumeDepth
-    {  0.05f,    0.0f,    2.0f},   // Osc1VolumeEnvA
-    {   0.2f,    0.0f,    2.0f},   // Osc1VolumeEnvD
-    {   0.7f,    0.0f,    1.0f},   // Osc1VolumeEnvS
-    {   0.2f,    0.0f,    2.0f},   // Osc1VolumeEnvR
-    {   4.0f,    0.0f,    8.0f},   // FilterCutoffDepth
-    {  0.05f,    0.0f,    2.0f},   // FilterCutoffEnvA
-    {  0.20f,    0.0f,    2.0f},   // FilterCutoffEnvD
-    {   0.2f,    0.0f,    1.0f},   // FilterCutoffEnvS
-    {  0.25f,    0.0f,    2.0f},   // FilterCutoffEnvR
-    {   3.0f,    0.0f,    8.0f},   // FilterResonanceDepth
-    {  0.05f,    0.0f,    2.0f},   // FilterResonanceEnvA
-    {  0.20f,    0.0f,    2.0f},   // FilterResonanceEnvD
-    {   0.5f,    0.0f,    1.0f},   // FilterResonanceEnvS
-    {  0.30f,    0.0f,    2.0f},   // FilterResonanceEnvR
-}};
-
 constexpr size_t PARAM_COUNT = static_cast<size_t>(ParamId::Count);
 
 class ParameterStore {
@@ -119,7 +86,6 @@ public:
     void set(EnvelopeId id, float depth, float a, float d, float s, float r);
     float get(ParamId id) const;
     int32_t getInt(ParamId id) const { return static_cast<int32_t>(get(id)); }
-    void resetToDefaults();
 
 private:
 
