@@ -81,6 +81,7 @@ float Voice::process(float* params, bool& scopeTrigger) {
     float velocityGain = std::lerp(velocityCenter, velocity_, velocitySensitivity);
 
     float gain = gainEnv * getParam(ParamId::Osc1VolumeDepth) * velocityGain;
+    gain *= (100.0f - static_cast<float>(note_)) * 0.005f + 0.75;
 
     // sample generation
     uint8_t osc1Wave = (static_cast<uint8_t>(std::round(getParam(ParamId::Osc1WaveSelector1))));
