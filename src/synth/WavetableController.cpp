@@ -16,6 +16,14 @@ WavetableController::WavetableController() {
 
 void WavetableController::init() {
 
+    // find number of wavetable files
+    std::vector<std::filesystem::path> wavetableFiles;
+    for(std::filesystem::directory_entry entry : std::filesystem::directory_iterator(wavetablesRoot_)) {
+        if(std::filesystem::is_regular_file(entry.status())) {
+            wavetableFiles.push_back(entry.path());
+        }
+    }
+
     wavetables_.resize(4); // resize for however many files we find
 
     // wavetable file structure is best explained in scripts/generate_wavetable.py

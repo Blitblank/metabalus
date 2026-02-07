@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <cstdint>
+#include <filesystem>
 
 #define SYNTH_WAVETABLE_SIZE 2048
 #ifndef M_PI // I hate my stupid chungus life
@@ -29,6 +30,8 @@ public:
 private:
 
     std::vector<Wavetable> wavetables_;
+
+    const std::filesystem::path wavetablesRoot_ = "./config/wavetables";
 
 };
 
