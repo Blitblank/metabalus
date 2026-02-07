@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <fstream>
 
 WavetableController::WavetableController() {
     // load from files
@@ -17,17 +18,19 @@ void WavetableController::init() {
 
     wavetables_.resize(4); // resize for however many files we find
 
-    // don't really know how the files are gonna work
-    // but I'd like two files- a yaml that contains metadata like name, length, range, datatype, etc.
-    // and the main data be just a big array of that data type in a binary file
-    // although having it all in a single bin makes the most sense with the metadata being in the header
+    // wavetable file structure is best explained in scripts/generate_wavetable.py
+
+    // read the wavetable file
+    std::ifstream inputFile("config/wavetables/sine.wt", std::ios::in | std::ios::binary);
+    if(!inputFile) std::cout << "error opening file" << std::endl;
+    inputFile.read(reinterpret_cast<char*>(wavetables_[0].data()), SYNTH_WAVETABLE_SIZE * sizeof(float));
 
     float phase = 0.0f;
     float phaseInc = 2.0f * M_PI / static_cast<float>(SYNTH_WAVETABLE_SIZE);
 
     for(int i = 0; i < SYNTH_WAVETABLE_SIZE; i++) {
 
-        wavetables_[0][i] = std::sin(phase) / 0.707f; // sine
+        //wavetables_[0][i] = std::sin(phase) / 0.707f; // sine
         wavetables_[1][i] = (phase >= M_PI) ? 1.0f : -1.0f; // square
         wavetables_[2][i] = ((phase / M_PI) - 1.0f) / 0.577f; // saw
 
