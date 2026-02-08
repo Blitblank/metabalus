@@ -16,45 +16,25 @@ WavetableController::WavetableController() {
 
 void WavetableController::init() {
 
-    // find number of wavetable files
+    // find wavetable files
     std::vector<std::filesystem::path> wavetableFiles;
     for(std::filesystem::directory_entry entry : std::filesystem::directory_iterator(wavetablesRoot_)) {
         if(std::filesystem::is_regular_file(entry.status())) {
             wavetableFiles.push_back(entry.path());
         }
     }
+    uint32_t wavetableCount = wavetableFiles.size();
+    wavetables_.resize(wavetableCount);
 
-    wavetables_.resize(4); // resize for however many files we find
-
-    // wavetable file structure is best explained in scripts/generate_wavetable.py
-
-    // read the wavetable file
-    std::ifstream inputFile("config/wavetables/sine.wt", std::ios::in | std::ios::binary);
-    if(!inputFile) std::cout << "error opening file" << std::endl;
-    inputFile.read(reinterpret_cast<char*>(wavetables_[0].data()), SYNTH_WAVETABLE_SIZE * sizeof(float));
-
-    float phase = 0.0f;
-    float phaseInc = 2.0f * M_PI / static_cast<float>(SYNTH_WAVETABLE_SIZE);
-
-    for(int i = 0; i < SYNTH_WAVETABLE_SIZE; i++) {
-
-        //wavetables_[0][i] = std::sin(phase) / 0.707f; // sine
-        wavetables_[1][i] = (phase >= M_PI) ? 1.0f : -1.0f; // square
-        wavetables_[2][i] = ((phase / M_PI) - 1.0f) / 0.577f; // saw
-
-        // triangle
-        float tri = 0.0f;
-        if(phase <= M_PI/2.0f) {
-            tri = phase * 2.0f/M_PI;
-        } else if(phase <= 3.0f*M_PI/2.0f) {
-            tri = phase * -2.0f/M_PI + 2.0f;
-        } else {
-            tri = phase * 2.0f/M_PI - 4.0f;
-        }
-        wavetables_[3][i] = tri / 0.577f; 
-
-        phase += phaseInc;
+    // load the wavetable files
+    for(int i = 0; i < wavetableCount; i++) {
+        std::cout << "loading wavetable file [" << i << "]: " << wavetableFiles[i] << std::endl;
+        std::ifstream inputFile(wavetableFiles[i], std::ios::in | std::ios::binary);
+        if(!inputFile) std::cout << "error opening file" << std::endl;
+        inputFile.read(reinterpret_cast<char*>(wavetables_[i].data()), SYNTH_WAVETABLE_SIZE * sizeof(float));
     }
+
+    // wavetable data structure is best explained in scripts/generate_wavetable.py
 
 }
 

@@ -48,6 +48,17 @@ MainWindow::MainWindow(QWidget *parent) :
         this, [this](int index) {
             audio_->parameters()->set(ParamId::Osc1WaveSelector2, index);
         });
+    ui_->comboOsc1WaveSelector1->clear();
+    ui_->comboOsc1WaveSelector2->clear();
+    for(std::filesystem::directory_entry entry : std::filesystem::directory_iterator("config/wavetables")) {
+        if(std::filesystem::is_regular_file(entry.status())) {
+            std::string fileName = entry.path().string().substr(18);
+            fileName.erase(fileName.length() - 3);
+            ui_->comboOsc1WaveSelector1->addItem(QString::fromStdString(fileName));
+            ui_->comboOsc1WaveSelector2->addItem(QString::fromStdString(fileName));
+        }
+    }
+    
 
     // rogue sliders, TODO: clean these up in a package
     connect(ui_->sliderMasterOctave, &SmartSlider::valueChanged,

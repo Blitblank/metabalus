@@ -21,8 +21,9 @@ import example_wavetable
 wavetableLength = 2048
 
 def createFile():
-    print("creating file")
-    file = open("sine.wt", "wb")
+    filename = example_wavetable.WAVETABLE_FILE_NAME + ".wt"
+    print("creating file " + filename)
+    file = open(filename, "wb")
     return file
 
 def writeMetadata(file):
