@@ -107,5 +107,14 @@ target_link_libraries(metabolus
         RtMidi::rtmidi
         yaml-cpp
         Qt6::Widgets
-        atomic
 )
+
+# needed some different calls here
+if (WIN32)
+
+else()
+    target_link_libraries(metabolus 
+    PRIVATE
+        atomic
+    )
+endif()

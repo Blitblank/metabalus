@@ -14,3 +14,15 @@ stereoMode: 2
 
 # number of samples per audio buffer
 bufferSize: 512 
+
+
+# synth settings
+
+#define SYNTH_PITCH_STANDARD 440.0f // frequency of home pitch
+#define SYNTH_MIDI_HOME 69 // midi note index of home pitch
+#define SYNTH_NOTES_PER_OCTAVE 12
+
+# midi home note (usually A4=69) = pitchStandard hz (usually 440 or 432 hz)
+pitchStandard: 440.0
+midi_home: 69
+notesPerOctave: 12 # changes to this give some interesting non-western harmonics

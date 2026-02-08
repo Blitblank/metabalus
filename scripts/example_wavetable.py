@@ -3,7 +3,7 @@ import math
 
 from generate_wavetable import generateWavetable
 
-WAVETABLE_FILE_NAME = "sharkFin"
+WAVETABLE_FILE_NAME = "sigmoid"
 
 # process expects a waveform from x=[0, 2pi) centered around f(x)=0
 # normalization is handled by the wavetableGenerator
@@ -38,12 +38,15 @@ def sharkFin(phase):
         sample = -2 * (phase/math.pi - 1.0) ** k + 1.0
     return sample
 
-def sphere(phase):
-    return 1
+def sigmoid(phase):
+    k = 4
+    a = -k * (phase - math.pi)
+    sample = 2 / (1 + math.exp(a)) - 1
+    return sample
 
 # pass in the name of your wavtable file and the process function
 def main():
-    generateWavetable(WAVETABLE_FILE_NAME, process)
+    generateWavetable(WAVETABLE_FILE_NAME, sigmoid)
 
 if __name__ == "__main__":
     main()

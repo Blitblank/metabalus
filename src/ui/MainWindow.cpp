@@ -157,50 +157,54 @@ void MainWindow::onResetClicked() {
 
     // TODO: clean these up, maybe put them in a package like the envelope generators (it'll help encapsulate the int-snapping business)
     // what I might do is make a variable-length slider-package object
-    ui_->sliderMasterOctave->setResolution(configRoot["MasterOctaveOffset"][2].as<int>() - configRoot["MasterOctaveOffset"][1].as<int>());
-    ui_->sliderMasterOctave->setRange(configRoot["MasterOctaveOffset"][1].as<int>(), configRoot["MasterOctaveOffset"][2].as<int>());
-    ui_->sliderMasterOctave->setValue(configRoot["MasterOctaveOffset"][0].as<int>());
+    YAML::Node masterNode = configRoot["MasterPitchOffset"];
+    YAML::Node osc1Node = configRoot["Osc1PitchOffset"];
+    YAML::Node osc2Node = configRoot["Osc2PitchOffset"];
+    YAML::Node osc3Node = configRoot["Osc3PitchOffset"];
+    ui_->sliderMasterOctave->setResolution(masterNode["Octave"][2].as<int>() - masterNode["Octave"][1].as<int>());
+    ui_->sliderMasterOctave->setRange(masterNode["Octave"][1].as<int>(), masterNode["Octave"][2].as<int>());
+    ui_->sliderMasterOctave->setValue(masterNode["Octave"][0].as<int>());
 
-    ui_->sliderMasterSemitone->setResolution(configRoot["MasterSemitoneOffset"][2].as<int>() - configRoot["MasterSemitoneOffset"][1].as<int>());
-    ui_->sliderMasterSemitone->setRange(configRoot["MasterSemitoneOffset"][1].as<int>(), configRoot["MasterSemitoneOffset"][2].as<int>());
-    ui_->sliderMasterSemitone->setValue(configRoot["MasterSemitoneOffset"][0].as<int>());
+    ui_->sliderMasterSemitone->setResolution(masterNode["Semitone"][2].as<int>() - masterNode["Semitone"][1].as<int>());
+    ui_->sliderMasterSemitone->setRange(masterNode["Semitone"][1].as<int>(), masterNode["Semitone"][2].as<int>());
+    ui_->sliderMasterSemitone->setValue(masterNode["Semitone"][0].as<int>());
 
-    ui_->sliderMasterPitch->setRange(configRoot["MasterPitchOffset"][1].as<float>(), configRoot["MasterPitchOffset"][2].as<float>());
-    ui_->sliderMasterPitch->setValue(configRoot["MasterPitchOffset"][0].as<float>());
+    ui_->sliderMasterPitch->setRange(masterNode["Pitch"][1].as<float>(), masterNode["Pitch"][2].as<float>());
+    ui_->sliderMasterPitch->setValue(masterNode["Pitch"][0].as<float>());
 
-    ui_->sliderOsc1Octave->setResolution(configRoot["Osc1OctaveOffset"][2].as<int>() - configRoot["Osc1OctaveOffset"][1].as<int>());
-    ui_->sliderOsc1Octave->setRange(configRoot["Osc1OctaveOffset"][1].as<int>(), configRoot["Osc1OctaveOffset"][2].as<int>());
-    ui_->sliderOsc1Octave->setValue(configRoot["Osc1OctaveOffset"][0].as<int>());
+    ui_->sliderOsc1Octave->setResolution(osc1Node["Octave"][2].as<int>() - osc1Node["Octave"][1].as<int>());
+    ui_->sliderOsc1Octave->setRange(osc1Node["Octave"][1].as<int>(), osc1Node["Octave"][2].as<int>());
+    ui_->sliderOsc1Octave->setValue(osc1Node["Octave"][0].as<int>());
 
-    ui_->sliderOsc1Semitone->setResolution(configRoot["Osc1SemitoneOffset"][2].as<int>() - configRoot["Osc1SemitoneOffset"][1].as<int>());
-    ui_->sliderOsc1Semitone->setRange(configRoot["Osc1SemitoneOffset"][1].as<int>(), configRoot["Osc1SemitoneOffset"][2].as<int>());
-    ui_->sliderOsc1Semitone->setValue(configRoot["Osc1SemitoneOffset"][0].as<int>());
+    ui_->sliderOsc1Semitone->setResolution(osc1Node["Semitone"][2].as<int>() - osc1Node["Semitone"][1].as<int>());
+    ui_->sliderOsc1Semitone->setRange(osc1Node["Semitone"][1].as<int>(), osc1Node["Semitone"][2].as<int>());
+    ui_->sliderOsc1Semitone->setValue(osc1Node["Semitone"][0].as<int>());
 
-    ui_->sliderOsc1Pitch->setRange(configRoot["Osc1PitchOffset"][1].as<float>(), configRoot["Osc1PitchOffset"][2].as<float>());
-    ui_->sliderOsc1Pitch->setValue(configRoot["Osc1PitchOffset"][0].as<float>());
+    ui_->sliderOsc1Pitch->setRange(osc1Node["Pitch"][1].as<float>(), osc1Node["Pitch"][2].as<float>());
+    ui_->sliderOsc1Pitch->setValue(osc1Node["Pitch"][0].as<float>());
 
-    ui_->sliderOsc2Octave->setResolution(configRoot["Osc2OctaveOffset"][2].as<int>() - configRoot["Osc2OctaveOffset"][1].as<int>());
-    ui_->sliderOsc2Octave->setRange(configRoot["Osc2OctaveOffset"][1].as<int>(), configRoot["Osc2OctaveOffset"][2].as<int>());
-    ui_->sliderOsc2Octave->setValue(configRoot["Osc2OctaveOffset"][0].as<int>());
+    ui_->sliderOsc2Octave->setResolution(osc2Node["Octave"][2].as<int>() - osc2Node["Octave"][1].as<int>());
+    ui_->sliderOsc2Octave->setRange(osc2Node["Octave"][1].as<int>(), osc2Node["Octave"][2].as<int>());
+    ui_->sliderOsc2Octave->setValue(osc2Node["Octave"][0].as<int>());
 
-    ui_->sliderOsc2Semitone->setResolution(configRoot["Osc2SemitoneOffset"][2].as<int>() - configRoot["Osc2SemitoneOffset"][1].as<int>());
-    ui_->sliderOsc2Semitone->setRange(configRoot["Osc2SemitoneOffset"][1].as<int>(), configRoot["Osc2SemitoneOffset"][2].as<int>());
-    ui_->sliderOsc2Semitone->setValue(configRoot["Osc2SemitoneOffset"][0].as<int>());
+    ui_->sliderOsc2Semitone->setResolution(osc2Node["Semitone"][2].as<int>() - osc2Node["Semitone"][1].as<int>());
+    ui_->sliderOsc2Semitone->setRange(osc2Node["Semitone"][1].as<int>(), osc2Node["Semitone"][2].as<int>());
+    ui_->sliderOsc2Semitone->setValue(osc2Node["Semitone"][0].as<int>());
 
-    ui_->sliderOsc2Pitch->setRange(configRoot["Osc2PitchOffset"][1].as<float>(), configRoot["Osc2PitchOffset"][2].as<float>());
-    ui_->sliderOsc2Pitch->setValue(configRoot["Osc2PitchOffset"][0].as<float>());
+    ui_->sliderOsc2Pitch->setRange(osc2Node["Pitch"][1].as<float>(), osc2Node["Pitch"][2].as<float>());
+    ui_->sliderOsc2Pitch->setValue(osc2Node["Pitch"][0].as<float>());
 
-    ui_->sliderOsc3Octave->setResolution(configRoot["Osc3OctaveOffset"][2].as<int>() - configRoot["Osc3OctaveOffset"][1].as<int>());
-    ui_->sliderOsc3Octave->setRange(configRoot["Osc3OctaveOffset"][1].as<int>(), configRoot["Osc3OctaveOffset"][2].as<int>());
-    ui_->sliderOsc3Octave->setValue(configRoot["Osc3OctaveOffset"][0].as<int>());
+    ui_->sliderOsc3Octave->setResolution(osc3Node["Octave"][2].as<int>() - osc3Node["Octave"][1].as<int>());
+    ui_->sliderOsc3Octave->setRange(osc3Node["Octave"][1].as<int>(), osc3Node["Octave"][2].as<int>());
+    ui_->sliderOsc3Octave->setValue(osc3Node["Octave"][0].as<int>());
 
-    ui_->sliderOsc3Semitone->setResolution(configRoot["Osc3SemitoneOffset"][2].as<int>() - configRoot["Osc3SemitoneOffset"][1].as<int>());
-    ui_->sliderOsc3Semitone->setRange(configRoot["Osc3SemitoneOffset"][1].as<int>(), configRoot["Osc3SemitoneOffset"][2].as<int>());
-    ui_->sliderOsc3Semitone->setValue(configRoot["Osc3SemitoneOffset"][0].as<int>());
+    ui_->sliderOsc3Semitone->setResolution(osc3Node["Semitone"][2].as<int>() - osc3Node["Semitone"][1].as<int>());
+    ui_->sliderOsc3Semitone->setRange(osc3Node["Semitone"][1].as<int>(), osc3Node["Semitone"][2].as<int>());
+    ui_->sliderOsc3Semitone->setValue(osc3Node["Semitone"][0].as<int>());
 
-    ui_->sliderOsc3Pitch->setRange(configRoot["Osc3PitchOffset"][1].as<float>(), configRoot["Osc3PitchOffset"][2].as<float>());
-    ui_->sliderOsc3Pitch->setValue(configRoot["Osc3PitchOffset"][0].as<float>());
-    
+    ui_->sliderOsc3Pitch->setRange(osc3Node["Pitch"][1].as<float>(), osc3Node["Pitch"][2].as<float>());
+    ui_->sliderOsc3Pitch->setValue(osc3Node["Pitch"][0].as<float>());
+
     ui_->comboOsc1WaveSelector1->setCurrentIndex(configRoot["OscWaveSelector1"].as<int>());
     ui_->comboOsc1WaveSelector2->setCurrentIndex(configRoot["OscWaveSelector2"].as<int>());
 

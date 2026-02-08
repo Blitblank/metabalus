@@ -8,7 +8,7 @@
 
 #include "ParameterStore.h"
 
-#define CONFIG_VERSION 0x0002
+#define CONFIG_VERSION 0x04
 
 enum class ConfigFile {
     Audio = 0

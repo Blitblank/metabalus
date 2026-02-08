@@ -74,25 +74,29 @@ YAML::Node ConfigInterface::loadProfile(std::string filename) {
     std::array<Param, 5> fCutoffProfile = loadEnvProfile(&config, "FilterCutoff");
     std::array<Param, 5> fResonanceProfile = loadEnvProfile(&config, "FilterResonance");
 
+    YAML::Node masterNode = config["MasterPitchOffset"];
+    YAML::Node osc1Node = config["Osc1PitchOffset"];
+    YAML::Node osc2Node = config["Osc2PitchOffset"];
+    YAML::Node osc3Node = config["Osc3PitchOffset"];
     std::array<Param, 3> masterPitchOffsets = {{
-        { config["MasterOctaveOffset"][0].as<float>(), config["MasterOctaveOffset"][1].as<float>(), config["MasterOctaveOffset"][2].as<float>() },
-        { config["MasterSemitoneOffset"][0].as<float>(), config["MasterSemitoneOffset"][1].as<float>(), config["MasterSemitoneOffset"][2].as<float>() },
-        { config["MasterPitchOffset"][0].as<float>(), config["MasterPitchOffset"][1].as<float>(), config["MasterPitchOffset"][2].as<float>() },
+        { masterNode["Octave"][0].as<float>(), masterNode["Octave"][1].as<float>(), masterNode["Octave"][2].as<float>() },
+        { masterNode["Semitone"][0].as<float>(), masterNode["Semitone"][1].as<float>(), masterNode["Semitone"][2].as<float>() },
+        { masterNode["Pitch"][0].as<float>(), masterNode["Pitch"][1].as<float>(), masterNode["Pitch"][2].as<float>() },
     }};
     std::array<Param, 3> osc1PitchOffsets = {{
-        { config["Osc1OctaveOffset"][0].as<float>(), config["Osc1OctaveOffset"][1].as<float>(), config["Osc1OctaveOffset"][2].as<float>() },
-        { config["Osc1SemitoneOffset"][0].as<float>(), config["Osc1SemitoneOffset"][1].as<float>(), config["Osc1SemitoneOffset"][2].as<float>() },
-        { config["Osc1PitchOffset"][0].as<float>(), config["Osc1PitchOffset"][1].as<float>(), config["Osc1PitchOffset"][2].as<float>() },
+        { osc1Node["Octave"][0].as<float>(), osc1Node["Octave"][1].as<float>(), osc1Node["Octave"][2].as<float>() },
+        { osc1Node["Semitone"][0].as<float>(), osc1Node["Semitone"][1].as<float>(), osc1Node["Semitone"][2].as<float>() },
+        { osc1Node["Pitch"][0].as<float>(),osc1Node["Pitch"][1].as<float>(), osc1Node["Pitch"][2].as<float>() },
     }};
     std::array<Param, 3> osc2PitchOffsets = {{
-        { config["Osc2OctaveOffset"][0].as<float>(), config["Osc2OctaveOffset"][1].as<float>(), config["Osc2OctaveOffset"][2].as<float>() },
-        { config["Osc2SemitoneOffset"][0].as<float>(), config["Osc2SemitoneOffset"][1].as<float>(), config["Osc2SemitoneOffset"][2].as<float>() },
-        { config["Osc2PitchOffset"][0].as<float>(), config["Osc2PitchOffset"][1].as<float>(), config["Osc2PitchOffset"][2].as<float>() },
+        { osc2Node["Octave"][0].as<float>(), osc2Node["Octave"][1].as<float>(), osc2Node["Octave"][2].as<float>() },
+        { osc2Node["Semitone"][0].as<float>(), osc2Node["Semitone"][1].as<float>(), osc2Node["Semitone"][2].as<float>() },
+        { osc2Node["Pitch"][0].as<float>(), osc2Node["Pitch"][1].as<float>(), osc2Node["Pitch"][2].as<float>() },
     }};
     std::array<Param, 3> osc3PitchOffsets = {{
-        { config["Osc3OctaveOffset"][0].as<float>(), config["Osc3OctaveOffset"][1].as<float>(), config["Osc3OctaveOffset"][2].as<float>() },
-        { config["Osc3SemitoneOffset"][0].as<float>(), config["Osc3SemitoneOffset"][1].as<float>(), config["Osc3SemitoneOffset"][2].as<float>() },
-        { config["Osc3PitchOffset"][0].as<float>(), config["Osc3PitchOffset"][1].as<float>(), config["Osc3PitchOffset"][2].as<float>() },
+        { osc3Node["Octave"][0].as<float>(), osc3Node["Octave"][1].as<float>(), osc3Node["Octave"][2].as<float>() },
+        { osc3Node["Semitone"][0].as<float>(), osc3Node["Semitone"][1].as<float>(), osc3Node["Semitone"][2].as<float>() },
+        { osc3Node["Pitch"][0].as<float>(), osc3Node["Pitch"][1].as<float>(), osc3Node["Pitch"][2].as<float>() },
     }};
 
     // set the values in the paramstore
@@ -126,9 +130,11 @@ std::array<Param, 5> ConfigInterface::loadEnvProfile(YAML::Node* node, std::stri
 
     std::array<Param, 5> paramProfile;
 
-    for(int i = 0; i < paramProfile.size(); i++) {
-        paramProfile[i] = { envelopeNode[i][0].as<float>(), envelopeNode[i][1].as<float>(), envelopeNode[i][2].as<float>() };
-    }
+    paramProfile[0] = { envelopeNode["Depth"][0].as<float>(), envelopeNode["Depth"][1].as<float>(), envelopeNode["Depth"][2].as<float>() };
+    paramProfile[1] = { envelopeNode["Attack"][0].as<float>(), envelopeNode["Attack"][1].as<float>(), envelopeNode["Attack"][2].as<float>() };
+    paramProfile[2] = { envelopeNode["Decay"][0].as<float>(), envelopeNode["Decay"][1].as<float>(), envelopeNode["Decay"][2].as<float>() };
+    paramProfile[3] = { envelopeNode["Sustain"][0].as<float>(), envelopeNode["Sustain"][1].as<float>(), envelopeNode["Sustain"][2].as<float>() };
+    paramProfile[4] = { envelopeNode["Release"][0].as<float>(), envelopeNode["Release"][1].as<float>(), envelopeNode["Release"][2].as<float>() };
 
     return paramProfile;
 }

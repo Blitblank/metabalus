@@ -4,51 +4,46 @@
 
 # sequences in the form [x, x, x] denote [setValue, sliderMinimum, sliderMaximum]
 
-version: 0x0003
-
-# deprecated, useless
-Osc1Freq: [100, 20, 600]
+version: 0x04
 
 # wavetable selections
 OscWaveSelector1: 2
 OscWaveSelector2: 3
 
 # Frequency parameters
-MasterOctaveOffset: [0, -5, 5]
-MasterSemitoneOffset: [0, -12, 12]
-MasterPitchOffset: [0, -100, 100]
-Osc1OctaveOffset: [0, -5, 5]
-Osc1SemitoneOffset: [0, -12, 12]
-Osc1PitchOffset: [1.34, -100, 100]
-Osc2OctaveOffset: [1, -5, 5]
-Osc2SemitoneOffset: [0, -12, 12]
-Osc2PitchOffset: [12.86, -100, 100]
-Osc3OctaveOffset: [1, -5, 5]
-Osc3SemitoneOffset: [7, -12, 12]
-Osc3PitchOffset: [-8.79, -100, 100]
-
-# gonna have something like this:
-#MasterPitchOffset:
-# - [0, -5, 5] # Octave
-# - [0, -12, -12] # Semitone
-# - [0, -100, 100] # Pitch
+MasterPitchOffset:
+  Octave: [0, -5, 5]
+  Semitone: [0, -12, 12]
+  Pitch: [0, -100, 100]
+Osc1PitchOffset:
+  Octave: [0, -5, 5]
+  Semitone: [0, -12, 12]
+  Pitch: [1.34, -100, 100]
+Osc2PitchOffset:
+  Octave: [1, -5, 5]
+  Semitone: [0, -12, 12]
+  Pitch: [12.86, -100, 100]
+Osc3PitchOffset:
+  Octave: [1, -5, 5]
+  Semitone: [7, -12, 12]
+  Pitch: [-8.79, -100, 100]
 
 # Envelope generator parameters
 Osc1Volume:
-  - [1, 0, 10] # Depth
-  - [0.05, 0, 2] # Attack
-  - [0.2, 0, 2] # Decay
-  - [0.7, 0, 1] # Sustain
-  - [0.2, 0, 2] # Release
+  Depth: [1, 0, 10]
+  Attack: [0.05, 0, 2]
+  Decay: [0.2, 0, 2]
+  Sustain: [0.7, 0, 1]
+  Release: [0.2, 0, 2]
 FilterCutoff:
-  - [4, 0, 8] # Depth
-  - [0.05, 0, 2] # Attack
-  - [0.2, 0, 2] # Decay
-  - [0.2, 0, 1] # Sustain
-  - [0.25, 0, 2] # Release
+  Depth: [4, 0, 8]
+  Attack: [0.05, 0, 2]
+  Decay: [0.2, 0, 2]
+  Sustain: [0.2, 0, 1]
+  Release: [0.25, 0, 2]
 FilterResonance:
-  - [3, 0, 8] # Depth
-  - [0.05, 0, 2] # Attack
-  - [0.2, 0, 2] # Decay
-  - [0.5, 0, 1] # Sustain
-  - [0.3, 0, 2] # Release
+  Depth: [3, 0, 8]
+  Attack: [0.05, 0, 2]
+  Decay: [0.2, 0, 2]
+  Sustain: [0.5, 0, 1]
+  Release: [0.3, 0, 2]
