@@ -1,7 +1,7 @@
 
 import math
 
-WAVETABLE_FILE_NAME = "triangle"
+WAVETABLE_FILE_NAME = "sharkFin"
 
 def sine(phase):
     return math.sin(phase)
@@ -26,7 +26,12 @@ def triangle(phase):
     return sample
 
 def sharkFin(phase):
-    return 1
+    k = 10.0
+    if(phase <= math.pi):
+        sample = 2 * (phase/math.pi) ** k - 1.0
+    else:
+        sample = -2 * (phase/math.pi - 1.0) ** k + 1.0
+    return sample
 
 def sphere(phase):
     return 1
@@ -35,4 +40,4 @@ def sphere(phase):
 # it calculates a single sample at a specified phase
 # normalization is handled by generate_wavetable.py
 def process(phase):
-    return triangle(phase)
+    return sharkFin(phase)
