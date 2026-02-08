@@ -26,7 +26,6 @@ if (-not (Test-Path -Path $BUILD_DIR)) {
 }
 
 # detect dependencies
-
 $libraries = @("rtaudio", "rtmidi", "yaml-cpp")
 $dependencies_found = 0
 foreach ($lib in $libraries) {
@@ -38,6 +37,7 @@ foreach ($lib in $libraries) {
     }
 }
 
+# run the install script if dependencies not found
 if (-not ($dependencies_found -eq $libraries.Count)) {
     & "scripts\install_dependencies.ps1"
 } else {
