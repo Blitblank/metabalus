@@ -70,48 +70,48 @@ YAML::Node ConfigInterface::loadProfile(std::string filename) {
     }
 
     // extract values from the config file
-    std::array<ParamDefault, 5> osc1VolumeProfile = loadEnvProfile(&config, "Osc1Volume");
-    std::array<ParamDefault, 5> fCutoffProfile = loadEnvProfile(&config, "FilterCutoff");
-    std::array<ParamDefault, 5> fResonanceProfile = loadEnvProfile(&config, "FilterResonance");
+    std::array<Param, 5> osc1VolumeProfile = loadEnvProfile(&config, "Osc1Volume");
+    std::array<Param, 5> fCutoffProfile = loadEnvProfile(&config, "FilterCutoff");
+    std::array<Param, 5> fResonanceProfile = loadEnvProfile(&config, "FilterResonance");
 
-    std::array<ParamDefault, 3> masterPitchOffsets = {{
+    std::array<Param, 3> masterPitchOffsets = {{
         { config["MasterOctaveOffset"][0].as<float>(), config["MasterOctaveOffset"][1].as<float>(), config["MasterOctaveOffset"][2].as<float>() },
         { config["MasterSemitoneOffset"][0].as<float>(), config["MasterSemitoneOffset"][1].as<float>(), config["MasterSemitoneOffset"][2].as<float>() },
         { config["MasterPitchOffset"][0].as<float>(), config["MasterPitchOffset"][1].as<float>(), config["MasterPitchOffset"][2].as<float>() },
     }};
-    std::array<ParamDefault, 3> osc1PitchOffsets = {{
+    std::array<Param, 3> osc1PitchOffsets = {{
         { config["Osc1OctaveOffset"][0].as<float>(), config["Osc1OctaveOffset"][1].as<float>(), config["Osc1OctaveOffset"][2].as<float>() },
         { config["Osc1SemitoneOffset"][0].as<float>(), config["Osc1SemitoneOffset"][1].as<float>(), config["Osc1SemitoneOffset"][2].as<float>() },
         { config["Osc1PitchOffset"][0].as<float>(), config["Osc1PitchOffset"][1].as<float>(), config["Osc1PitchOffset"][2].as<float>() },
     }};
-    std::array<ParamDefault, 3> osc2PitchOffsets = {{
+    std::array<Param, 3> osc2PitchOffsets = {{
         { config["Osc2OctaveOffset"][0].as<float>(), config["Osc2OctaveOffset"][1].as<float>(), config["Osc2OctaveOffset"][2].as<float>() },
         { config["Osc2SemitoneOffset"][0].as<float>(), config["Osc2SemitoneOffset"][1].as<float>(), config["Osc2SemitoneOffset"][2].as<float>() },
         { config["Osc2PitchOffset"][0].as<float>(), config["Osc2PitchOffset"][1].as<float>(), config["Osc2PitchOffset"][2].as<float>() },
     }};
-    std::array<ParamDefault, 3> osc3PitchOffsets = {{
+    std::array<Param, 3> osc3PitchOffsets = {{
         { config["Osc3OctaveOffset"][0].as<float>(), config["Osc3OctaveOffset"][1].as<float>(), config["Osc3OctaveOffset"][2].as<float>() },
         { config["Osc3SemitoneOffset"][0].as<float>(), config["Osc3SemitoneOffset"][1].as<float>(), config["Osc3SemitoneOffset"][2].as<float>() },
         { config["Osc3PitchOffset"][0].as<float>(), config["Osc3PitchOffset"][1].as<float>(), config["Osc3PitchOffset"][2].as<float>() },
     }};
 
     // set the values in the paramstore
-    params_->set(EnvelopeId::Osc1Volume, osc1VolumeProfile[0].def, osc1VolumeProfile[1].def, osc1VolumeProfile[2].def, osc1VolumeProfile[3].def, osc1VolumeProfile[4].def);
-    params_->set(EnvelopeId::FilterCutoff, fCutoffProfile[0].def, fCutoffProfile[1].def, fCutoffProfile[2].def, fCutoffProfile[3].def, fCutoffProfile[4].def);
-    params_->set(EnvelopeId::FilterResonance, fResonanceProfile[0].def, fResonanceProfile[1].def, fResonanceProfile[2].def, fResonanceProfile[3].def, fResonanceProfile[4].def);
+    params_->set(EnvelopeId::Osc1Volume, osc1VolumeProfile[0].val, osc1VolumeProfile[1].val, osc1VolumeProfile[2].val, osc1VolumeProfile[3].val, osc1VolumeProfile[4].val);
+    params_->set(EnvelopeId::FilterCutoff, fCutoffProfile[0].val, fCutoffProfile[1].val, fCutoffProfile[2].val, fCutoffProfile[3].val, fCutoffProfile[4].val);
+    params_->set(EnvelopeId::FilterResonance, fResonanceProfile[0].val, fResonanceProfile[1].val, fResonanceProfile[2].val, fResonanceProfile[3].val, fResonanceProfile[4].val);
     // TODO: why do I bother passing in 5 values independently when I can just do an array like in loadEnvProfile ?
-    params_->set(ParamId::MasterOctaveOffset, masterPitchOffsets[0].def);
-    params_->set(ParamId::MasterSemitoneOffset, masterPitchOffsets[1].def);
-    params_->set(ParamId::MasterPitchOffset, masterPitchOffsets[2].def);
-    params_->set(ParamId::Osc1OctaveOffset, osc1PitchOffsets[0].def);
-    params_->set(ParamId::Osc1SemitoneOffset, osc1PitchOffsets[1].def);
-    params_->set(ParamId::Osc1PitchOffset, osc1PitchOffsets[2].def);
-    params_->set(ParamId::Osc2OctaveOffset, osc2PitchOffsets[0].def);
-    params_->set(ParamId::Osc2SemitoneOffset, osc2PitchOffsets[1].def);
-    params_->set(ParamId::Osc2PitchOffset, osc2PitchOffsets[2].def);
-    params_->set(ParamId::Osc3OctaveOffset, osc3PitchOffsets[0].def);
-    params_->set(ParamId::Osc3SemitoneOffset, osc3PitchOffsets[1].def);
-    params_->set(ParamId::Osc3PitchOffset, osc3PitchOffsets[2].def);
+    params_->set(ParamId::MasterOctaveOffset, masterPitchOffsets[0].val);
+    params_->set(ParamId::MasterSemitoneOffset, masterPitchOffsets[1].val);
+    params_->set(ParamId::MasterPitchOffset, masterPitchOffsets[2].val);
+    params_->set(ParamId::Osc1OctaveOffset, osc1PitchOffsets[0].val);
+    params_->set(ParamId::Osc1SemitoneOffset, osc1PitchOffsets[1].val);
+    params_->set(ParamId::Osc1PitchOffset, osc1PitchOffsets[2].val);
+    params_->set(ParamId::Osc2OctaveOffset, osc2PitchOffsets[0].val);
+    params_->set(ParamId::Osc2SemitoneOffset, osc2PitchOffsets[1].val);
+    params_->set(ParamId::Osc2PitchOffset, osc2PitchOffsets[2].val);
+    params_->set(ParamId::Osc3OctaveOffset, osc3PitchOffsets[0].val);
+    params_->set(ParamId::Osc3SemitoneOffset, osc3PitchOffsets[1].val);
+    params_->set(ParamId::Osc3PitchOffset, osc3PitchOffsets[2].val);
 
     params_->set(ParamId::Osc1WaveSelector1, static_cast<float>(config["OscWaveSelector1"].as<int>()));
     params_->set(ParamId::Osc1WaveSelector2, static_cast<float>(config["OscWaveSelector2"].as<int>()));
@@ -120,11 +120,11 @@ YAML::Node ConfigInterface::loadProfile(std::string filename) {
 
 }
 
-std::array<ParamDefault, 5> ConfigInterface::loadEnvProfile(YAML::Node* node, std::string profile) {
+std::array<Param, 5> ConfigInterface::loadEnvProfile(YAML::Node* node, std::string profile) {
 
     YAML::Node envelopeNode = (*node)[profile];
 
-    std::array<ParamDefault, 5> paramProfile;
+    std::array<Param, 5> paramProfile;
 
     for(int i = 0; i < paramProfile.size(); i++) {
         paramProfile[i] = { envelopeNode[i][0].as<float>(), envelopeNode[i][1].as<float>(), envelopeNode[i][2].as<float>() };
@@ -133,7 +133,7 @@ std::array<ParamDefault, 5> ConfigInterface::loadEnvProfile(YAML::Node* node, st
     return paramProfile;
 }
 
-std::array<ParamDefault, 5> ConfigInterface::loadEnvProfile(std::string filename, std::string profile) {
+std::array<Param, 5> ConfigInterface::loadEnvProfile(std::string filename, std::string profile) {
 
     std::string filepath = "config/profiles/" + filename + ".yaml";
     filepath = std::filesystem::absolute(filepath).string();

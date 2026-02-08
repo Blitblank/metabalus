@@ -17,7 +17,7 @@ public:
     ~EnvelopeGenerator();
 
     // connects signals, sets parameters to a provided profile
-    void init(EnvelopeId id, std::array<ParamDefault, 5> profile);
+    void init(EnvelopeId id, std::array<Param, 5> profile);
 
     // setters
     void setDepth(float v);

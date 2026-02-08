@@ -60,7 +60,7 @@ Build. The script will build and install dependencies automatically
 
 On Windows (MSVC):
 ```PowerShell
-.\scripts\build.ps1 # builds in build/Debug/
+.\scripts\build.ps1
 ```
 
 On Linux (GCC):
@@ -68,7 +68,7 @@ On Linux (GCC):
 ./scripts/build.sh
 ```
 
-TODO: right now you need to run the executable from the executable's directory because of CWD paths and such. Needs to be fixed because annoying
+Note: executing the app from the root directory will make the app use the default root level configs. Run the app from the build directory to customize your configurations with the build/config configurations.
 
 Configure the CMake/build script if you have issues
 
@@ -79,9 +79,6 @@ To clean:
 ```
 Note: dependencies are built into build/lib, so don't delete unless you need to rebuild the libraries
 Use the install_dependencies script to manually install dependencies.
-
-Build troubleshooting:
-On windows, `bcdedit /set IncreaseUserVa 3072` solved cc1plus.exe: out of memory errors while building qt for me
 
 ## Configurations
 Default config files are located in the config/ directory, and they are replicated into build/config/ if they dont already exist there. To edit the configurations, edit the config files in the build directory, not the defaults. Most config files are loaded/parsed at startup (TODO: investigate some reloading functions), so the program must be restarted, although not recompiled, for new configs to take effect. \

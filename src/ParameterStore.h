@@ -66,8 +66,8 @@ constexpr std::array<EnvelopeParam, static_cast<size_t>(EnvelopeId::Count)> ENV_
     { ParamId::FilterResonanceDepth, ParamId::FilterResonanceEnvA, ParamId::FilterResonanceEnvD, ParamId::FilterResonanceEnvS, ParamId::FilterResonanceEnvR }, // FilterResonance
 }};
 
-struct ParamDefault {
-    float def;
+struct Param {
+    float val;
     float min;
     float max;
 };
@@ -89,6 +89,6 @@ public:
 
 private:
 
-    std::array<std::atomic<float>, PARAM_COUNT> values_;
+    std::array<std::atomic<Param>, PARAM_COUNT> values_;
 
 };

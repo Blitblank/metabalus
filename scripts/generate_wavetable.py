@@ -12,16 +12,15 @@
 
 # this script uses the function defined in example_wavetable.py to calculate samples
 # if you want a custom wavetable, copy/edit/modify the example function (desmos is great for brainstorming)
+# import this script and call generateWavetable(processFunction) to generate a custom wavetable
 
 from array import array
 import math
 
-import example_wavetable
-
 wavetableLength = 2048
 
-def createFile():
-    filename = example_wavetable.WAVETABLE_FILE_NAME + ".wt"
+def createFile(name):
+    filename = name + ".wt"
     print("creating file " + filename)
     file = open(filename, "wb")
     return file
@@ -29,7 +28,7 @@ def createFile():
 def writeMetadata(file):
     print(">> im writing metadata")
 
-def generateWavetable(file):
+def writeData(file, processFunction):
     print(">> im generating the wavetable")
 
     # init variables
@@ -40,7 +39,7 @@ def generateWavetable(file):
 
     # generate each discrete sample
     for i in range(wavetableLength): 
-        sample = example_wavetable.process(x)
+        sample = processFunction(x)
         accumulator += sample * sample
         x += phaseInc
         data_list[i] = sample
@@ -59,14 +58,11 @@ def closeFile(file):
     print(">> finishing up")
     file.close()
 
-def main():
+def generateWavetable(name, processFunction):
     print("Hello main")
-    file = createFile()
+    file = createFile(name)
     writeMetadata(file)
-    generateWavetable(file)
+    writeData(file, processFunction)
     closeFile(file)
     print("done")
     
-
-if __name__ == "__main__":
-    main()

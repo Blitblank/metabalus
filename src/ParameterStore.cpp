@@ -11,7 +11,9 @@ ParameterStore::ParameterStore() {
 
 // set parameter value
 void ParameterStore::set(ParamId id, float value) {
-    values_[static_cast<size_t>(id)].store(value, std::memory_order_relaxed);
+    Param oldParam = values_[static_cast<size_t>(id)].load(std::memory_order_relaxed);
+    Param updatedParam = { value, oldParam.min, oldParam.max };
+    values_[static_cast<size_t>(id)].store(updatedParam, std::memory_order_relaxed);
 }
 
 // set a whole envelope of parameters
@@ -27,5 +29,5 @@ void ParameterStore::set(EnvelopeId id, float depth, float a, float d, float s, 
 
 // get a single parameter
 float ParameterStore::get(ParamId id) const {
-    return values_[static_cast<size_t>(id)].load(std::memory_order_relaxed);
+    return values_[static_cast<size_t>(id)].load(std::memory_order_relaxed).val;
 }

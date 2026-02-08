@@ -1,7 +1,12 @@
 
 import math
 
+from generate_wavetable import generateWavetable
+
 WAVETABLE_FILE_NAME = "sharkFin"
+
+# process expects a waveform from x=[0, 2pi) centered around f(x)=0
+# normalization is handled by the wavetableGenerator
 
 def sine(phase):
     return math.sin(phase)
@@ -36,8 +41,9 @@ def sharkFin(phase):
 def sphere(phase):
     return 1
 
-# process get called by generate_wavetable.py
-# it calculates a single sample at a specified phase
-# normalization is handled by generate_wavetable.py
-def process(phase):
-    return sharkFin(phase)
+# pass in the name of your wavtable file and the process function
+def main():
+    generateWavetable(WAVETABLE_FILE_NAME, process)
+
+if __name__ == "__main__":
+    main()

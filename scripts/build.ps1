@@ -58,6 +58,8 @@ Write-Host "Building metabolus..."
 cmake --build $BUILD_DIR --config $CONFIG
 
 # TODO: install
+cd $BUILD_DIR
+cmake --install . --prefix ".\"
 
 # link dlls
 Write-Host "Deploying metabolus..."
